@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/maxgebhardt/catbus/schema/secure-payload.schema.json",
+  "title": "CATBus secure payload patterns (public)",
+  "description": "Illustrative sterile-bus payload shapes. No secrets, PHI, PANs, or credentials. Domains in examples: example.com only. See docs/secure-payload.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "task": {
+      "type": "string",
+      "description": "Short task verb or label.",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "status": {
+      "type": "string",
+      "description": "Sparse status token.",
+      "enum": ["accepted", "rejected", "running", "done", "error", "ok", "hold"]
+    },
+    "reason": {
+      "type": "string",
+      "description": "Short non-sensitive reason string.",
+      "maxLength": 500
+    },
+    "result_summary": {
+      "type": "string",
+      "description": "Human-skimmable summary; no secrets.",
+      "maxLength": 1000
+    },
+    "ref_id": {
+      "type": "string",
+      "description": "Opaque off-bus reference handle (document, vault pointer, ticket id).",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._:-]{1,128}$"
+    },
+    "nonce": {
+      "type": "string",
+      "description": "Optional liveness nonce; not a secret credential.",
+      "maxLength": 128
+    },
+    "local_version": {
+      "type": "string",
+      "description": "Local protocol semver pin.",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "envelope_v": {
+      "type": "string",
+      "description": "Local envelope major version string.",
+      "const": "2"
+    },
+    "authority": {
+      "type": "string",
+      "description": "Authority URL for protocol pin / best practices (public default: GitHub catbus).",
+      "maxLength": 256
+    },
+    "ok": {
+      "type": "boolean",
+      "description": "Sparse health bit for heartbeat/telemetry."
+    },
+    "metrics": {
+      "type": "object",
+      "description": "Non-sensitive counters only.",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "roles": {
+      "type": "array",
+      "description": "Sanitized public taxonomy roles only.",
+      "items": {
+        "type": "string",
+        "enum": ["orchestrator", "dispatcher", "worker-node", "audit-node"]
+      },
+      "uniqueItems": true
+    },
+    "note": {
+      "type": "string",
+      "description": "Optional short non-sensitive note.",
+      "maxLength": 500
+    },
+    "code": {
+      "type": "string",
+      "description": "Machine error code.",
+      "maxLength": 64
+    },
+    "message": {
+      "type": "string",
+      "description": "Error or status message; no secrets or stack traces with credentials.",
+      "maxLength": 500
+    },
+    "newer": {
+      "type": "boolean",
+      "description": "For protocol-check responses: whether remote pin/BP is newer."
+    },
+    "remote_version": {
+      "type": "string",
+      "description": "Remote protocol semver from authority.",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "protocol": "catbus",
+  "version": "0.3.0",
+  "envelope_v": "2",
+  "released": "2026-09-27",
+  "best_practices_url": {
+    "relative": "docs/best-practices.md",
+    "canonical": "https://github.com/maxgebhardt/catbus/blob/main/docs/best-practices.md"
+  },
+  "schema_url": {
+    "relative": "schema/catbus-envelope.schema.json",
+    "canonical": "https://github.com/maxgebhardt/catbus/blob/main/schema/catbus-envelope.schema.json"
+  },
+  "threat_model_url": {
+    "relative": "docs/threat-model.md",
+    "canonical": "https://github.com/maxgebhardt/catbus/blob/main/docs/threat-model.md"
+  },
+  "signing_url": {
+    "relative": "docs/signing.md",
+    "canonical": "https://github.com/maxgebhardt/catbus/blob/main/docs/signing.md"
+  },
+  "secure_payload_url": {
+    "relative": "docs/secure-payload.md",
+    "canonical": "https://github.com/maxgebhardt/catbus/blob/main/docs/secure-payload.md"
+  },
+  "changelog_url": {
+    "relative": "CHANGELOG.md",
+    "canonical": "https://github.com/maxgebhardt/catbus/blob/main/CHANGELOG.md"
+  },
+  "notes": "Public protocol version pin. Hubs SHOULD poll this file and docs/best-practices.md; propose compatible upgrades autonomously; require human GO for breaking changes. 0.3.0 adds public threat model, signing, and sterile-payload docs/schemas."
+}

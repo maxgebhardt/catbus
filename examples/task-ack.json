@@ -1,0 +1,14 @@
+{
+  "v": "2",
+  "event": "ack",
+  "correlation_id": "550e8400-e29b-41d4-a716-446655440002",
+  "sender": "worker-node",
+  "target": "dispatcher",
+  "timestamp": "2026-09-27T13:05:05-05:00",
+  "in_reply_to": "ask",
+  "message": "Accepted",
+  "payload": {
+    "status": "accepted",
+    "eta_seconds": 30
+  }
+}

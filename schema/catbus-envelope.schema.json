@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/maxgebhardt/catbus/schema/catbus-envelope.schema.json",
+  "title": "CATBus Envelope (public v2)",
+  "description": "Public envelope for CATBus (Cross-Agent Tasking Bus): a serverless, asynchronous tasking and telemetry bus over standard email. Production deployments may add private binding fields not defined in this public schema.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "v",
+    "event",
+    "correlation_id",
+    "sender",
+    "target",
+    "payload"
+  ],
+  "properties": {
+    "v": {
+      "type": "string",
+      "description": "Public schema major version string.",
+      "const": "2"
+    },
+    "event": {
+      "type": "string",
+      "description": "Kebab-case verb for this message. Common public events: ping, pong, ask, ack, task, telemetry, heartbeat, intro, onboard, error, protocol-check.",
+      "minLength": 1,
+      "pattern": "^[a-z][a-z0-9-]{0,63}$"
+    },
+    "correlation_id": {
+      "type": "string",
+      "description": "Opaque token tying a request to its response. Prefer UUID.",
+      "minLength": 8,
+      "maxLength": 128
+    },
+    "sender": {
+      "type": "string",
+      "description": "Callsign of the emitting agent. Public examples use sanitized roles only (dispatcher, worker-node, orchestrator, audit-node).",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "target": {
+      "type": "string",
+      "description": "Callsign of the intended recipient, or a documented multicast alias in a private registry.",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "payload": {
+      "type": "object",
+      "description": "Event-specific body. Keep secrets, credentials, and sensitive identifiers out of bus JSON.",
+      "additionalProperties": true
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional ISO-8601 timestamp with offset."
+    },
+    "in_reply_to": {
+      "type": "string",
+      "description": "Optional prior event name or correlation handle this message answers."
+    },
+    "ttl_seconds": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Optional soft expiry hint for receivers."
+    },
+    "message": {
+      "type": "string",
+      "description": "Optional short human-readable status line.",
+      "maxLength": 500
+    }
+  }
+}

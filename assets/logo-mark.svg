@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Background: Deep Slate #0F172A -->
+  <rect width="512" height="512" rx="64" fill="#0F172A" stroke="#1E293B" stroke-width="4" />
+
+  <!-- Horizontal Bus Traces (Hardware I/O Channels) -->
+  <path d="M 24 280 L 120 280" stroke="#334155" stroke-width="10" stroke-linecap="round" />
+  <path d="M 392 280 L 488 280" stroke="#334155" stroke-width="10" stroke-linecap="round" />
+  <path d="M 24 314 L 140 314" stroke="#334155" stroke-width="10" stroke-linecap="round" />
+  <path d="M 372 314 L 488 314" stroke="#334155" stroke-width="10" stroke-linecap="round" />
+
+  <!-- Active Pulses (Pure solid vectors, zero glow filters) -->
+  <line x1="60" y1="280" x2="150" y2="280" stroke="#06B6D4" stroke-width="10" stroke-linecap="round" />
+  <circle cx="150" cy="280" r="9" fill="#38BDF8" />
+  <line x1="362" y1="280" x2="452" y2="280" stroke="#06B6D4" stroke-width="10" stroke-linecap="round" />
+  <circle cx="362" cy="280" r="9" fill="#38BDF8" />
+
+  <!-- Cat Head Contour: Circuit geometry with smooth bezier ear roots and jaw -->
+  <!-- Ear roots curve smoothly into crown; muzzle curves cleanly into jaw -->
+  <path d="M 125 310 
+           C 145 250, 160 210, 172 195 
+           L 198 95 
+           C 215 155, 230 185, 246 185 
+           L 266 185 
+           C 282 185, 297 155, 314 95 
+           L 340 195 
+           C 352 210, 367 250, 387 310 
+           C 340 355, 310 360, 256 360 
+           C 202 360, 172 355, 125 310 Z" 
+        fill="none" stroke="#F59E0B" stroke-width="16" stroke-linejoin="round" stroke-linecap="round" />
+
+  <!-- Ear Solder Pad Terminals -->
+  <circle cx="198" cy="95" r="10" fill="#F59E0B" />
+  <circle cx="314" cy="95" r="10" fill="#F59E0B" />
+
+  <!-- Eyes: Sharp Angled Geometric LED Terminals -->
+  <polygon points="206,220 242,220 224,248" fill="#F59E0B" />
+  <polygon points="306,220 270,220 288,248" fill="#F59E0B" />
+
+  <!-- Router Nose Node & Bridge -->
+  <circle cx="256" cy="282" r="10" fill="#38BDF8" />
+  <line x1="256" y1="292" x2="256" y2="326" stroke="#38BDF8" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Whiskers: PCB I/O Pins with Terminals meeting Muzzle -->
+  <line x1="85" y1="248" x2="165" y2="248" stroke="#06B6D4" stroke-width="8" stroke-linecap="round" />
+  <circle cx="85" cy="248" r="9" fill="#06B6D4" />
+  <line x1="65" y1="280" x2="145" y2="280" stroke="#06B6D4" stroke-width="8" stroke-linecap="round" />
+  <circle cx="65" cy="280" r="9" fill="#06B6D4" />
+
+  <line x1="427" y1="248" x2="347" y2="248" stroke="#06B6D4" stroke-width="8" stroke-linecap="round" />
+  <circle cx="427" cy="248" r="9" fill="#06B6D4" />
+  <line x1="447" y1="280" x2="367" y2="280" stroke="#06B6D4" stroke-width="8" stroke-linecap="round" />
+  <circle cx="447" cy="280" r="9" fill="#06B6D4" />
+</svg>

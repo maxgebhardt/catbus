@@ -1,0 +1,10 @@
+{
+  "v": "2",
+  "event": "ping",
+  "correlation_id": "550e8400-e29b-41d4-a716-446655440001",
+  "sender": "orchestrator",
+  "target": "worker-node",
+  "timestamp": "2026-09-27T13:00:00-05:00",
+  "message": "Liveness check",
+  "payload": {}
+}

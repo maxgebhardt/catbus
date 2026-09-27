@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/maxgebhardt/catbus/schema/signing.schema.json",
+  "title": "CATBus signature object (public)",
+  "description": "Optional hash-based signature attachment for CATBus envelopes. Private keys MUST remain off-bus. See docs/signing.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["alg", "hash_alg", "key_id", "sig"],
+  "properties": {
+    "alg": {
+      "type": "string",
+      "description": "Signature algorithm identifier.",
+      "enum": ["ed25519", "ecdsa-p256", "ecdsa-p384"]
+    },
+    "hash_alg": {
+      "type": "string",
+      "description": "Hash used for message_hash / canonical bytes before signing.",
+      "enum": ["sha256", "sha512", "blake2b-256"]
+    },
+    "key_id": {
+      "type": "string",
+      "description": "Opaque seated key handle. Not a secret. Public examples only — never publish live fleet key IDs here as authoritative.",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._:-]{1,128}$"
+    },
+    "parent_hash": {
+      "type": "string",
+      "description": "Hex-encoded hash of the parent envelope (sans signature). Omit on chain roots. Binds reply chains (hash-into-hash).",
+      "pattern": "^[a-f0-9]{64,128}$"
+    },
+    "sig": {
+      "type": "string",
+      "description": "Base64-encoded signature over message_hash (or canonical bytes — fleet must document which).",
+      "minLength": 16,
+      "maxLength": 1024
+    },
+    "message_hash": {
+      "type": "string",
+      "description": "Optional explicit hex message hash for debugging; receivers SHOULD recompute rather than trust this field alone.",
+      "pattern": "^[a-f0-9]{64,128}$"
+    }
+  }
+}

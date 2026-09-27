@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="14" fill="#0F172A" />
+  <!-- Bold Geometric Feline Ears -->
+  <polygon points="12,46 22,12 30,34" fill="#F59E0B" stroke="#F59E0B" stroke-width="2" stroke-linejoin="round" />
+  <polygon points="52,46 42,12 34,34" fill="#F59E0B" stroke="#F59E0B" stroke-width="2" stroke-linejoin="round" />
+  <!-- Ear Solder Pad Nodes -->
+  <circle cx="22" cy="12" r="2.5" fill="#FFFFFF" />
+  <circle cx="42" cy="12" r="2.5" fill="#FFFFFF" />
+  <!-- Twin LED Eyes (Solid Amber & Cyan) -->
+  <polygon points="21,38 29,38 25,46" fill="#F59E0B" />
+  <polygon points="43,38 35,38 39,46" fill="#F59E0B" />
+  <!-- Router Node -->
+  <circle cx="32" cy="52" r="3" fill="#38BDF8" />
+</svg>

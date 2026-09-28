@@ -81,7 +81,7 @@ Ask:
 1. Do you have **one shared mailbox** that both the hub and peer agents can send to and read? Bus traffic is **self-mail** — From = To = that mailbox. No external recipients. Gmail or an equivalent mailbox **is** the bus.
 2. Do **you** (human) keep inbox access for oversight?
 3. Can this agent **send and read** mail on that mailbox?
-4. Can it send **routine self-mail unattended** (no per-message Approve / Send click)? If **no**, this seat is not a hub candidate — the human would be the send queue. Approval-gated peers exist and may stall `RES` until a human clicks Send. See [`peer-capability-matrix.md`](peer-capability-matrix.md).
+4. Can it send **routine self-mail unattended** (no per-message Approve / Send click, **including self-mail**)? If **no**, this seat is not a hub candidate — the human would be the send queue. Some seats can read and auto-ack and still cannot reply or send until a human clicks Send. Some seats cannot outbound send at all and need a thin sender peer. Read [`peer-capability-matrix.md`](peer-capability-matrix.md) before seating a hub or a peer you will depend on for `RES`.
 
 If any answer is no, stop and say what is missing. Do not mint cards.
 
@@ -122,7 +122,7 @@ If the human cannot create the rule yet, describe it at this level only: subject
 
 **Propose** the pin in [`../schema/protocol-version.json`](../schema/protocol-version.json). Do not invent a different pin. Do not seat it until yes.
 
-As of this document, that pin is protocol **`0.3.1`** and envelope **`v: "2"`**. If the file on `main` has moved, propose the file, not this sentence.
+As of this document, that pin is protocol **`0.3.2`** and envelope **`v: "2"`**. If the file on `main` has moved, propose the file, not this sentence.
 
 Ask:
 
@@ -149,6 +149,7 @@ Ask:
 1. How many peer agents will join in this session (0 if hub-only)?
 2. For each peer: callsign, and which runtime will run it. Docs may **suggest** `worker-node`, `dispatcher`, `audit-node`. Do not reuse those as live seating without an explicit yes for each.
 3. Reminder: unknown senders stay **liveness-only** (ping/pong only) until **you** seat them.
+4. For each runtime, check [`peer-capability-matrix.md`](peer-capability-matrix.md). Record whether unattended self-mail is expected. Read, draft, and auto-ack are not send. If Send needs a human, including for self-mail, or the seat cannot outbound send, do not plan hub liveness on that seat. A no-send seat needs a thin sender peer.
 
 Record callsigns only. No secrets. No mailbox addresses.
 
@@ -378,6 +379,7 @@ Peers may specialize and request seating changes. Still require a human yes to s
 # Part E — Checklist (human)
 
 - [ ] Handed this doc to the shared-mailbox central agent
+- [ ] Checked [`peer-capability-matrix.md`](peer-capability-matrix.md) before seating the hub and peers (read and auto-ack are not unattended send)
 - [ ] One shared mailbox; bus traffic is self-mail only (From = To)
 - [ ] Answered the interview; saw the summary
 - [ ] Said **yes** to mint cards
@@ -393,11 +395,11 @@ Peers may specialize and request seating changes. Still require a human yes to s
 # Pointers (for agents and reviewers)
 
 - Threat model (**MUST**): [`threat-model.md`](threat-model.md)
+- Peer capability matrix (read, draft, auto-ack without Send, unattended self-mail, human Approve, hub fit): [`peer-capability-matrix.md`](peer-capability-matrix.md)
 - Signing: [`signing.md`](signing.md)
 - Cleartext sterile payloads: [`secure-payload.md`](secure-payload.md)
 - Opaque envelopes (optional, advised against): [`secure-envelope.md`](secure-envelope.md)
 - Living practices: [`best-practices.md`](best-practices.md)
 - Security summary: [`security.md`](security.md)
 - Questions and anti-patterns: [`faq-anti-patterns.md`](faq-anti-patterns.md)
-- Who can send unattended self-mail: [`peer-capability-matrix.md`](peer-capability-matrix.md)
 - Hub contract: [`../prompts/hub.md`](../prompts/hub.md)

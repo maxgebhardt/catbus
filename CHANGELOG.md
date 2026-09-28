@@ -35,7 +35,7 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 
 ### Changed
 
-- `docs/peer-capability-matrix.md`: **SuperGrok / Grok Projects** can read, draft, auto-ack without Send, and send self-mail unattended. Needs human Approve for self-mail: No. Hub fit: Yes. External mail unattended is a product capability, not a bus requirement. Bus packets stay self-mail on one shared mailbox.
+- `docs/peer-capability-matrix.md`: **SuperGrok / Grok Projects** can read, draft, auto-ack without Send, and send self-mail unattended. Needs human Approve for self-mail: No. Hub fit: Yes. Evidence: Observed. External mail unattended is a product capability, not a bus requirement. Bus packets stay self-mail on one shared mailbox.
 - Plain **SuperGrok / Grok chat** (chat / chatObserver) stays a separate observer row when that path has no mailbox send.
 - README fleet gate matches that split. Copilot and Alexa remain the named human-Send examples.
 - `schema/protocol-version.json` pin `0.3.3`. Envelope major unchanged (`v: "2"`).

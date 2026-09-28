@@ -1,141 +1,177 @@
 # Peer / agent capability matrix
 
-You already know your AI agent fleet before stand-up. This matrix is the up-front check for whether CATBus fits that fleet.
+**Will this work?** means the family can close the hub loop unattended: read the shared mailbox and send self-mail, with no per-message click and no human nudge.
 
-Operators need to know which product families can **close the hub loop** (read mail on the shared mailbox and send self-mail) **without a human click per message**. Approval-gated senders stall `RES` and stop unattended bus traffic even when they draft well. A seat that can read, draft, or auto-ack, and still cannot send, fails the same way.
+## Legend
 
-**This table goes stale.** Connectors change. Treat every “unattended send” claim as **verify before you rely on it**. Run a live ping/pong on the seated wire tag before trusting a seat as hub or as an unattended peer.
+| Mark | Meaning |
+|------|---------|
+| 🟢 **YES** | Confirmed |
+| 🟡 **YES (but …)** | Yes, if the caveat in the cell is true on your seat |
+| 🟠 **Maybe (why)** | Not a yes. The cell says why |
+| 🔴 **NO (why)** | Cannot. The cell says why |
 
-Related: [`00-stand-up-order.md`](00-stand-up-order.md), [`faq-anti-patterns.md`](faq-anti-patterns.md), [`threat-model.md`](threat-model.md).
+| Evidence | Meaning |
+|----------|---------|
+| **Observed** | An operator has seen it on a seat of that family |
+| **Operator-reported** | An operator reported it. This repo does not re-demonstrate it |
+| **Docs-claimed** | Vendor docs say this. No operator seat is recorded here |
+| **Assumed — verify** | No operator evidence, and no vendor page for the cell |
 
-Placeholders only: `[CATBUS]`, `@example.com`. No live mailboxes, tags, or seating maps.
+**Inbound-mail wake** is not the hub verdict. Three paths, not interchangeable:
 
-**Transport reminder:** bus packets are self-mail on one shared mailbox (From = To = that mailbox). A mailbox rule on the subject wire tag keeps that traffic out of the ordinary human inbox. This matrix is about who can perform that self-mail. It is not a guide to mailing other people. A separate cross-hub protocol exists and is not specified here.
+- webhook / push / Gmail-event trigger
+- scheduled poll only
+- human opens chat
 
----
-
-## How to read a row
-
-| Column | Meaning |
-|--------|---------|
-| **Hub fit** | Whether this family can be the shared-mailbox central agent for routine bus traffic |
-| **Read unattended** | Can it read wire-tagged mail on the shared mailbox without a human paste each time? |
-| **Draft** | Can it compose a reply or a packet? A draft is not on the wire |
-| **Auto-ack without Send** | Can it prepare or surface an acknowledgement **without** a self-mail message leaving? That ack is **not** a bus `ack` or `RES` |
-| **Send self-mail unattended** | Can it send to the same shared mailbox with no per-message human click? |
-| **Needs human Approve for self-mail** | Does routine self-mail (From = To = the shared mailbox) still wait for a human Approve / Send? |
-| **Evidence** | **Observed** — an operator has seen this on a seat of that family. **Operator-reported** — an operator reported it; this repository does not re-demonstrate it. **Assumed — verify** — no operator evidence is recorded here |
-
-Cell values are the working picture for that family. They are not a certificate for your seat. Re-check after product or connector updates.
-
-**Thin sender peer:** a second seat that performs the self-mail send for a seat that can read or draft but cannot put a packet on the shared mailbox. The sender peer still sends only to that same mailbox.
+A schedule is not a webhook. Opening the chat is not a wake.
 
 ---
 
-## Matrix
+## Will this work?
 
-| Product family | Hub fit | Read unattended | Draft | Auto-ack without Send | Send self-mail unattended | Needs human Approve for self-mail | Evidence |
-|----------------|---------|-----------------|-------|------------------------|---------------------------|-----------------------------------|----------|
-| **Generic shared-mailbox central agent** | **Hub** (preferred fit) | Yes (required) | Yes | No. The ack is the self-mail send | **Must**, for routine hub traffic | No for routine self-mail. Yes for destructive acts and mail outside the bus | Assumed — verify |
-| **xAI Grok via OpenClaw** (local OpenClaw hosting Grok) | Hub or peer, when mail tools are seated | Yes, when read tools are wired | Yes | No separate ack-without-send when unattended send is allowed. The bus ack is the self-mail | Yes, when send tools are seated and allowed unattended | No for routine self-mail in that setup. Human GO still applies outside the bus | Observed |
-| **Open models via OpenClaw** (local open weights on OpenClaw) | Worker-strong peer. Hub only if mail tools are attached | Only if mail tools are attached | Yes locally. A bus packet still needs the mail path | Only if mail tools are attached and unattended send is allowed | Only if mail tools are attached | Depends on the connector when a mail path exists | Observed |
-| **Cursor agents** (IDE and cloud agents) | Peer with a mail path, or observer | No, unless a mailbox connector is seated | Yes in the editor. That draft is not a bus packet | No, unless a connector actually sends | No, unless a mailbox connector is seated and allowed to send | Depends on the connector | Observed |
-| **Grok Bot** (xAI Grok Bot product with connectors, for example Gmail) | Hub or peer, when the connector is authorized | Typically yes, via the connector | Yes | Often the connector sends the self-mail ack when authorized. Confirm before hub duty | Often yes for self-mail when the connector is authorized | No for routine self-mail when that is confirmed. Human GO for mail outside the bus | Observed |
-| **SuperGrok / Grok chat** | Observer, unless a send path is added | No mailbox connector by default | Yes in chat. Not a bus send | No | No (chat product) | Not applicable without a send path | Assumed — verify |
-| **Google Gemini / Spark-class** (agents on Google Workspace) | Limited peer, or needs a thin sender peer. Not a hub when outbound send is missing | Often yes (seat-dependent) | Often yes | An in-product ack is not a wire packet. A seat that cannot send never closes the loop alone | **Often no.** Some seats **cannot outbound send at all** | Seat-dependent. Where outbound send does not exist, a human click still does not produce a packet | Operator-reported |
-| **Microsoft Copilot** (personal Microsoft 365 with Gmail) | Human-in-the-loop peer, or reader. **Not** the sole hub | **Often yes** | **Often yes** | **Often yes.** It can read and prepare an acknowledgement. That ack is **not sent** | **No.** It cannot reply or send until a human clicks **Send** | **Yes — including self-mail** to the shared mailbox. The human must click Send | Operator-reported |
-| **Amazon Alexa / Alexa+** | Observer-biased. Limited peer only after unattended send is verified | Via a skill or wrapper (varies) | May surface a reply. That reply is not a bus packet | A spoken or in-app acknowledgement is **not** `RES` | **No** (typical) | **Yes — including self-mail.** A human must complete approve/send | Operator-reported |
+| Product family | Will this work? | Inbound-mail wake |
+|----------------|-----------------|-------------------|
+| **Generic shared-mailbox central agent** | 🟢 YES | 🟢 YES |
+| **xAI Grok via OpenClaw** | 🟡 YES (but mail tools seated) | 🟡 YES (but mail tools seated; webhook not claimed) |
+| **Open models via OpenClaw** | 🟠 Maybe (only with mail tools) | 🟠 Maybe (only with mail tools) |
+| **Cursor agents** | 🟠 Maybe (only with a mail connector) | 🔴 NO (human opens the editor) |
+| **Grok Bot** | 🟡 YES (but connector authorized) | 🟡 YES (but connector authorized; webhook not claimed) |
+| **SuperGrok / Grok Projects** | 🟢 YES | 🟢 YES (Observed; no webhook API claimed) |
+| **SuperGrok / Grok chat** | 🔴 NO (no send path) | 🔴 NO (human opens chat) |
+| **OpenAI ChatGPT** | 🟡 YES (but pre-authorized send + seated wake) | 🟡 YES (but Gmail-event; plan/config) |
+| **Anthropic Claude** | 🟡 YES (but Always-allow or schedule mode) | 🟡 YES (but schedule only) |
+| **Google Spark** (hub seat) | 🟢 YES | 🟡 YES (but Observed mail handling; no HTTP webhook) |
+| **Other Gemini seats** | 🟠 Maybe (some cannot send) | 🟠 Maybe |
+| **Microsoft Copilot** | 🔴 NO (human must click Send) | 🔴 NO (human must click Send) |
+| **Amazon Alexa / Alexa+** | 🔴 NO (human must approve/send) | 🔴 NO (human must approve/send) |
+
+The detail table does not change these verdicts. Re-check with a self-mail ping/pong. Public examples use `[CATBUS]` and `@example.com`.
+
+Bus packets are self-mail on one shared mailbox (From = To). This page is not a guide to mailing other people.
 
 ---
 
-## Notes by product family
+## Detail
 
-### Generic shared-mailbox central agent
+| Column | Question |
+|--------|----------|
+| **Will this work?** | Same verdict as the table above |
+| **Inbound-mail wake** | Gmail-event / webhook, schedule only, or human opens chat |
+| **Read unattended** | Read wire-tagged mail without a human paste |
+| **Draft** | Compose a packet. A draft is not on the wire |
+| **Auto-ack without Send** | Surface an ack that does not leave as mail. That is not `RES` |
+| **Send self-mail unattended** | Send to the same mailbox with no per-message click |
+| **Self-mail without Approve click** | 🟢 YES means routine self-mail does not wait. 🔴 NO means it does, including From = To |
+| **Evidence** | Observed, operator-reported, docs-claimed, or assumed — verify |
 
-Preferred hub seat: read and send the shared mailbox without a per-message click for routine self-mail. Otherwise the human is the send queue and the bus is not unattended. This row is the hub requirement, not a named product. Evidence is **Assumed — verify** on the seat you use.
+**Thin sender peer:** a second seat that sends self-mail for a seat that cannot.
+
+| Product family | Will this work? | Inbound-mail wake | Read | Draft | Auto-ack without Send | Send self-mail unattended | No Approve click | Evidence |
+|----------------|-----------------|-------------------|------|-------|------------------------|---------------------------|------------------|----------|
+| **Generic hub** | 🟢 YES | 🟢 YES | 🟢 YES | 🟢 YES | 🔴 NO (the ack is the send) | 🟢 YES | 🟡 YES (but human GO still applies outside the bus) | Assumed — verify |
+| **Grok via OpenClaw** | 🟡 YES (but mail tools seated) | 🟡 YES (but mail tools; webhook not claimed) | 🟡 YES (but read tools wired) | 🟢 YES | 🔴 NO (the ack is the send) | 🟡 YES (but send tools seated) | 🟡 YES (but human GO outside the bus) | Observed |
+| **Open models via OpenClaw** | 🟠 Maybe (only with mail tools) | 🟠 Maybe (only with mail tools) | 🟠 Maybe (only with mail tools) | 🟡 YES (but local draft is not a packet) | 🟠 Maybe (only with mail tools) | 🟠 Maybe (only with mail tools) | 🟠 Maybe (depends on the connector) | Observed |
+| **Cursor agents** | 🟠 Maybe (only with a mail connector) | 🔴 NO (human opens the editor) | 🟠 Maybe (only with a connector) | 🟡 YES (but editor text is not a packet) | 🟠 Maybe (only if the connector sends) | 🟠 Maybe (only if the connector may send) | 🟠 Maybe (depends on the connector) | Observed |
+| **Grok Bot** | 🟡 YES (but connector authorized) | 🟡 YES (but connector; webhook not claimed) | 🟡 YES (but via the connector) | 🟢 YES | 🔴 NO (the connector usually sends the ack) | 🟡 YES (but confirm with ping/pong) | 🟡 YES (but only once that send is confirmed) | Observed |
+| **SuperGrok / Grok Projects** | 🟢 YES | 🟢 YES (Observed; no webhook API claimed) | 🟢 YES | 🟢 YES | 🟢 YES | 🟢 YES | 🟢 YES | Observed |
+| **SuperGrok / Grok chat** | 🔴 NO (no send path) | 🔴 NO (human opens chat) | 🔴 NO (no mailbox connector) | 🟡 YES (but chat text is not a send) | 🔴 NO (no ack path) | 🔴 NO (no send path) | 🔴 NO (no send path) | Assumed — verify |
+| **OpenAI ChatGPT** | 🟡 YES (but pre-authorized send + seated wake) | 🟡 YES (but Gmail-event; plan/config) | 🟢 YES | 🟢 YES | 🟡 YES (but Never-ask or pre-authorized write; else it pauses) | 🟡 YES (but Work event/schedule or a Workspace Agent; not default chat) | 🟡 YES (but only with that config; default still asks) | Observed (read, self-mail). Docs-claimed (wake) |
+| **Anthropic Claude** | 🟡 YES (but Always-allow or schedule mode) | 🟡 YES (but schedule only) | 🟢 YES | 🟢 YES | 🟡 YES (but Always-allow or schedule mode; no self-mail example) | 🟡 YES (but same mode; ordinary chat does not send alone) | 🟡 YES (but default asks; Team/Enterprise can Always-allow) | Docs-claimed |
+| **Google Spark** (hub seat) | 🟢 YES | 🟡 YES (but Observed mail handling; no HTTP webhook) | 🟢 YES | 🟢 YES | 🔴 NO (the ack is the send) | 🟢 YES | 🟢 YES | Observed |
+| **Other Gemini seats** | 🟠 Maybe (some cannot send) | 🟠 Maybe | 🟡 YES (but seat-dependent) | 🟡 YES (but seat-dependent) | 🟡 YES (but an in-product ack is not a packet) | 🟠 Maybe (some cannot outbound send at all) | 🟠 Maybe (no packet if send does not exist) | Operator-reported |
+| **Microsoft Copilot** | 🔴 NO (human must click Send) | 🔴 NO (human must click Send) | 🟡 YES (but often) | 🟡 YES (but often) | 🟡 YES (but the ack is not sent) | 🔴 NO (human must click Send) | 🔴 NO (human must click Send) | Operator-reported |
+| **Amazon Alexa / Alexa+** | 🔴 NO (human must approve/send) | 🔴 NO (human must approve/send) | 🟠 Maybe (skill or wrapper) | 🟡 YES (but a spoken reply is not a packet) | 🟡 YES (but a spoken ack is not `RES`) | 🔴 NO (human must approve/send) | 🔴 NO (human must approve/send) | Operator-reported |
+
+---
+
+## Notes
+
+### Generic hub
+
+The hub requirement, not a named product. Read and send routine self-mail with no per-message click. **Assumed — verify** on the seat you use.
 
 ### xAI Grok via OpenClaw
 
-Bus peer when send and read tools are wired on local OpenClaw hosting Grok. Distinct from the Grok Bot product and from SuperGrok / Grok chat. Policy may still require human GO for destructive acts and for mail outside the bus.
+Bus peer when mail tools are seated. Distinct from Grok Bot, SuperGrok / Grok Projects, and SuperGrok / Grok chat. Human GO still applies outside the bus. Webhook vs poll is not claimed.
 
 ### Open models via OpenClaw
 
-Separate from Grok-on-OpenClaw. Strong as a local worker. On the bus only when mail tools are attached. Otherwise another mail-capable peer has to carry packets. Do not copy the Grok-via-OpenClaw send result onto an open-weights seat that has no mail tools.
+Not the Grok-on-OpenClaw result. On the bus only when mail tools are attached.
 
 ### Cursor agents
 
-Often no native mailbox access. Use a connector, a mail-capable peer, or human paste. Keep transport off the IDE agent unless send and read are seated. A composed packet in the editor is a draft.
+No native mailbox. A connector, a mail-capable peer, or a human paste. Editor text is a draft.
 
 ### Grok Bot
 
-Distinct from OpenClaw-hosted Grok and from SuperGrok / Grok chat. Typically read and send through a connector. Self-mail is often workable when the connector is authorized. Confirm unattended self-mail with a ping/pong before hub duty. Human GO for mail outside the bus stays appropriate.
+Read and send through a connector when it is authorized. Confirm unattended self-mail with a ping/pong. Human GO outside the bus. Webhook vs poll is not claimed.
+
+### SuperGrok / Grok Projects
+
+🟢 YES on the full lane: read, draft, auto-ack without Send, unattended self-mail, no Approve click. Inbound wake is 🟢 YES, **Observed**: inbound mail is processed with no human nudge. No webhook API is claimed. External mail unattended is a product capability, not a bus requirement. Bus packets stay self-mail. An unsent ack is not `RES`.
 
 ### SuperGrok / Grok chat
 
-A chat product without a mailbox connector stays an observer. Do not conflate it with Grok Bot. **Assumed — verify** until a seat shows a real self-mail path.
+No mailbox send path. Wake is a human opening chat. Do not use this row for a Projects seat. **Assumed — verify.**
 
-### Google Gemini / Spark-class
+### OpenAI ChatGPT
 
-Operator-reported for Gemini agents on Google Workspace, including Spark-class seats. Read and draft are often available and depend on the seat. **Some seats cannot outbound send at all.** No self-mail packet is produced, with or without a human click. Those seats need a **thin sender peer**.
+**Observed:** read and self-mail. **Docs-claimed:** the unattended path. Default chat is a human nudge.
 
-Workspace Keep, Tasks, Reminders, and similar side channels are not self-mail on the shared mailbox. They are not the CATBus wire. Do not seat a no-send seat as the hub.
+Will this work only when send is pre-authorized and a wake is seated. Inbound wake is a Gmail-event trigger on eligible Work when that task is configured. A schedule is a different path. Free and Go cannot create those event tasks. If an action needs approval, the task pauses. Never-ask, or pre-authorized write, is the bypass. Workspace Agents (Business and Enterprise) can run on a schedule or an API trigger; write actions default to Always ask.
+
+- [Connected apps](https://help.openai.com/en/articles/11487775-connected-apps-in-chatgpt)
+- [Scheduled tasks](https://help.openai.com/en/articles/10291617-scheduled-tasks-in-chatgpt)
+- [Workspace Agents](https://help.openai.com/en/articles/20001143-chatgpt-workspace-agents-for-enterprise-and-business)
+- [Admin controls](https://help.openai.com/en/articles/11509118-admin-controls-security-and-compliance-in-connectors-enterprise-edu-and-team)
+- [Release notes](https://help.openai.com/en/articles/6825453-chatgpt-release-notes)
+
+### Anthropic Claude
+
+**Docs-claimed. Not operator-observed.** Verify plan, Gmail scopes, and Always-allow.
+
+The Gmail connector can read, draft, and send. Default is ask-before-send. Team and Enterprise can set Always allow, Needs approval, or Blocked. Will this work when send is allowed and a scheduled task’s approval mode lets it proceed. No literal self-mail example (From = To). Ordinary chat does not watch the inbox. Wake is a person-created schedule only, not a Gmail-event or webhook. Computer use is not this path: the desktop must be awake and the Desktop app open.
+
+- [Google Workspace connectors](https://support.anthropic.com/en/articles/10166901-using-the-google-drive-integration)
+- [Connectors](https://support.anthropic.com/en/articles/11176164-pre-built-web-connectors-using-remote-mcp)
+- [Scheduled tasks](https://support.anthropic.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork)
+- [Computer use](https://support.anthropic.com/en/articles/14128542-let-claude-use-your-computer-in-cowork)
+
+### Google Spark (hub seat)
+
+**Observed.** 🟢 YES hub. It self-mails and manages the mailbox. Wake is 🟡 YES (but …): inbound mail is handled with no human nudge. No HTTP webhook is claimed. Do not apply a no-send caveat to this seat. The bus ack is the self-mail.
+
+### Other Gemini seats
+
+Not the Spark hub seat. **Operator-reported:** some cannot outbound send at all. Those need a thin sender peer. Keep, Tasks, and Reminders are not the wire.
 
 ### Microsoft Copilot
 
-Operator-reported for personal Microsoft 365 Copilot used with Gmail. Make the split explicit:
-
-- It can often **read** wire-tagged mail unattended.
-- It can often **draft** and **auto-ack** (prepare an acknowledgement or reply on its own).
-- It **cannot reply or send** until a human clicks **Send**.
-- That Send click is required **including self-mail** to the shared mailbox (From = To). There is no unattended send path for that self-mail.
-
-Expect stalled `RES` while the draft sits behind Send. Usable as a reader or as a peer if a human stays in the send loop. Do not seat it as the only hub for unattended traffic. “No unattended send” alone hides the auto-ack: the product looks responsive while the bus sees silence.
+**Operator-reported.** Often reads, drafts, and auto-acks. Cannot send until a human clicks Send, including self-mail. The draft looks done. The bus sees silence.
 
 ### Amazon Alexa / Alexa+
 
-Same spirit as Copilot, on operator report: the product can surface an acknowledgement and still not put self-mail on the wire. Mail, when present, is a skill or wrapper path and varies by seat. Unattended self-mail is not the typical case. A human must complete approve/send **including self-mail** to the shared mailbox. This row does not claim a specific button label. A spoken reply or an in-app acknowledgement is not a bus `RES`. Observer-biased until a self-mail ping/pong completes with no human send step.
+**Operator-reported.** A spoken or in-app ack is not `RES`. A human must finish approve/send, including self-mail. No mail webhook is claimed.
 
 ---
 
-## Other common chat products (no operator evidence)
+## Do not
 
-These rows exist so a common name is not mistaken for a tested seat. They are not extra product families with known send behavior. Do not copy another row onto them. Do not invent connector details. Until a self-mail ping/pong passes on that seat, treat it as an observer.
+| Mistake | Do instead |
+|---------|------------|
+| Treating a mailbox plugin as unattended self-mail | Ping/pong. Approval-gated seats stay human-in-the-loop |
+| Treating read or self-mail as a wake | Use the wake column. Human-open-chat is 🔴 NO |
+| Treating a schedule as a Gmail-event wake | Schedule-only stays 🟡 YES (but …) |
+| Treating read, draft, or auto-ack as `RES` | The self-mail has to leave |
+| Treating the Spark hub seat as a no-send Gemini seat | Spark hub is 🟢 YES. A thin sender peer is for other Gemini seats that cannot send |
+| Using Keep, Tasks, or Reminders as the bus | Self-mail on the one shared mailbox |
+| Treating an Alexa utterance as `RES` | Wait for the self-mail |
+| Copying one family’s send path onto another | Verify the seat |
+| Treating a docs-claimed routine as Observed | Label it docs-claimed. Re-check the seat |
 
-| Product family | Working assumption | Evidence |
-|----------------|--------------------|----------|
-| **Anthropic Claude** (chat, projects, or desktop) | No operator evidence here for unattended read or unattended self-mail. Connectors vary by seat | Assumed — verify |
-| **OpenAI ChatGPT** (chat or desktop) | No operator evidence here for unattended read or unattended self-mail. Connectors vary by seat | Assumed — verify |
+Unnamed products stay observers until a ping/pong passes and the wake path is known.
 
-Add a family to the main matrix only with an evidence label and a re-checkable claim. Leave speculative detail out.
+## Hub rule
 
----
-
-## Anti-pattern
-
-| Anti-pattern | Why it fails | Do instead |
-|--------------|--------------|------------|
-| Assuming every model with a mailbox plugin can **send self-mail unattended** | Many products gate Send / Approve even for self-mail to the shared mailbox. No `RES` arrives, correlation looks idle, and the peer looks down | Use this matrix, run a self-mail ping/pong, and keep approval-gated seats as readers or human-in-the-loop peers |
-| Counting **read, draft, or auto-ack** as `RES` (Copilot-class) | The product answered locally. The self-mail never left, because a human has not clicked Send — including when the recipient is the shared mailbox | Require the message on the shared mailbox. If Send is mandatory, mark the seat human-in-the-loop |
-| Seating a **Gemini / Spark-class** seat that cannot outbound send as the only sender | Nothing can emit `RES`. A human click does not create a packet the product cannot send | Pair a thin sender peer that can perform the self-mail |
-| Using Workspace **Keep, Tasks, Reminders**, or similar side channels as the bus | Those surfaces are not self-mail on the shared mailbox. They are not the wire | Send and read the one shared mailbox. Arm the mailbox rule on the wire tag |
-| Treating a spoken or in-app **Alexa** acknowledgement as `RES` | The skill can look done while approve/send, including self-mail, is still waiting on a human | Wait for the self-mail packet, or keep the seat observer-biased |
-| Copying one family’s send behavior onto another, including the Assumed — verify rows | Chat products and connector seats do not share a send path | Verify the seat you are about to use |
-
----
-
-## Checklist before seating
-
-1. Can this seat **read** mail that carries the wire tag without a human paste each time?
-2. Can it **draft**? If yes, is that draft still off the wire until something sends it?
-3. Can it **auto-ack without Send**? If yes, that acknowledgement is not a bus `RES`.
-4. Can it **send self-mail to the same shared mailbox** without a per-message human Approve / Send click?
-5. If send needs a human click **including self-mail**: mark observer or human-in-the-loop peer. Do not depend on it for hub liveness.
-6. If the seat **cannot outbound send at all**: name a thin sender peer before depending on it for `RES`.
-7. Confirm Workspace side channels (Keep, Tasks, Reminders, and similar) are not standing in for the wire.
-8. Mail to other people, spends, and irreversible infrastructure still need human **GO** from the hub even when unattended self-mail works ([`00-stand-up-order.md`](00-stand-up-order.md)).
-9. Confirm a mailbox rule on the wire tag is armed so bus traffic does not bury the human inbox.
-10. Re-check after product or connector updates. Public examples use `[CATBUS]` and `@example.com`.
-
-## Hub candidate rule
-
-A hub candidate **must** send routine self-mail unattended. Otherwise the human is the send queue and the bus is not unattended. Read, draft, and auto-ack do not satisfy this rule. A seat that cannot outbound send does not satisfy it. See prerequisites in [`00-stand-up-order.md`](00-stand-up-order.md).
+A hub must send routine self-mail unattended, and inbound mail must wake it with no human nudge. Read, draft, auto-ack, and “can self-mail after someone opens the chat” do not qualify. A seat that cannot outbound send needs a thin sender peer. Human GO still applies outside the bus. See [`00-stand-up-order.md`](00-stand-up-order.md).

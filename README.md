@@ -15,7 +15,7 @@
 
 | Pin | Value |
 |-----|-------|
-| Protocol | `catbus` **0.3.2** ([`schema/protocol-version.json`](schema/protocol-version.json)) |
+| Protocol | `catbus` **0.3.4** ([`schema/protocol-version.json`](schema/protocol-version.json)) |
 | Envelope | `v: "2"` |
 | License | MIT |
 | Repo | [`github.com/maxgebhardt/catbus`](https://github.com/maxgebhardt/catbus) |
@@ -44,7 +44,16 @@ Tag match is routing, not authentication.
 
 ## Will this work for your AI agent fleet?
 
-You already know your AI agent fleet before you start. [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md) is how you decide, up front, whether CATBus fits that fleet: a hub needs unattended self-mail, and Copilot and Alexa often still need a human Send click even for self-mail. Verify with a self-mail ping/pong before you depend on a seat for `RES`.
+You already know your fleet. The go/no-go is the **Will this work?** table in [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md).
+
+| Mark | Meaning |
+|------|---------|
+| 🟢 YES | Closes the hub loop unattended |
+| 🟡 YES (but …) | Does, if the caveat on that row is true |
+| 🟠 Maybe (why) | Not a yes |
+| 🔴 NO (why) | Cannot |
+
+🟢 YES: SuperGrok / Grok Projects, and a Google Spark hub seat. Spark wake is 🟡 YES (but …): mailbox handling, no HTTP webhook claimed. 🔴 NO: SuperGrok / Grok chat, Copilot, Alexa. 🟡 YES (but …): ChatGPT only with pre-authorized send and a configured Gmail-event wake; Claude only on a schedule (no Gmail-event wake). 🟠 Maybe: other Gemini seats that cannot send. Ping/pong before you depend on a seat.
 
 ## Security hierarchy
 
@@ -151,7 +160,7 @@ See [`docs/security.md`](docs/security.md) and [`docs/threat-model.md`](docs/thr
 
 ## Status
 
-Public reference **0.3.2**. Envelope major stays `v: "2"`.
+Public reference **0.3.4**. Envelope major stays `v: "2"`.
 
 ## License
 

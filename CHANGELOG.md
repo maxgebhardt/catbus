@@ -13,7 +13,7 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 
 ### Changed
 
-- README gate, after mailbox rules and before the security hierarchy: you already know your AI agent fleet; `docs/peer-capability-matrix.md` is the up-front fit check. Protocol pin unchanged (`0.3.2`).
+- (none yet)
 
 ### Deprecated
 
@@ -30,6 +30,38 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 ### Security
 
 - (none yet)
+
+## [0.3.4] — 2026-09-28
+
+### Changed
+
+- `docs/peer-capability-matrix.md` cells use a scale: 🟢 YES, 🟡 YES (but …), 🟠 Maybe (why), 🔴 NO (why). Evidence labels now include **Docs-claimed**. The Approve column is **Self-mail without Approve click** (🟢 YES means routine self-mail does not wait).
+- Capability is split from unattended poll/wake. A seat that can read and self-mail only while a session is running is not a hub.
+- **OpenAI ChatGPT:** Observed read and self-mail. Docs-claimed hub fit is 🟡 YES (but …): pre-authorized send (Never-ask) plus a scheduled or Gmail event-triggered Work task, or a Workspace Agent. Default chat still needs a human Approve. Not an always-on chat daemon. Sources in the matrix notes.
+- **Anthropic Claude:** Docs-claimed, not operator-observed. Gmail connector can read, draft, and send. Hub fit is 🟡 YES (but …): Always-allow or a scheduled-task approval mode. Ordinary chat does not monitor the mailbox. Computer use is not the unattended path (desktop must be awake). Anthropic does not show a literal self-mail example.
+- **SuperGrok / Grok Projects** stays 🟢 YES on the full self-mail lane. Evidence: Observed. Plain chat / chatObserver stays a separate 🔴 NO send path.
+- The matrix leads with a **Will this work?** summary: one hub-loop verdict per family on the same scale.
+- **Inbound-mail wake** is its own column: Gmail-event / webhook, scheduled poll only, or human opens chat. ChatGPT Work is 🟡 YES (but) for a configured Gmail-event trigger. Claude’s ordinary connector is schedule-only. SuperGrok / Grok Projects is Observed wake with no webhook API claimed. The Spark hub seat is Observed mailbox handling with no HTTP webhook claimed.
+- Clarity pass: legend first, short verdict cells, notes hold the citations. Verdicts unchanged.
+- **Google Spark** (hub seat) is 🟢 YES: it can self-mail and close the hub loop. Evidence: Observed. Other Gemini seats that cannot outbound send stay a separate row and still need a thin sender peer.
+- `schema/protocol-version.json` pin `0.3.4`. Envelope major unchanged (`v: "2"`).
+
+### Notes
+
+- Compatible docs pin. Not a breaking envelope change. Threat model, cleartext baseline, optional signing, and opaque envelopes advised against are unchanged.
+
+## [0.3.3] — 2026-09-28
+
+### Changed
+
+- `docs/peer-capability-matrix.md`: **SuperGrok / Grok Projects** can read, draft, auto-ack without Send, and send self-mail unattended. Needs human Approve for self-mail: No. Hub fit: Yes. Evidence: Observed. External mail unattended is a product capability, not a bus requirement. Bus packets stay self-mail on one shared mailbox.
+- Plain **SuperGrok / Grok chat** (chat / chatObserver) stays a separate observer row when that path has no mailbox send.
+- README fleet gate matches that split. Copilot and Alexa remain the named human-Send examples.
+- `schema/protocol-version.json` pin `0.3.3`. Envelope major unchanged (`v: "2"`).
+
+### Notes
+
+- Compatible docs pin. Not a breaking envelope change. Threat model, cleartext baseline, optional signing, and opaque envelopes advised against are unchanged.
 
 ## [0.3.2] — 2026-09-28
 

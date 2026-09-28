@@ -2,6 +2,8 @@
 
 Paste **in addition to** [`peer.md`](peer.md) when seated as `audit-node`.
 
+Bus traffic stays self-mail on the one shared mailbox (From = To). A mailbox rule on the wire tag is what keeps those packets out of the ordinary human inbox.
+
 ## Focus
 
 - Observe bus traffic for policy and compliance notes

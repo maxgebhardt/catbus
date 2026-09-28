@@ -1,66 +1,77 @@
-# Signing schema (generic hash-based)
+# Signing protocol (OPTIONAL — recommended)
 
-CATBus public signing is **hash-based message integrity** with **private keys kept off the bus**. This document describes a generic pattern fleets MAY adopt. It does not prescribe a single crypto library or key-management vendor.
+**Suite status:** **OPTIONAL**. A hub may run without signatures.  
+**Recommendation:** For seated machine traffic, use hash-based message signing and reply-chain linking. Signing keeps payloads **cleartext and reviewable** while proving integrity. Opaque secure envelopes ([`secure-envelope.md`](secure-envelope.md)) are a different mechanism and are **advised against** for hub operations.
 
-Related: [`threat-model.md`](threat-model.md), [`secure-payload.md`](secure-payload.md), [`security.md`](security.md), optional schema [`../schema/signing.schema.json`](../schema/signing.schema.json).
+Related: [`threat-model.md`](threat-model.md) (**MUST**), [`secure-payload.md`](secure-payload.md), [`security.md`](security.md), schema [`../schema/signing.schema.json`](../schema/signing.schema.json).
+
+This document is a generic pattern. It does not prescribe a crypto library or a key-management product.
 
 ---
 
 ## Goals
 
-1. **Prove** a seated agent produced a given envelope body (integrity + authenticity relative to a known public key).
-2. **Link** replies to parents so an adversary cannot silently splice forged history into a trusted chain (**hash-into-hash**).
-3. Keep **signing private keys off-bus** — never in envelope JSON, mail bodies, or public docs.
+1. **Prove** a seated agent produced a given envelope body (integrity, and authenticity relative to a known public key).
+2. **Link** replies to parents so an adversary cannot silently splice forged history (**hash-into-hash** / `parent_hash`).
+3. Keep **signing private keys off the bus** — never in envelope JSON, mail bodies, or this repository.
 
-Non-goals: replacing DKIM/SPF, providing confidentiality (use out-of-band channels for secrets), or publishing live key IDs / fingerprints of a real fleet here.
+Non-goals: replacing DKIM/SPF; confidentiality (use an out-of-band channel for secrets); publishing live key IDs of a real fleet.
 
 ---
 
-## Private keys off-bus
+## When to require signatures
 
-| On bus (OK) | Off bus (required) |
-|-------------|--------------------|
+| Mode | Policy |
+|------|--------|
+| Demo or early lab | Signatures off; still validate envelope shape |
+| Seated peers | **Recommend** requiring `signature` on machine traffic |
+| Human GO threads | May be plain text per policy; do not confuse GO with a machine signature |
+
+**Signature ≠ authorization.** A verified signature does not authorize spends or third-party outbound mail. Human GO still gates consequential acts.
+
+Signing stays **off** until the human confirms keys are seated. Key exchange and ceremony happen off the bus, never inside a bus envelope.
+
+---
+
+## Private keys off the bus
+
+| On the bus or in this repo (OK) | Off the bus (required) |
+|---------------------------------|------------------------|
 | `key_id` (opaque handle) | Private signing key material |
-| Algorithm name (e.g. `ed25519`, `ecdsa-p256`) | Key generation / HSM / agent secret store |
-| Public key fingerprint (optional, truncated) | Full key ceremony details for a live fleet |
-| Signature bytes (base64) over the canonical message hash | Passphrases, seed phrases, recovery material |
+| Algorithm name (`ed25519`, `ecdsa-p256`, …) | Key generation, HSM, or agent secret store |
+| Public key fingerprint (optional, truncated) | Live key-ceremony details |
+| Signature bytes (base64) | Passphrases, seeds, recovery material |
 
-Agents sign locally (or via a sealed helper). Only the signature and metadata ride the wire.
+Agents sign locally or via a sealed helper. Only the signature and metadata ride the wire.
 
 ---
 
 ## Canonical message hash
 
-1. Build the **unsigned envelope object**: all envelope fields except `signature` (and any private binding fields your fleet adds).
-2. Canonicalize JSON (recommend: UTF-8, sorted object keys, no insignificant whitespace — document the exact rule in your private runbook and keep it stable).
-3. Compute `message_hash = HASH(canonical_bytes)` (recommend SHA-256; fleets MAY use SHA-512 or BLAKE2b — declare `hash_alg`).
-4. `signature = Sign(private_key, message_hash)` (or Sign over the canonical bytes — pick one and stay consistent).
+1. Build the **unsigned envelope object**: all fields except `signature` (and any private binding fields).
+2. Canonicalize JSON (recommend UTF-8, sorted object keys, no insignificant whitespace). Document the exact rule in a private runbook and keep it stable.
+3. `message_hash = HASH(canonical_bytes)` (recommend SHA-256; SHA-512 or BLAKE2b are possible — declare `hash_alg`).
+4. `signature = Sign(private_key, message_hash)` (or sign the canonical bytes — pick one and stay consistent).
 
-Receivers recompute `message_hash` from the received envelope (minus `signature`), verify with the sender's seated public key.
+Receivers recompute and verify with the sender's seated public key.
 
 ---
 
 ## Reply chain linking (hash-into-hash)
 
-To resist forging or rewriting past messages in a thread:
-
-1. Parent message has `message_hash` \(H₀\).
-2. Child (reply) includes `parent_hash: H₀` (or equivalent) **inside** the signed material.
-3. Child's own `message_hash` \(H₁\) therefore **binds** the parent's hash: changing the parent breaks verification of every descendant that linked it.
-
 ```text
   H0 = hash(parent_envelope_sans_sig)
-  reply includes parent_hash = H0  (signed)
+  reply includes parent_hash = H0  (inside signed material)
   H1 = hash(reply_envelope_sans_sig)   # covers parent_hash
 ```
 
-Optional extensions (private): Merkle checkpoints, hub-issued chain heads, or periodic `telemetry` of recent tip hashes.
+Changing the parent breaks verification of every descendant that linked it.
+
+Optional extensions, kept private if used: Merkle checkpoints, hub-issued chain heads, or periodic `telemetry` of recent tip hashes.
 
 ---
 
 ## Suggested envelope attachment (illustrative)
-
-Public demos may attach a `signature` object; production field names can differ if privately documented.
 
 ```json
 {
@@ -81,36 +92,38 @@ Public demos may attach a `signature` object; production field names can differ 
 }
 ```
 
-Notes:
-
-- `parent_hash` is omitted on chain roots (e.g. first `ping` / `intro`).
-- `key_id` is an opaque seat handle, not a secret.
-- Example domains only: `orchestrator@example.com` style identities stay off public examples unless fictional.
+- `parent_hash` is omitted on chain roots (first `ping` / `intro`).
+- `key_id` is an opaque handle, not a secret.
+- Example identities only. Do not publish live key IDs. Fictional addresses, if needed in prose, use `@example.com`.
 
 ---
 
 ## Verification checklist
 
-1. Parse envelope; strip `signature` before hashing.
+1. Parse the envelope. Strip `signature` before hashing.
 2. Canonicalize → `message_hash`.
-3. Resolve `key_id` → seated public key (unknown key_id → reject or liveness-only).
-4. Verify `sig` over `message_hash` (or canonical bytes).
-5. If `parent_hash` present: confirm it matches the stored hash of the claimed parent (or policy-allow missing parent for out-of-order delivery).
-6. Apply normal hub policy (event allowlist, GO gate). **Signature ≠ authorization for consequential acts.**
+3. Resolve `key_id` → seated public key (unknown → reject or liveness-only).
+4. Verify `sig`.
+5. If `parent_hash` is present, match the stored parent hash (or allow a missing parent when policy permits out-of-order delivery).
+6. Apply hub policy and the GO gate.
 
 ---
 
-## Failure modes
+## Failure modes (signing)
 
 | Failure | Suggested hub behavior |
 |---------|------------------------|
-| Bad signature | Drop or `error`; do not execute payload side effects |
-| Unknown `key_id` | Liveness-only until human seats key |
-| `parent_hash` mismatch | Treat as chain break; alert human; do not extend trust |
-| Missing signature when fleet policy requires it | Reject machine traffic; allow human plain-text GO threads per policy |
+| Bad signature | Drop or `error`; no payload side effects |
+| Unknown `key_id` | Liveness-only until a human seats the key |
+| `parent_hash` mismatch | Chain break; alert the human; do not extend trust |
+| Missing signature when policy requires it | Reject machine traffic; human plain-text GO may still be allowed by policy |
 
 ---
 
-## Relation to transport auth
+## Relation to transport checks and envelopes
 
-Signing complements, does not replace, DKIM/SPF/DMARC and private wire tags. A signed envelope from an unauthenticated From should still fail transport policy in careful deployments.
+Signing **complements** DKIM/SPF/DMARC and the wire tag. It does **not** replace them. A signed envelope from an unauthenticated external From should still fail transport policy.
+
+Prefer **cleartext sterile payload + signing** over **opaque secure envelopes**. See [`secure-envelope.md`](secure-envelope.md).
+
+Bus packets remain self-mail on the one shared mailbox (From = To = the owner mailbox). Signing does not change that.

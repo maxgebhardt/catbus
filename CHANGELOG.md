@@ -31,6 +31,24 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 
 - (none yet)
 
+## [0.3.1] — 2026-09-28
+
+### Added
+
+- Opaque-envelope note (`docs/secure-envelope.md`): optional, and advised against. Readable JSON plus optional signing stays the path.
+- FAQ (`docs/faq-anti-patterns.md`) and peer send matrix (`docs/peer-capability-matrix.md`).
+- Hub contract for an unseated agent (`prompts/hub.md`) and interview stand-up (`docs/00-stand-up-order.md`): mint gate, topology, self-mail, mailbox rule.
+
+### Changed
+
+- Threat model, security notes, signing, sterile-payload rules, and Best Practices state one hierarchy: threat model required, cleartext payload baseline, signing optional and recommended, opaque envelopes optional and advised against.
+- Transport text across the public docs: bus traffic is self-mail on one shared mailbox (From = To). A mailbox rule on the subject wire tag keeps bus traffic out of the ordinary human inbox.
+- `schema/protocol-version.json` pin `0.3.1` plus `secure_envelope_url`.
+
+### Security
+
+- Opaque secure envelopes are optional and **advised against**. They are not a stronger default. Human review of cleartext packets remains in place, including human GO.
+
 ## [0.3.0] — 2026-09-27
 
 ### Added
@@ -46,7 +64,7 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 
 ### Removed
 
-- Public branding-guidelines doc (`docs/brand.md`). README keeps amber/slate/cyan aesthetic and logo assets without a published brand guide.
+- Removed a non-protocol notes file from the public tree. SVG marks under `assets/` remain.
 
 ### Notes
 
@@ -59,7 +77,7 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 
 - Public CATBus package: README, MIT license, assets (SVG mark/favicon, PNG mark).
 - Envelope schema v2 (`schema/catbus-envelope.schema.json`) with required `v` const `"2"`.
-- Protocol version pin (`schema/protocol-version.json`) and living Best Practices authority (`docs/best-practices.md`).
+- Protocol version pin (`schema/protocol-version.json`) and living Best Practices (`docs/best-practices.md`).
 - Stand-up order (`docs/00-stand-up-order.md`) including periodic protocol-version / best-practices fetch.
 - Architecture, security, correlation, roles docs.
 - Agent-agnostic drop-in prompts: hub, peer, dispatcher, worker-node, orchestrator, audit-node.

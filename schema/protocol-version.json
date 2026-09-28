@@ -1,8 +1,8 @@
 {
   "protocol": "catbus",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "envelope_v": "2",
-  "released": "2026-09-27",
+  "released": "2026-09-28",
   "best_practices_url": {
     "relative": "docs/best-practices.md",
     "canonical": "https://github.com/maxgebhardt/catbus/blob/main/docs/best-practices.md"
@@ -23,9 +23,13 @@
     "relative": "docs/secure-payload.md",
     "canonical": "https://github.com/maxgebhardt/catbus/blob/main/docs/secure-payload.md"
   },
+  "secure_envelope_url": {
+    "relative": "docs/secure-envelope.md",
+    "canonical": "https://github.com/maxgebhardt/catbus/blob/main/docs/secure-envelope.md"
+  },
   "changelog_url": {
     "relative": "CHANGELOG.md",
     "canonical": "https://github.com/maxgebhardt/catbus/blob/main/CHANGELOG.md"
   },
-  "notes": "Public protocol version pin. Hubs SHOULD poll this file and docs/best-practices.md; propose compatible upgrades autonomously; require human GO for breaking changes. 0.3.0 adds public threat model, signing, and sterile-payload docs/schemas."
+  "notes": "Public protocol version pin. Hubs SHOULD compare this file and docs/best-practices.md; propose compatible updates locally; require human GO for breaking changes. 0.3.1 adds docs/secure-envelope.md: opaque envelopes are optional and advised against. Threat model remains required. Cleartext sterile payloads remain the baseline. Signing remains optional and recommended. Envelope major remains 2. Bus traffic is self-mail on one shared mailbox."
 }

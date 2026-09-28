@@ -1,6 +1,10 @@
 # Roles (sanitized public taxonomy)
 
-Public docs and prompts use **only** these role names. Production fleets may map private callsigns onto these roles; do not publish live callsigns here.
+Public docs and prompts use **only** these role names. A deployment may map private callsigns onto these roles. Do not publish live callsigns here.
+
+Names below are examples. Seat each one only after an explicit human yes ([`00-stand-up-order.md`](00-stand-up-order.md)).
+
+Bus traffic is self-mail on one shared mailbox (From = To). These roles do not imply separate SMTP recipients. A mailbox rule on the wire tag keeps bus mail out of the ordinary human inbox.
 
 | Role | Responsibility |
 |------|----------------|
@@ -11,7 +15,7 @@ Public docs and prompts use **only** these role names. Production fleets may map
 
 ## Seating
 
-1. Human seats the `orchestrator` (hub) first — see [`00-stand-up-order.md`](00-stand-up-order.md).
+1. Human seats the hub first — see [`00-stand-up-order.md`](00-stand-up-order.md). `orchestrator` is an example callsign, used only after an explicit yes.
 2. Hub validates peers with ping/pong.
 3. Hub emits `intro` with the role map for the session.
 4. Optional specializations via [`../prompts/`](../prompts/).

@@ -1,35 +1,39 @@
-# Secure payload (sterile-bus rules)
+# Secure payload — sterile cleartext (preferred)
 
-CATBus treats the wire as a **sterile bus**: structured coordination only. Secrets, credentials, payment data, and protected health information do **not** ride the bus. This document is the public, genericized rule set. Fleets SHOULD tighten further in a private runbook.
+**Naming:** This document is about **cleartext, human-reviewable payloads** on a sterile bus. It is **not** an opaque secure envelope. For the optional opaque construct (advised against), see [`secure-envelope.md`](secure-envelope.md).
 
-Related: [`threat-model.md`](threat-model.md), [`signing.md`](signing.md), [`security.md`](security.md), [`best-practices.md`](best-practices.md), schema [`../schema/secure-payload.schema.json`](../schema/secure-payload.schema.json).
+**Suite status:** Recommended baseline for all hubs (pair with the threat model, which is **MUST**). Signing is optional and recommended on top. Opaque envelopes are optional and advised against.
+
+Related: [`threat-model.md`](threat-model.md), [`signing.md`](signing.md), [`secure-envelope.md`](secure-envelope.md), [`security.md`](security.md), schema [`../schema/secure-payload.schema.json`](../schema/secure-payload.schema.json).
 
 Public examples use `@example.com` / `@example.org` / `@example.net` and wire tag `[CATBUS]` only.
+
+Bus packets are self-mail on one shared mailbox. A mailbox rule on the wire tag keeps those packets out of the ordinary human inbox so a person can still skim them on purpose.
 
 ---
 
 ## Sterile-bus principles
 
-1. **No secrets on the wire.** API keys, OAuth tokens, session cookies, app passwords, recovery codes, private keys, and seed material are forbidden in subjects, bodies, and JSON.
-2. **No PHI / PANs / credentials.** Protected health information, primary account numbers (card data), bank account secrets, and login credentials stay off-bus. Reference them by opaque handles if a workflow requires linkage.
-3. **Allowlisted fields.** Prefer a small, documented set of payload keys per event. Reject or strip unknown keys in high-security fleets.
-4. **Pointers, not payloads.** Large blobs, attachments with sensitive content, and proprietary datasets live off-bus; envelopes carry IDs, hashes, or `https://example.com/...` style placeholder URLs in public docs.
-5. **Human-skimmable.** If a human cannot safely read the thread on a phone, the packet is too sensitive or too chatty.
+1. **No secrets on the wire.** API keys, OAuth tokens, cookies, app passwords, recovery codes, private keys, and seeds are forbidden in subjects, bodies, and JSON.
+2. **No health data, payment numbers, or credentials.** Reference them by opaque handles off the bus if a workflow needs a link.
+3. **Allowlisted fields.** Use a small documented set of payload keys per event. Reject or strip unknown keys in higher-security deployments.
+4. **Pointers, not blobs.** Large or sensitive blobs stay off the bus. Envelopes carry IDs, hashes, or `https://example.com/...` placeholder URLs in public docs.
+5. **Human-readable.** If a human cannot safely read the thread, the packet is too sensitive or too chatty. That is why cleartext is the baseline and opaque envelopes are advised against.
 
 ---
 
 ## Forbidden content (non-exhaustive)
 
-| Class | Examples (do not put on bus) |
-|-------|------------------------------|
-| Credentials | Passwords, API keys, bearer tokens, refresh tokens, app passwords |
+| Class | Examples (do not put on the bus) |
+|-------|----------------------------------|
+| Credentials | Passwords, API keys, bearer or refresh tokens, app passwords |
 | Key material | Private keys, JWKs with `d`, seed phrases, raw HMAC secrets |
-| Payment | Full PAN, CVV/CVC, magnetic-stripe equivalents, full bank account + routing as a secret pair |
-| Health / identity abuse | PHI beyond what the mailbox owner already accepts; government ID images; biometric templates |
-| Live fleet identity in public channels | Production wire tags, live callsign registries, real mailbox addresses |
-| Bypass recipes | Instructions whose primary value is defeating scanners or forging From headers |
+| Payment | Full card number, CVV, magnetic-stripe equivalents, secret bank pairs |
+| Health / identity documents | Health data beyond what the mailbox owner already accepts; ID images; biometrics |
+| Live fleet identity in public docs | Production wire tags, live callsign registries, real mailbox addresses |
+| Bypass recipes | Scanner defeat or From-forgery recipes |
 
-If a task needs any of the above, use an **out-of-band** channel the human owner controls (sealed store, vault reference, or offline handoff). On the bus, send only an opaque `ref_id` or status.
+Use an out-of-band channel the human owner controls for the above. On the bus, send only an opaque `ref_id` or a status.
 
 ---
 
@@ -37,25 +41,23 @@ If a task needs any of the above, use an **out-of-band** channel the human owner
 
 Required: `v`, `event`, `correlation_id`, `sender`, `target`, `payload`.
 
-Optional (public schema): `timestamp`, `in_reply_to`, `ttl_seconds`, `message`, plus optional `signature` object per [`signing.md`](signing.md).
-
-`payload` SHOULD itself be allowlisted per event. Illustrative public allowlists:
+Optional: `timestamp`, `in_reply_to`, `ttl_seconds`, `message`, and optional `signature` ([`signing.md`](signing.md)).
 
 | Event | Example allowlisted payload keys |
 |-------|----------------------------------|
-| `ping` / `pong` | (empty object), optional `nonce` |
+| `ping` / `pong` | (empty), optional `nonce` |
 | `ask` / `ack` | `task`, `status`, `reason` |
 | `task` | `task`, `status`, `result_summary`, `ref_id` |
 | `telemetry` / `heartbeat` | `local_version`, `envelope_v`, `ok`, `metrics` (non-sensitive counters only) |
 | `intro` / `onboard` | `roles` (sanitized taxonomy only), `note` |
 | `protocol-check` | `local_version`, `envelope_v`, `authority` |
-| `error` | `code`, `message` (no stack traces with secrets) |
+| `error` | `code`, `message` (no secret stack traces) |
 
-Production fleets MAY add private binding fields — keep those fields and their semantics private.
+Deployments may add private binding fields. Keep those fields and their meaning private.
 
 ---
 
-## Example (sterile)
+## Example (sterile cleartext)
 
 Subject: `[CATBUS] REQ: ask`
 
@@ -73,26 +75,25 @@ Subject: `[CATBUS] REQ: ask`
 }
 ```
 
-Fictional addresses in prose only: `dispatcher@example.com`, `worker-node@example.org`.
+Fictional addresses in prose only: `dispatcher@example.com`, `worker-node@example.org`. The SMTP envelope for bus traffic is still self-mail on the one shared mailbox. `target` is not an external recipient.
 
 ---
 
 ## Anti-patterns
 
 - Pasting `.env` contents or cloud access keys into a task body
-- Embedding raw card numbers or auth cookies in `payload`
-- Using `message` as a free-form dump of PII
-- Publishing real domains or live tags in public examples (use `example.com` / `[CATBUS]`)
-- Assuming schema validation alone makes a payload safe — **policy allowlists** still apply
+- Embedding card numbers or auth cookies in `payload`
+- Using `message` as a free-form dump of personal data
+- Publishing real domains or live tags in public examples
+- Assuming schema validation alone makes a payload safe
+- Wrapping ordinary hub traffic in opaque envelopes ([`secure-envelope.md`](secure-envelope.md))
 
 ---
 
 ## Validation hint
 
-High-security hubs SHOULD:
-
 1. Validate envelope shape ([`../schema/catbus-envelope.schema.json`](../schema/catbus-envelope.schema.json)).
-2. Validate payload against a per-event allowlist ([`../schema/secure-payload.schema.json`](../schema/secure-payload.schema.json) as a starting pattern).
-3. Scan for high-entropy token-like strings and known secret prefixes; quarantine on hit.
-4. Require signatures when seated ([`signing.md`](signing.md)).
-5. Still demand human **GO** for consequential side effects.
+2. Validate payload against a per-event allowlist ([`../schema/secure-payload.schema.json`](../schema/secure-payload.schema.json) is a starting pattern).
+3. Scan for high-entropy token-like strings. Quarantine on a hit.
+4. Optionally require signatures when keys are seated ([`signing.md`](signing.md)).
+5. Still require human **GO** for consequential side effects. GO stays in cleartext.

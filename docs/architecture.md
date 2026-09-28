@@ -1,30 +1,43 @@
-# CATBus architecture (public)
+# CATBus architecture
 
-**CATBus (Cross-Agent Tasking Bus)** — SMTP as a task bus. No broker. No extra infra.
+**CATBus (Cross-Agent Tasking Bus)** uses one mailbox as a task bus. No broker. No extra infrastructure. Documents in this repository are free to use under the MIT license.
 
 ## Idea
 
-Use an ordinary mailbox as an **asynchronous, human-auditable** coordination plane for heterogeneous AI agents. Agents do not open persistent sockets to each other. They drop structured JSON envelopes into email bodies. Humans can read the same threads on a phone.
+Agents do not open persistent sockets to each other. They put structured JSON envelopes in email bodies on one shared mailbox. A human can read the same threads.
 
-Your agents need to talk. You don't need a broker. SMTP is already your message bus. You just haven't used it yet.
+## Transport
+
+**Exclusively self-mail on that one mailbox.** From = To = the owner mailbox. Gmail, or any other mailbox the agents can send and read, can serve. There are no external SMTP recipients for bus packets. `target` is a callsign in the JSON.
+
+A separate cross-hub protocol exists. This page does not specify it and is not a stand-up for it.
+
+A mailbox rule on the subject wire tag keeps bus traffic out of the ordinary human inbox. The human can still open those messages. See [`00-stand-up-order.md`](00-stand-up-order.md).
 
 ## Topology (conceptual)
 
 ```text
   [ worker-node ] --------\
                            \
-  [ dispatcher ] -----------+-->  mailbox (async bus)  <--+-- human inbox oversight
-                           /                              |
+  [ dispatcher ] -----------+-->  one shared mailbox   <--+-- human reviews filtered mail
+                           /     (self-mail bus)          |
   [ audit-node ] ---------/                               |
                                                           |
   [ orchestrator / hub ] --------------------------------/
 ```
 
-- **Hub (`orchestrator`)** owns protocol and semantic routing for the fleet.
-- **Peers** emit and consume envelopes; they do not invent events.
-- **Humans** remain first-class: GO / HOLD replies in-thread are valid control signals.
+Every node reads and writes the **same** mailbox. Bus packets are not addressed to a different inbox.
 
-Nothing here requires a specific vendor mailbox. Gmail API is one workable path; any RFC 822 stack with DKIM/SPF can serve the same pattern.
+- **Hub** owns the protocol and callsign routing. `orchestrator` is the public example name. Seating it requires a human yes.
+- **Peers** emit and consume envelopes. They do not invent events.
+- **Humans** answer when the hub asks for GO. Those replies are control signals. They are not a second bus.
+
+## Security hierarchy
+
+1. Threat model — required ([`threat-model.md`](threat-model.md))
+2. Cleartext sterile payload — baseline ([`secure-payload.md`](secure-payload.md))
+3. Signing + reply-chain hash — optional, recommended ([`signing.md`](signing.md))
+4. Opaque secure envelope — optional, advised against ([`secure-envelope.md`](secure-envelope.md))
 
 ## Envelope placement
 
@@ -39,7 +52,7 @@ Example subject (public demo tag):
 [CATBUS] RES: pong
 ```
 
-Production fleets should pick a **private** subject tag. Do not treat `[CATBUS]` as authentication.
+A deployment should pick a **private** subject tag and not publish it. Do not treat `[CATBUS]` as authentication. The tag is also the mailbox-rule pattern that keeps bus mail out of the ordinary inbox.
 
 ## Common public events
 
@@ -51,9 +64,9 @@ Production fleets should pick a **private** subject tag. Do not treat `[CATBUS]`
 | `telemetry` | Sparse status metrics |
 | `heartbeat` | Periodic presence |
 | `intro` | Role map / seating announcement |
-| `onboard` | Peer join handshake (policy-gated) |
+| `onboard` | Peer join (policy-gated) |
 | `error` | Structured failure |
-| `protocol-check` | Compare local vs authority `protocol-version.json` / Best Practices |
+| `protocol-check` | Compare the local pin with `protocol-version.json` and Best Practices in this repository |
 
 Event names are kebab-case. Production may define private events; do not publish a live fleet catalog here.
 
@@ -66,7 +79,7 @@ Every REQ/RES pair shares a `correlation_id`. See [`correlation.md`](correlation
 Public pin: [`../schema/protocol-version.json`](../schema/protocol-version.json) (semver, aligned to envelope `v`).  
 Living practices: [`best-practices.md`](best-practices.md).
 
-Hubs SHOULD poll the authority repo on heartbeat or schedule, or handle an explicit `protocol-check` event. Compatible upgrades may be proposed autonomously; breaking changes need human GO. See also [`correlation.md`](correlation.md).
+Hubs should compare `schema/protocol-version.json` and [`best-practices.md`](best-practices.md) in this repository on heartbeat, on a schedule, or on `protocol-check`. Compatible updates may be proposed locally. Breaking changes need human GO. See also [`correlation.md`](correlation.md).
 
 ## Design principles
 
@@ -79,11 +92,13 @@ Hubs SHOULD poll the authority repo on heartbeat or schedule, or handle an expli
 
 ## Optional integrity
 
-Fleets MAY adopt hash-based signing and reply-chain linking ([`signing.md`](signing.md)). Signing complements transport auth; it does not replace DKIM/SPF/DMARC or human GO.
+Deployments may add hash-based signing and reply-chain linking ([`signing.md`](signing.md)). Signing complements DKIM/SPF/DMARC. It does not replace them or human GO. Opaque envelopes are optional and advised against ([`secure-envelope.md`](secure-envelope.md)).
 
-## Non-goals (public scope)
+## Non-goals
 
-- Mandatory cryptographic peer identity for all deployments (optional per [`signing.md`](signing.md))
+- Mandatory signatures for every deployment (optional per [`signing.md`](signing.md))
+- Cross-hub routing (a separate protocol exists; it is not specified here)
+- External SMTP recipients for bus packets
 - Guaranteed sub-second latency
-- Replacement for high-throughput brokers (Kafka, etc.) where those are already justified
-- Publishing live fleet keys, tags, or branding guidelines
+- A replacement for a high-throughput broker where one is already in use
+- Publishing live fleet keys or tags

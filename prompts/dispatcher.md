@@ -2,6 +2,8 @@
 
 Paste **in addition to** [`peer.md`](peer.md) when seated as `dispatcher`.
 
+Bus traffic stays self-mail on the one shared mailbox (From = To). Routing means choosing a `target` callsign, not an external address.
+
 ## Focus
 
 - Route `ask` / `task` to appropriate `worker-node` targets

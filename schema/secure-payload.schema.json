@@ -51,7 +51,7 @@
     },
     "authority": {
       "type": "string",
-      "description": "Authority URL for protocol pin / best practices (public default: GitHub catbus).",
+      "description": "URL of the repository copy of the protocol pin and best practices (public default: https://github.com/maxgebhardt/catbus).",
       "maxLength": 256
     },
     "ok": {
@@ -95,7 +95,7 @@
     },
     "remote_version": {
       "type": "string",
-      "description": "Remote protocol semver from authority.",
+      "description": "Remote protocol semver read from that repository.",
       "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
     }
   }

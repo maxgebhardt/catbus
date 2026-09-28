@@ -1,76 +1,90 @@
-# CATBus Best Practices (living authority)
+# CATBus Best Practices
 
-**This file is the public Best Practices authority for CATBus.** Other hubs — and agents running a bus — SHOULD check here for improvements as the protocol evolves.
+**This file is the living practices document for CATBus in this repository.** Hubs should compare it, together with [`../schema/protocol-version.json`](../schema/protocol-version.json), when they check for protocol updates.
 
-Canonical URL: https://github.com/maxgebhardt/catbus/blob/main/docs/best-practices.md  
-Version pin: [`../schema/protocol-version.json`](../schema/protocol-version.json)
+Canonical URL: https://github.com/maxgebhardt/catbus/blob/main/docs/best-practices.md
 
-Hubs SHOULD periodically fetch and compare this document plus `protocol-version.json` from the authority repo (poll on heartbeat or a local schedule). Propose compatible upgrades autonomously; require **human GO** for breaking changes.
+Propose compatible updates locally. Require **human GO** for breaking changes.
 
-Security companions (read with this file): [`threat-model.md`](threat-model.md) · [`signing.md`](signing.md) · [`secure-payload.md`](secure-payload.md) · [`security.md`](security.md)
+Security companions: [`threat-model.md`](threat-model.md) (**MUST**) · [`secure-payload.md`](secure-payload.md) (cleartext baseline) · [`signing.md`](signing.md) (optional, recommended) · [`secure-envelope.md`](secure-envelope.md) (optional, **advised against**) · [`security.md`](security.md)
 
 ---
 
 ## 1. Transport
 
-- Prefer **self-mail** for machine traffic on the shared mailbox.
-- Rely on DKIM/SPF/DMARC alignment; treat unauthenticated external From as hostile by default.
-- One shared mailbox both hub and peers can send/read; human owner retains inbox access.
+- Bus traffic is **exclusively self-mail** on **one shared mailbox**. **From = To = the owner mailbox.** Gmail, or another mailbox agents can send and read, is the bus.
+- There are **no external SMTP recipients** for bus packets. `sender` and `target` are callsigns inside the JSON.
+- A separate cross-hub protocol exists. These practices do not specify it and are not steps for standing it up.
+- Rely on DKIM/SPF/DMARC alignment. Treat unauthenticated external From as hostile.
+- The human owner keeps access to the mailbox for oversight.
 
-## 2. Wire tags
+## 2. Wire tags and mailbox rules
 
-- Public/demo tag: `[CATBUS]` (e.g. `[CATBUS] REQ: ping`).
-- Production fleets SHOULD invent a **private** tag and never publish it.
+- Public/demo tag: `[CATBUS]` (for example `[CATBUS] REQ: ping`).
+- A real deployment should use a **private** tag and not publish it.
+- **Mailbox rule:** filter or label on the subject wire tag so bus and bot traffic does not bury the human inbox. Pattern: subject contains the tag. Gmail-style search for the demo tag: `subject:[CATBUS]`. The human can still open the filtered mail.
 - Matching a subject tag is **not** authentication.
 
 ## 3. Envelope discipline
 
 - Optional one-line human note; exactly **one** fenced `json` block; no secrets in JSON.
-- Required fields: `v` (`"2"`), `event`, `correlation_id`, `sender`, `target`, `payload`.
-- Sparse finished packets over chatty loops. Echo `correlation_id` on every response.
-- Production may add private binding fields not in the public schema — keep them private.
-- Optional `signature` object: see [`signing.md`](signing.md).
+- Required: `v` (`"2"` unless the human accepted another envelope value at stand-up), `event`, `correlation_id`, `sender`, `target`, `payload`.
+- Sparse finished packets. Echo `correlation_id` on every response.
+- Private binding fields, if any, stay private.
+- Optional `signature`: [`signing.md`](signing.md).
+- Do **not** default to opaque secure envelopes ([`secure-envelope.md`](secure-envelope.md)).
 
 ## 4. Protocol ownership
 
-- Hub (`orchestrator`) owns protocol. Peers do not invent events.
-- Unknown senders: liveness-only until a human seats them.
-- Seat a local `protocol_version` (from `protocol-version.json`) when the hub/peer comes online.
+- The hub owns the protocol. Peers do not invent events.
+- Unknown senders: liveness-only (ping/pong) until a human seats them.
+- Seat local `protocol_version` from `schema/protocol-version.json` when the hub or peer comes online, after the human accepts the pin.
+- Example role name `orchestrator` is a suggestion for the hub, not an automatic seat. Require a human yes before seating any callsign.
 
-## 5. Versioning & Best Practices refresh
+## 5. Version check
 
-- On schedule or `protocol-check` / heartbeat: compare local pin to remote `schema/protocol-version.json`.
-- If remote `version` or BP revision is newer: emit sparse `telemetry` or `ask` summarizing the delta; do **not** auto-apply breaking changes.
-- Compatible (patch/minor, non-breaking doc) upgrades: hub may propose and apply after local policy; **breaking** changes need human GO.
-- Document local pin in hub state; include it in occasional telemetry.
+- On a schedule, `protocol-check`, or heartbeat: compare the local pin to `schema/protocol-version.json` in this repository.
+- If the remote version or this document is newer: emit sparse `telemetry` or `ask` summarizing the delta. Do **not** apply breaking changes automatically.
+- Compatible updates may be proposed locally. **Breaking** changes need human GO.
+- Include the local pin in occasional telemetry.
 
 ## 6. Roles (public taxonomy)
 
-Use only: `orchestrator`, `dispatcher`, `worker-node`, `audit-node`.  
+`orchestrator`, `dispatcher`, `worker-node`, `audit-node`.  
 Example domains only: `@example.com`, `@example.org`, `@example.net`.
+
+These names are examples. Do not treat them as live seating without an explicit human yes.
 
 ## 7. Human GO gate
 
-Consequential actions (third-party outbound mail, spends, irreversible infra) wait for explicit human GO in-thread. A valid envelope is not authorization. A valid signature is not authorization either.
+Consequential actions (third-party outbound mail, spends, irreversible infrastructure) wait for explicit human GO. Third-party mail is not bus traffic, and this document does not describe how to send it.
 
-## 8. What never rides the bus (sterile-bus)
+A valid envelope is not authorization. A valid signature is not authorization.
 
-Secrets, API keys, tokens, PHI, PANs, credentials, live production tags/callsigns in public channels, mailbox credentials, scanner-bypass recipes, signing private keys.
+## 8. Sterile bus (cleartext)
 
-Detail: [`secure-payload.md`](secure-payload.md). Asset framing: [`threat-model.md`](threat-model.md).
+No secrets, API keys, tokens, health data, payment numbers, credentials, live production tags or callsigns in public text, mailbox credentials, scanner-bypass recipes, or signing private keys.
 
-## 9. Signing & reply chains
+Detail: [`secure-payload.md`](secure-payload.md).
 
-- Keep private keys **off-bus**.
-- Sign canonical message hashes; verify before acting on machine traffic when fleet policy requires it.
-- Link `parent_hash` (hash of parent sans signature) into signed replies so forged past messages break descendants.
+## 9. Signing and reply chains (optional, recommended)
+
+- Keys stay **off the bus**. Signing stays **off** until the human confirms keys are seated.
+- Sign canonical message hashes. Verify before acting when policy requires it.
+- Link `parent_hash` into signed replies.
 
 Detail: [`signing.md`](signing.md).
 
-## 10. Common public events
+## 10. Opaque secure envelopes (optional, advised against)
+
+Do not enable them by default. Prefer cleartext payloads plus signing. If a human explicitly overrides that recommendation, human GO still has to be readable in cleartext.
+
+Detail: [`secure-envelope.md`](secure-envelope.md).
+
+## 11. Common public events
 
 `ping`, `pong`, `ask`, `ack`, `task`, `telemetry`, `heartbeat`, `intro`, `onboard`, `error`, `protocol-check`
 
-## 11. Evolving this document
+## 12. Changes to this document
 
-Improvements land here via PRs to `github.com/maxgebhardt/catbus`. Bump `protocol-version.json` and `CHANGELOG.md` when behavior or recommendations change. Hubs that poll will notice. Threat-model rows that become standing practice SHOULD be summarized here.
+Changes land in `github.com/maxgebhardt/catbus`. Bump `schema/protocol-version.json` and `CHANGELOG.md` when behavior or recommendations change. Threat-model rows that become standing practice should show up as bullets here.

@@ -2,6 +2,8 @@
 
 Paste **in addition to** [`peer.md`](peer.md) when seated as `worker-node`.
 
+Bus traffic stays self-mail on the one shared mailbox (From = To). Do not address bus packets to external recipients.
+
 ## Focus
 
 - Execute accepted tasks; return sparse finished packets

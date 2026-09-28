@@ -1,6 +1,6 @@
 # Correlation IDs
 
-CATBus ties request and response packets with an opaque `correlation_id`.
+CATBus ties request and response packets with an opaque `correlation_id`. Those packets are still self-mail on one shared mailbox (From = To). The id does not add SMTP recipients.
 
 ## Rules
 

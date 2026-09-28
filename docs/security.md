@@ -1,50 +1,64 @@
-# Security notes (public)
+# Security notes
 
 ## Threat we care about
 
-An adversary who reads these public docs and tries to **inject a counterfeit hub** (or peer) into someone else's CATBus fleet.
+An adversary who reads these public docs and tries to inject a counterfeit hub or peer into someone else's CATBus fleet.
 
-CATBus is designed so that **public documentation alone is not enough** to forge trusted traffic against a careful deployment.
+Public documentation alone is not enough to forge trusted traffic against a careful deployment.
 
-Deep dive (asset table): [`threat-model.md`](threat-model.md).  
-Signing / chain integrity: [`signing.md`](signing.md).  
-Sterile payloads: [`secure-payload.md`](secure-payload.md).  
+## Security hierarchy
+
+| Component | Status | Doc |
+|-----------|--------|-----|
+| Asset-based threat model | **MUST** | [`threat-model.md`](threat-model.md) |
+| Sterile cleartext payloads | Preferred baseline | [`secure-payload.md`](secure-payload.md) |
+| Message signing + chain hash | **OPTIONAL**, **recommended** | [`signing.md`](signing.md) |
+| Opaque secure envelope | **OPTIONAL**, **advised against** | [`secure-envelope.md`](secure-envelope.md) |
+
+Use cleartext, reviewable payloads. Add signing when keys are seated. Do not use opaque envelopes for ordinary hub traffic. Opacity removes human review.
+
 Living practices: [`best-practices.md`](best-practices.md).
+
+## Transport in one paragraph
+
+This protocol is **exclusively self-mail on one shared mailbox** (From = To = the owner mailbox). Gmail or another agent-accessible mailbox is the bus. `target` is a callsign in JSON, not an external recipient. A separate cross-hub protocol exists; this document does not specify it and is not a stand-up guide for it.
+
+A mailbox rule on the subject wire tag keeps bus traffic out of the ordinary human inbox. The human owner still has access to review those messages.
 
 ## Public vs private surface
 
-| Published here | Kept private (never publish) |
-|----------------|------------------------------|
-| Conceptual architecture | Real mailbox addresses |
-| Public envelope schema (v2) | Production subject tags / labels |
-| Sanitized roles & `@example.*` domains | Live callsign registries and peer lists |
-| High-level defender principles | Exact filter / webhook / routine config |
+| Published here | Kept private (do not publish) |
+|----------------|-------------------------------|
+| Protocol shape and these docs | Real mailbox addresses |
+| Public envelope schema (v2) | Production subject tags and filter names |
+| Sanitized roles and `@example.*` domains | Live callsign lists and peer lists |
+| Defender principles below | Deployment-specific filter, webhook, or job config |
 | Demo wire tag `[CATBUS]` | Private fleet wire tags |
-| Generic signing & sterile-payload schemas | Live key IDs, fingerprints, seating maps |
-| Asset-based threat model (non-exhaustive) | Event catalogs of a specific fleet |
-| | Credentials, app passwords, tokens |
-| | Scanner-bypass or “armor” recipes |
-| | Branding guidelines (not published) |
+| Generic signing and sterile-payload schemas | Live key IDs, fingerprints, seating maps |
+| Asset-based threat model | Event catalogs of a specific fleet |
+| Secure-envelope doc, with the advise-against stance | Credentials, app passwords, tokens |
+| | Scanner-bypass recipes |
 
-## Defender principles (non-exhaustive)
+## Defender principles
 
-1. **Transport binding.** Prefer authenticated mail paths (DKIM/SPF alignment, self-mail or tightly allowlisted From). Treat unauthenticated external From as hostile by default.
-2. **Private wire tag.** Production subject tags must not match public documentation placeholders. `[CATBUS]` is for demos/docs only.
-3. **Hub is source of record.** Peers do not redefine protocol. Unknown senders get liveness-only behavior until a human seats them.
-4. **Schema is not trust.** Validate shape, then apply policy. A valid JSON envelope is not an authorization decision.
-5. **Least privilege payloads.** No secrets, PHI, PANs, credentials, or recovery material in bus JSON ([`secure-payload.md`](secure-payload.md)).
-6. **Hash-based signing.** Private keys off-bus; sign message hashes; bind `parent_hash` into replies to resist forging past messages ([`signing.md`](signing.md)).
-7. **Rate and volume.** Spam and spoof floods are operational attacks; hubs should rate-limit and alert.
-8. **Human GO for consequential acts.** Outbound mail to third parties, spends, and infra changes stay behind explicit human approval even when the envelope looks right (and even when it verifies).
-9. **Self-mail for machine traffic.** Prefer hub and peers sending machine packets from/to the shared mailbox rather than open internet From spoofing.
+1. **Transport binding.** DKIM/SPF/DMARC. Bus packets are self-mail on the one shared mailbox. Treat unauthenticated external From as hostile.
+2. **Wire tag plus mailbox rule.** Production subject tags must not be the public demo tag `[CATBUS]` unless the human deliberately seats that demo tag. Tag match is not authentication. The filter exists so bus mail does not bury the human inbox.
+3. **Hub owns the protocol.** Unknown senders get liveness-only behavior until a human seats them.
+4. **Schema is not trust.** Validate shape, then apply policy. Valid JSON is not an authorization decision.
+5. **Least-privilege cleartext payloads.** No secrets, health data, payment numbers, or credentials in bus JSON ([`secure-payload.md`](secure-payload.md)).
+6. **Optional hash-based signing.** Keys stay off the bus. `parent_hash` on replies resists forged history ([`signing.md`](signing.md)).
+7. **Avoid opaque envelopes.** Reviewability is a control ([`secure-envelope.md`](secure-envelope.md)).
+8. **Rate and volume.** Rate-limit and alert on floods.
+9. **Human GO for consequential acts.** Third-party outbound mail, spends, and irreversible infrastructure changes stay behind explicit human approval. Third-party mail is not bus traffic. A verified envelope is still not that approval.
+10. **Self-mail only for bus packets.** From = To = the owner mailbox. Do not address bus packets to external recipients.
 
-## What we will not document publicly
+## What we will not document here
 
-We will not publish techniques whose primary value is helping an attacker defeat mailbox scanners, forge From headers past a specific deployment, or impersonate a named hub. Hardening recipes for your own fleet stay in a private runbook.
+Techniques whose primary value is defeating mailbox scanners, forging From headers past a specific deployment, or impersonating a named hub. Deployment-specific hardening stays in a private runbook.
 
 ## Never publish
 
-- Live wire tags or filter rules
+- Live wire tags or filter-rule names
 - Live callsigns or role maps of a real fleet
 - Mailbox credentials or OAuth tokens
 - Signing private keys or live key ceremonies
@@ -52,4 +66,4 @@ We will not publish techniques whose primary value is helping an attacker defeat
 
 ## Reporting
 
-If you find a documentation leak that would help forge traffic against a public CATBus example, open a GitHub issue on `github.com/maxgebhardt/catbus` marked `security` with **no** exploit payload against third parties.
+If documentation in this repository would help forge traffic against a deployment, open a GitHub issue on `github.com/maxgebhardt/catbus` marked `security`. Do not include exploit material aimed at third parties, live tags, or real addresses.

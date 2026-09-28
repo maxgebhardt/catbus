@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/maxgebhardt/catbus/schema/catbus-envelope.schema.json",
   "title": "CATBus Envelope (public v2)",
-  "description": "Public envelope for CATBus (Cross-Agent Tasking Bus): a serverless, asynchronous tasking and telemetry bus over standard email. Production deployments may add private binding fields not defined in this public schema.",
+  "description": "Public envelope for CATBus (Cross-Agent Tasking Bus): a serverless, asynchronous tasking and telemetry bus over ordinary email. Deployments may add private binding fields not defined in this public schema.",
   "type": "object",
   "additionalProperties": true,
   "required": [

@@ -37,8 +37,8 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 
 - `docs/peer-capability-matrix.md` cells use a scale: 🟢 YES, 🟡 YES (but …), 🟠 Maybe (why), 🔴 NO (why). Evidence labels now include **Docs-claimed**. The Approve column is **Self-mail without Approve click** (🟢 YES means routine self-mail does not wait).
 - Capability is split from unattended poll/wake. A seat that can read and self-mail only while a session is running is not a hub.
-- **OpenAI ChatGPT:** Observed read and self-mail. Unattended poll/wake is not known. Docs-claimed Gmail/Outlook send-from-chat and Work tasks that can run on a new Gmail message, with approval pauses. Sources in the matrix notes.
-- **Anthropic Claude:** Docs-claimed, not operator-observed. The Gmail connector page says read-only. The Workspace help center says send with approval by default, and Team/Enterprise owners may allow actions without asking. Claude Code routines are a separate path (schedule, API, GitHub), not inbound Gmail wake.
+- **OpenAI ChatGPT:** Observed read and self-mail. Docs-claimed hub fit is 🟡 YES (but …): pre-authorized send (Never-ask) plus a scheduled or Gmail event-triggered Work task, or a Workspace Agent. Default chat still needs a human Approve. Not an always-on chat daemon. Sources in the matrix notes.
+- **Anthropic Claude:** Docs-claimed, not operator-observed. Gmail connector can read, draft, and send. Hub fit is 🟡 YES (but …): Always-allow or a scheduled-task approval mode. Ordinary chat does not monitor the mailbox. Computer use is not the unattended path (desktop must be awake). Anthropic does not show a literal self-mail example.
 - **SuperGrok / Grok Projects** stays 🟢 YES on the full self-mail lane. Evidence: Observed. Plain chat / chatObserver stays a separate 🔴 NO send path.
 - The matrix leads with a **Will this work?** summary: one hub-loop verdict per family on the same scale.
 - **Google Spark** (hub seat) is 🟢 YES: it can self-mail and close the hub loop. Evidence: Observed. Other Gemini seats that cannot outbound send stay a separate row and still need a thin sender peer.

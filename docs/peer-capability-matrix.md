@@ -18,8 +18,8 @@
 | **Grok Bot** | 🟡 YES (but only when the connector is authorized) |
 | **SuperGrok / Grok Projects** | 🟢 YES |
 | **SuperGrok / Grok chat** (chat / chatObserver) | 🔴 NO (no mailbox send path) |
-| **OpenAI ChatGPT** | 🟠 Maybe (can read and self-mail; unattended poll/wake not known) |
-| **Anthropic Claude** | 🟠 Maybe (official pages conflict; default asks before send) |
+| **OpenAI ChatGPT** | 🟡 YES (but only when send is pre-authorized and a schedule or Gmail event wake is seated) |
+| **Anthropic Claude** | 🟡 YES (but Gmail send plus Always-allow or a scheduled-task approval mode; verify plan, scopes, and Always-allow) |
 | **Google Spark** (hub seat) | 🟢 YES |
 | **Other Gemini seats** (not the Spark hub seat) | 🟠 Maybe (some cannot outbound send; those need a thin sender peer) |
 | **Microsoft Copilot** | 🔴 NO (human must click Send, including self-mail) |
@@ -92,8 +92,8 @@ Cell values are the working picture for that family. They are not a certificate 
 | **Grok Bot** (xAI Grok Bot product with connectors, for example Gmail) | 🟡 YES (but only when the connector is authorized) | 🟡 YES (but via the connector; confirm on the seat) | 🟢 YES | 🔴 NO (an authorized connector usually sends the self-mail ack; confirm before hub duty) | 🟡 YES (but for self-mail when the connector is authorized; confirm with ping/pong) | 🟡 YES (but only when that unattended self-mail is confirmed. Human GO outside the bus) | Observed |
 | **SuperGrok / Grok Projects** | 🟢 YES | 🟢 YES | 🟢 YES | 🟢 YES | 🟢 YES | 🟢 YES | Observed |
 | **SuperGrok / Grok chat** (chat / chatObserver) | 🔴 NO (no mailbox send path) | 🔴 NO (no mailbox connector by default) | 🟡 YES (but a chat draft is not a bus send) | 🔴 NO (no bus ack path) | 🔴 NO (no mailbox send path) | 🔴 NO (no send path) | Assumed — verify |
-| **OpenAI ChatGPT** (Gmail or Outlook app) | 🟠 Maybe (can read and self-mail; unattended poll/wake not known) | 🟡 YES (but when a session is running). 🟠 Maybe inbound mail wakes it with no human nudge | 🟢 YES | 🟠 Maybe (a chat draft is not a bus `RES`) | 🟡 YES (but it can send self-mail). 🟠 Maybe with no human nudge and no Approve click | 🟠 Maybe (docs: you choose to send, and approval pauses a task. Approve click not operator-observed) | Observed (read and self-mail). Docs-claimed (Gmail tasks). Poll/wake not observed |
-| **Anthropic Claude** (chat, projects, desktop, Gmail connector) | 🟠 Maybe (official pages conflict; default asks before send) | 🟡 YES (but when you ask). 🟠 Maybe inbound wake — help center says access only on an explicit ask | 🟢 YES | 🟡 YES (but the draft is not a bus `RES`) | 🟠 Maybe (help center: send exists, approval by default; connector doc: cannot send. Not operator-observed) | 🟠 Maybe (default asks each time; Team/Enterprise owners may allow without asking) | Docs-claimed. Not operator-observed |
+| **OpenAI ChatGPT** (Gmail or Outlook app) | 🟡 YES (but only when send is pre-authorized and a schedule or Gmail event wake is seated) | 🟢 YES | 🟢 YES | 🟡 YES (but needs permitted Gmail write and pre-authorized or Never-ask; otherwise it pauses) | 🟡 YES (but via configured scheduled or event-triggered Work, or a Workspace Agent — not default chat) | 🟡 YES (but only with that explicit approval config; default still needs a human Approve) | Observed (read and self-mail). Docs-claimed (wake and Never-ask) |
+| **Anthropic Claude** (Gmail connector, chat, Cowork) | 🟡 YES (but Gmail send plus Always-allow or a scheduled-task approval mode; verify plan, scopes, and Always-allow) | 🟢 YES | 🟢 YES | 🟡 YES (but needs Gmail send and Always-allow or a scheduled-task approval mode. No literal self-mail example in the docs) | 🟡 YES (but the same approval mode. Ordinary chat does not send unattended) | 🟡 YES (but default asks; Team/Enterprise can set Always-allow) | Docs-claimed. Not operator-observed |
 | **Google Spark** (hub seat) | 🟢 YES | 🟢 YES | 🟢 YES | 🔴 NO (the bus ack is the self-mail send) | 🟢 YES | 🟢 YES | Observed |
 | **Other Gemini seats** (not the Spark hub seat) | 🟠 Maybe (some cannot outbound send; those need a thin sender peer) | 🟡 YES (but seat-dependent) | 🟡 YES (but seat-dependent) | 🟡 YES (but an in-product ack is not a wire packet) | 🟠 Maybe (some seats cannot outbound send at all. A human click still produces no packet) | 🟠 Maybe (where outbound send does not exist, Approve does not create a packet) | Operator-reported |
 | **Microsoft Copilot** (personal Microsoft 365 with Gmail) | 🔴 NO (cannot send until a human clicks Send, including self-mail) | 🟡 YES (but often; seat-dependent) | 🟡 YES (but often) | 🟡 YES (but that ack is not sent) | 🔴 NO (cannot reply or send until a human clicks Send) | 🔴 NO (human must click Send, including self-mail) | Operator-reported |
@@ -133,25 +133,31 @@ Chat / chatObserver with no mailbox send path stays an observer. A draft in chat
 
 ### OpenAI ChatGPT
 
-**Observed:** it can read mail, and it can send self-mail. That is capability while a session is running. **Not observed:** whether it will agentically check the mailbox with no human nudge (unattended poll or wake). Do not mark hub fit YES on the capability alone.
+**Observed:** it can read mail, and it can send self-mail. **Docs-claimed** for the unattended path. Default chat is not that path.
 
-**Docs-claimed** (this repository does not re-demonstrate these pages):
+Will this work: 🟡 **YES (but …)** only when send is pre-authorized and a wake path is seated. Agentic check without a human nudge is 🟡 **YES (but …)** via a Gmail event trigger or a scheduled Work task, not an always-on chat daemon. Needs human Approve for self-mail: **yes by default**. Bypass only with an explicit approval config (pre-authorized send or Never-ask). Otherwise the task pauses.
 
-- Connected Gmail or Outlook. In chat, ChatGPT drafts an email and the person can choose to send it, without leaving ChatGPT. Web, on Plus, Pro, Business, and Enterprise. [ChatGPT release notes](https://help.openai.com/en/articles/6825453-chatgpt-app-features).
-- Eligible Work tasks can run when a new Gmail message arrives. Actions that require approval pause until reviewed. Free and Go cannot create those webhook tasks. Same release notes, [Connected apps in ChatGPT](https://help.openai.com/en/articles/11487775-connected-apps-in-chatgpt), and [Scheduled tasks in ChatGPT](https://help.openai.com/en/articles/10291617-scheduled-tasks-in-chatgpt).
+- Connected apps, including Gmail event-triggered tasks. If an action requires approval, the task pauses until reviewed. [Connected apps in ChatGPT](https://help.openai.com/en/articles/11487775-connected-apps-in-chatgpt).
+- Scheduled tasks, including event-triggered Gmail tasks for eligible plans. Free and Go cannot create those webhook tasks. Actions that require approval may pause the task. [Scheduled tasks in ChatGPT](https://help.openai.com/en/articles/10291617-scheduled-tasks-in-chatgpt).
+- Workspace Agents (Business and Enterprise) can run on a schedule or an API trigger. Write actions default to Always ask. A builder can set Never ask. [ChatGPT Workspace Agents](https://help.openai.com/en/articles/20001143-chatgpt-workspace-agents-for-enterprise-and-business).
+- App permissions include Always ask and Never ask. Never ask lets ChatGPT read and take actions without a confirmation prompt. [Admin controls for plugins and apps](https://help.openai.com/en/articles/11509118-admin-controls-security-and-compliance-in-connectors-enterprise-edu-and-team).
+- In chat, with Gmail or Outlook connected, ChatGPT can draft and the person can choose to send. [ChatGPT release notes](https://help.openai.com/en/articles/6825453-chatgpt-release-notes).
 
-A configured webhook task is a docs-claimed wake path. It is not an operator observation that a seated ChatGPT polls or wakes on its own. The per-message Approve click is also not operator-observed; the release notes say the person chooses to send, and that approval-gated actions pause. Bus packets stay self-mail on the shared mailbox.
+That in-chat choice is not unattended self-mail. Bus packets stay self-mail on the shared mailbox. Re-check the seated approval mode and the wake path with a ping/pong.
 
 ### Anthropic Claude
 
-No operator seat is recorded here. Two official pages do not agree on send. Read both.
+**Docs-claimed. Not operator-observed.** Verify the plan, the Gmail scopes, and Always-allow on the seat before hub duty.
 
-- Gmail connector reference: search and read only. It cannot create, send, or modify messages. It searches when the request needs email. [Gmail connector](https://claude.com/docs/connectors/google/gmail).
-- Google Workspace help center: search and read; draft; send, reply, and forward. By default it asks for approval before each of those actions. On Team and Enterprise, owners decide whether members can allow actions without asking each time. It accesses mailbox data when you explicitly ask. [Use Google Workspace connectors](https://support.claude.com/en/articles/10166901-use-google-workspace-connectors).
+The Gmail connector can search and read, draft, and send, reply, and forward. By default Claude asks before each send. On Team and Enterprise, owners can allow those actions without asking each time. [Use Google Workspace connectors](https://support.anthropic.com/en/articles/10166901-using-the-google-drive-integration). Tool permissions on a connector are Always allow, Needs approval, or Blocked. An org can allow read and block send. [Use connectors](https://support.anthropic.com/en/articles/11176164-pre-built-web-connectors-using-remote-mcp).
 
-Unattended poll/wake on inbound mail is not described for claude.ai chat. Claude Code cloud routines can call included connectors with no approval prompts during a run. Triggers documented there are schedule, API, and GitHub, not inbound Gmail. [Routines](https://code.claude.com/docs/en/routines). That path is not this chat row. iOS can pre-fill the Mail app; the person still sends. [Use Claude with iOS apps](https://support.claude.com/en/articles/11869619-use-claude-with-ios-apps).
+Will this work: 🟡 **YES (but …)** when Gmail send is permitted and approval is Always-allow, or a scheduled task is in an approval mode that lets send proceed. Anthropic does not show a literal self-mail example (From = To). Ordinary chat does not monitor the mailbox on its own.
 
-Send self-mail unattended stays 🟠 **Maybe** because the official pages conflict, and because default approval is not unattended send. **Docs-claimed. Not Observed.**
+Agentic check without a human nudge: 🟡 **YES (but …)** a person creates a scheduled cadence. Scheduled tasks run remotely, including when the computer is asleep, and can use connectors already set up. The create form includes an approval mode. [Schedule recurring tasks](https://support.anthropic.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork).
+
+Computer use is not this path. The desktop must be awake and the Claude Desktop app must be open. [Let Claude use your computer](https://support.anthropic.com/en/articles/14128542-let-claude-use-your-computer-in-cowork).
+
+Needs human Approve for self-mail: **yes by default**. Team and Enterprise can set Always-allow. Bus packets stay self-mail on the shared mailbox.
 
 ### Google Spark (hub seat)
 

@@ -47,7 +47,8 @@ Product names link to that vendor’s own site. [Google Spark](https://gemini.go
 | [**claude.ai web**](https://claude.ai) | 🔴 NO (web chat) | 🔴 NO (human opens the page) |
 | [**Google Spark**](https://gemini.google.com/spark) (hub seat, beta) | 🟡 YES (but ephemeral turns; batch wake ~15–60m) | 🟡 YES (but batch ~15–60m or a human turn; operator-reported webhook, not a live socket) |
 | [**Other Gemini seats**](https://gemini.google.com) | 🔴 NO (will not wake on inbound mail) | 🔴 NO (will not wake on inbound send) |
-| [**Microsoft Copilot**](https://copilot.microsoft.com) | 🔴 NO (human must click Send) | 🔴 NO (human must click Send) |
+| [**Microsoft Copilot**](https://copilot.microsoft.com) (chat) | 🔴 NO (human must click Send) | 🔴 NO (human opens chat) |
+| [**Copilot Tasks**](https://support.microsoft.com/en-us/microsoft-copilot/using-copilot-tasks) | 🟠 Maybe (schedule; sending mail still asks) | 🟡 YES (but schedule only; not inbound mail) |
 | [**Amazon Alexa / Alexa+**](https://alexa.amazon.com) | 🔴 NO (human must approve/send) | 🔴 NO (human must approve/send) |
 
 The detail table does not change these verdicts. Re-check with a self-mail ping/pong. Public examples use `[CATBUS]` and `@example.com`.
@@ -86,7 +87,8 @@ Bus packets are self-mail on one shared mailbox (From = To). This page is not a 
 | [**claude.ai web**](https://claude.ai) | 🔴 NO (web chat) | 🔴 NO (human opens the page) | 🔴 NO (does not watch the inbox) | 🟡 YES (but page text is not a send) | 🔴 NO (no unattended ack) | 🔴 NO (no unattended send) | 🔴 NO (human must send) | Docs-claimed |
 | [**Google Spark**](https://gemini.google.com/spark) (hub seat, beta) | 🟡 YES (but ephemeral turns; batch wake ~15–60m) | 🟡 YES (but batch ~15–60m or a human turn; operator-reported webhook, not a live socket) | 🟢 YES | 🟢 YES | 🔴 NO (the ack is the send) | 🟢 YES | 🟢 YES | Operator-reported (ephemeral turns; batch ~15–60m). Operator-reported (webhook, pending confirm). Docs-claimed (Gmail monitor) |
 | [**Other Gemini seats**](https://gemini.google.com) | 🔴 NO (will not wake on inbound mail) | 🔴 NO (will not wake on inbound send) | 🟡 YES (but seat-dependent; not a wake) | 🟡 YES (but seat-dependent) | 🟡 YES (but an in-product ack is not a packet) | 🟠 Maybe (some cannot outbound send at all) | 🟠 Maybe (no packet if send does not exist) | Operator-reported (no inbound wake). Docs-claimed (Spark schedules ≠ chat actions) |
-| [**Microsoft Copilot**](https://copilot.microsoft.com) | 🔴 NO (human must click Send) | 🔴 NO (human must click Send) | 🟡 YES (but often) | 🟡 YES (but often) | 🟡 YES (but the ack is not sent) | 🔴 NO (human must click Send) | 🔴 NO (human must click Send) | Operator-reported |
+| [**Microsoft Copilot**](https://copilot.microsoft.com) (chat) | 🔴 NO (human must click Send) | 🔴 NO (human opens chat) | 🟡 YES (but often) | 🟡 YES (but often) | 🟡 YES (but the ack is not sent) | 🔴 NO (human must click Send) | 🔴 NO (human must click Send) | Operator-reported |
+| [**Copilot Tasks**](https://support.microsoft.com/en-us/microsoft-copilot/using-copilot-tasks) | 🟠 Maybe (schedule; sending mail still asks) | 🟡 YES (but schedule only; not inbound mail) | 🟠 Maybe (a connector can be seated; inbox watch is not claimed) | 🟡 YES (but a task result is not a packet) | 🟡 YES (but a task result is not `RES`) | 🟠 Maybe (email send asks for approval; a scheduled run may collect that at setup; self-mail not observed) | 🟠 Maybe (setup approval is documented; not observed) | Docs-claimed (schedule and send approval) |
 | [**Amazon Alexa / Alexa+**](https://alexa.amazon.com) | 🔴 NO (human must approve/send) | 🔴 NO (human must approve/send) | 🟠 Maybe (skill or wrapper) | 🟡 YES (but a spoken reply is not a packet) | 🟡 YES (but a spoken ack is not `RES`) | 🔴 NO (human must approve/send) | 🔴 NO (human must approve/send) | Operator-reported |
 
 ---
@@ -178,11 +180,21 @@ Canonical state does not live on the turn’s scratch disk. See [State backing](
 
 Not the Spark hub seat. **Operator-reported:** they will not wake on an inbound send. **Docs-claimed:** the Spark help page above keeps Spark schedules separate from scheduled actions in Gemini chat. It does not give non-Spark Gemini a Gmail monitor.
 
-Some of these seats still cannot outbound send at all. Those need a thin sender peer. Keep, Tasks, and Reminders are not the wire. Reading or sending while a chat is open is not a wake.
+Some of these seats still cannot outbound send at all. Those need a thin sender peer. Google Keep, Tasks, and Reminders are not the wire. Reading or sending while a chat is open is not a wake.
 
-### [Microsoft Copilot](https://copilot.microsoft.com)
+### [Microsoft Copilot](https://copilot.microsoft.com) (chat)
 
-**Operator-reported.** Often reads, drafts, and auto-acks. Cannot send until a human clicks Send, including self-mail. The draft looks done. The bus sees silence.
+Not [Copilot Tasks](#copilot-tasks). **Operator-reported.** Often reads, drafts, and auto-acks. Cannot send until a human clicks Send, including self-mail. The draft looks done. The bus sees silence. Opening the chat is not a wake.
+
+### [Copilot Tasks](https://support.microsoft.com/en-us/microsoft-copilot/using-copilot-tasks)
+
+Not Copilot chat. **Docs-claimed.** [Using Copilot Tasks](https://support.microsoft.com/en-us/microsoft-copilot/using-copilot-tasks).
+
+A task runs once when you submit it, or on a schedule you set. Tasks do not start unless you ask to start one. A schedule is not inbound-mail wake. That page does not claim a Gmail-event or webhook.
+
+Sending an email asks for approval, or hands control back. For a scheduled or recurring task, Copilot may collect that approval during setup so a later run can proceed. That does not remove the operator-reported Send-click on Copilot chat, and it is not an observed self-mail. Will this work? stays 🟠 Maybe until a ping/pong shows the packet leaves with no per-message click.
+
+Personal Copilot accounts are moving from Tasks to [Copilot Cowork](https://support.microsoft.com/en-us/microsoft-365-copilot/get-started-with-cowork). Cowork is the same path: you review and approve sensitive actions, including sending mail. It is not a second verdict.
 
 ### [Amazon Alexa / Alexa+](https://alexa.amazon.com)
 
@@ -200,7 +212,7 @@ The mailbox packet is not the hub’s memory. Name the canonical store. Three ki
 | Workspace Drive, or Keep used only as a store | An ephemeral turn container. The Spark hub seat is in this set |
 | External database | A seat you run, when a local file is the wrong boundary |
 
-An ephemeral container needs Workspace-backed state. Drive is the usual store. Keep may hold state. Keep, Tasks, and Reminders are still not the wire. The wire stays self-mail on the one shared mailbox.
+An ephemeral container needs Workspace-backed state. Drive is the usual store. Keep may hold state. Google Keep, Tasks, and Reminders are still not the wire. The wire stays self-mail on the one shared mailbox.
 
 ---
 
@@ -231,9 +243,11 @@ A workflow tool can bridge a Maybe or NO seat when that seat cannot wake on mail
 | Treating other Gemini like the Spark hub | They do not wake on inbound send. A thin sender peer is only for seats that also cannot send |
 | Copying ChatGPT Work onto consumer web | Consumer web is 🔴 NO. Work, Custom GPT, or Actions is the 🟡 YES (but …) row |
 | Copying Claude MCP / Desktop onto claude.ai | claude.ai web is 🔴 NO. MCP / Desktop is the 🟡 YES (but …) row |
+| Copying Copilot Tasks onto Copilot chat | Chat stays 🔴 NO (human must click Send). Tasks is the schedule row |
+| Treating Copilot Tasks as unattended self-mail | Sending mail still asks for approval. A setup-time approval is not an observed self-mail |
 | Keeping canonical state on an ephemeral turn disk | Use Workspace-backed state. Keep is a store, not the wire |
 | Treating a workflow wrapper as the hub | The wrapper moves packets. Ping/pong the seat |
-| Using Keep, Tasks, or Reminders as the bus | Self-mail on the one shared mailbox |
+| Using Google Keep, Tasks, or Reminders as the bus | Self-mail on the one shared mailbox |
 | Treating an Alexa utterance as `RES` | Wait for the self-mail |
 | Copying one family’s send path onto another | Verify the seat |
 | Treating a docs-claimed routine as Observed | Label it docs-claimed. Re-check the seat |

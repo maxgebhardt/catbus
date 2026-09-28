@@ -1,6 +1,6 @@
 # Peer / agent capability matrix
 
-**Will this work?** means the family can close the hub loop unattended: read the shared mailbox and send self-mail, with no per-message click and no human nudge.
+**Will this work?** means the family can close the hub loop unattended: read the shared mailbox and send self-mail, with no per-message click and no human nudge. Read or send only after a human asks is not this verdict.
 
 ## Legend
 
@@ -35,14 +35,14 @@ A schedule is not a webhook. Opening the chat is not a wake.
 | **Generic shared-mailbox central agent** | 🟢 YES | 🟢 YES |
 | **xAI Grok via OpenClaw** | 🟡 YES (but mail tools seated) | 🟡 YES (but mail tools seated; webhook not claimed) |
 | **Open models via OpenClaw** | 🟠 Maybe (only with mail tools) | 🟠 Maybe (only with mail tools) |
-| **Cursor agents** | 🟠 Maybe (only with a mail connector) | 🔴 NO (human opens the editor) |
+| **Cursor agents** | 🟡 YES (but mail connector + poll wake) | 🟡 YES (but poll only; not a Gmail webhook) |
 | **Grok Bot** | 🟡 YES (but connector authorized) | 🟡 YES (but connector authorized; webhook not claimed) |
 | **SuperGrok / Grok Projects** | 🟢 YES | 🟢 YES (Observed; no webhook API claimed) |
-| **SuperGrok / Grok chat** | 🔴 NO (no send path) | 🔴 NO (human opens chat) |
+| **SuperGrok / Grok chat** | 🔴 NO (human must ask) | 🔴 NO (human opens chat) |
 | **OpenAI ChatGPT** | 🟡 YES (but pre-authorized send + seated wake) | 🟡 YES (but Gmail-event; plan/config) |
 | **Anthropic Claude** | 🟡 YES (but Always-allow or schedule mode) | 🟡 YES (but schedule only) |
-| **Google Spark** (hub seat) | 🟢 YES | 🟡 YES (but Observed mail handling; no HTTP webhook) |
-| **Other Gemini seats** | 🟠 Maybe (some cannot send) | 🟠 Maybe |
+| **Google Spark** (hub seat) | 🟢 YES | 🟢 YES (inbound wake; operator-reported webhook, pending confirm) |
+| **Other Gemini seats** | 🔴 NO (will not wake on inbound mail) | 🔴 NO (will not wake on inbound send) |
 | **Microsoft Copilot** | 🔴 NO (human must click Send) | 🔴 NO (human must click Send) |
 | **Amazon Alexa / Alexa+** | 🔴 NO (human must approve/send) | 🔴 NO (human must approve/send) |
 
@@ -72,14 +72,14 @@ Bus packets are self-mail on one shared mailbox (From = To). This page is not a 
 | **Generic hub** | 🟢 YES | 🟢 YES | 🟢 YES | 🟢 YES | 🔴 NO (the ack is the send) | 🟢 YES | 🟡 YES (but human GO still applies outside the bus) | Assumed — verify |
 | **Grok via OpenClaw** | 🟡 YES (but mail tools seated) | 🟡 YES (but mail tools; webhook not claimed) | 🟡 YES (but read tools wired) | 🟢 YES | 🔴 NO (the ack is the send) | 🟡 YES (but send tools seated) | 🟡 YES (but human GO outside the bus) | Observed |
 | **Open models via OpenClaw** | 🟠 Maybe (only with mail tools) | 🟠 Maybe (only with mail tools) | 🟠 Maybe (only with mail tools) | 🟡 YES (but local draft is not a packet) | 🟠 Maybe (only with mail tools) | 🟠 Maybe (only with mail tools) | 🟠 Maybe (depends on the connector) | Observed |
-| **Cursor agents** | 🟠 Maybe (only with a mail connector) | 🔴 NO (human opens the editor) | 🟠 Maybe (only with a connector) | 🟡 YES (but editor text is not a packet) | 🟠 Maybe (only if the connector sends) | 🟠 Maybe (only if the connector may send) | 🟠 Maybe (depends on the connector) | Observed |
+| **Cursor agents** | 🟡 YES (but mail connector + poll wake) | 🟡 YES (but poll only; not a Gmail webhook) | 🟡 YES (but mail connector) | 🟢 YES | 🔴 NO (the ack is the send) | 🟡 YES (but mail connector + poll) | 🟡 YES (but on the poll path) | Operator-reported (mail + poll). Docs-claimed (cron; no Gmail trigger) |
 | **Grok Bot** | 🟡 YES (but connector authorized) | 🟡 YES (but connector; webhook not claimed) | 🟡 YES (but via the connector) | 🟢 YES | 🔴 NO (the connector usually sends the ack) | 🟡 YES (but confirm with ping/pong) | 🟡 YES (but only once that send is confirmed) | Observed |
 | **SuperGrok / Grok Projects** | 🟢 YES | 🟢 YES (Observed; no webhook API claimed) | 🟢 YES | 🟢 YES | 🟢 YES | 🟢 YES | 🟢 YES | Observed |
-| **SuperGrok / Grok chat** | 🔴 NO (no send path) | 🔴 NO (human opens chat) | 🔴 NO (no mailbox connector) | 🟡 YES (but chat text is not a send) | 🔴 NO (no ack path) | 🔴 NO (no send path) | 🔴 NO (no send path) | Assumed — verify |
+| **SuperGrok / Grok chat** | 🔴 NO (human must ask) | 🔴 NO (human opens chat) | 🟡 YES (but only when asked) | 🟡 YES (but only when asked) | 🟡 YES (but a chat ack is not `RES`) | 🟡 YES (but only when asked; not unattended) | 🔴 NO (human must ask) | Operator-reported (when asked). Docs-claimed (Gmail connector) |
 | **OpenAI ChatGPT** | 🟡 YES (but pre-authorized send + seated wake) | 🟡 YES (but Gmail-event; plan/config) | 🟢 YES | 🟢 YES | 🟡 YES (but Never-ask or pre-authorized write; else it pauses) | 🟡 YES (but Work event/schedule or a Workspace Agent; not default chat) | 🟡 YES (but only with that config; default still asks) | Observed (read, self-mail). Docs-claimed (wake) |
 | **Anthropic Claude** | 🟡 YES (but Always-allow or schedule mode) | 🟡 YES (but schedule only) | 🟢 YES | 🟢 YES | 🟡 YES (but Always-allow or schedule mode; no self-mail example) | 🟡 YES (but same mode; ordinary chat does not send alone) | 🟡 YES (but default asks; Team/Enterprise can Always-allow) | Docs-claimed |
-| **Google Spark** (hub seat) | 🟢 YES | 🟡 YES (but Observed mail handling; no HTTP webhook) | 🟢 YES | 🟢 YES | 🔴 NO (the ack is the send) | 🟢 YES | 🟢 YES | Observed |
-| **Other Gemini seats** | 🟠 Maybe (some cannot send) | 🟠 Maybe | 🟡 YES (but seat-dependent) | 🟡 YES (but seat-dependent) | 🟡 YES (but an in-product ack is not a packet) | 🟠 Maybe (some cannot outbound send at all) | 🟠 Maybe (no packet if send does not exist) | Operator-reported |
+| **Google Spark** (hub seat) | 🟢 YES | 🟢 YES (inbound wake; operator-reported webhook, pending confirm) | 🟢 YES | 🟢 YES | 🔴 NO (the ack is the send) | 🟢 YES | 🟢 YES | Observed (hub, inbound wake). Operator-reported (webhook; pending confirm). Docs-claimed (Gmail monitor) |
+| **Other Gemini seats** | 🔴 NO (will not wake on inbound mail) | 🔴 NO (will not wake on inbound send) | 🟡 YES (but seat-dependent; not a wake) | 🟡 YES (but seat-dependent) | 🟡 YES (but an in-product ack is not a packet) | 🟠 Maybe (some cannot outbound send at all) | 🟠 Maybe (no packet if send does not exist) | Operator-reported (no inbound wake). Docs-claimed (Spark schedules ≠ chat actions) |
 | **Microsoft Copilot** | 🔴 NO (human must click Send) | 🔴 NO (human must click Send) | 🟡 YES (but often) | 🟡 YES (but often) | 🟡 YES (but the ack is not sent) | 🔴 NO (human must click Send) | 🔴 NO (human must click Send) | Operator-reported |
 | **Amazon Alexa / Alexa+** | 🔴 NO (human must approve/send) | 🔴 NO (human must approve/send) | 🟠 Maybe (skill or wrapper) | 🟡 YES (but a spoken reply is not a packet) | 🟡 YES (but a spoken ack is not `RES`) | 🔴 NO (human must approve/send) | 🔴 NO (human must approve/send) | Operator-reported |
 
@@ -101,7 +101,11 @@ Not the Grok-on-OpenClaw result. On the bus only when mail tools are attached.
 
 ### Cursor agents
 
-No native mailbox. A connector, a mail-capable peer, or a human paste. Editor text is a draft.
+🟡 YES (but …) when a mail connector is seated and a routine or automation polls. That poll is unattended. It is not a Gmail webhook, and it is not “a human must open the editor.”
+
+**Operator-reported:** read, check, and send self-mail on that poll path.
+
+**Docs-claimed:** [Cursor Automations](https://cursor.com/docs/cloud-agent/automations) run on a cron schedule and can call MCP tools. The trigger list includes GitHub, GitLab, Slack, a generic HTTP endpoint you POST to, Linear, Sentry, and PagerDuty. It does not list a Gmail-event trigger. A generic webhook is not inbound-mail wake. Default Agent asks before an MCP tool unless Auto-review or an allowlist lets it run ([MCP](https://cursor.com/help/customization/mcp)). The poll path is the one that closes the loop.
 
 ### Grok Bot
 
@@ -113,7 +117,13 @@ Read and send through a connector when it is authorized. Confirm unattended self
 
 ### SuperGrok / Grok chat
 
-No mailbox send path. Wake is a human opening chat. Do not use this row for a Projects seat. **Assumed — verify.**
+Not the Projects seat. Split the columns: capability when a human asks, versus wake.
+
+**Operator-reported:** it can read and send when asked, if a mail connector is connected. It must be asked. Wake is 🔴 NO. A human opens chat.
+
+**Docs-claimed:** the [Gmail connector](https://docs.x.ai/grok/connectors/gmail-google-calendar) can search, read, draft, and send when send tools are enabled. [Connectors](https://docs.x.ai/grok/connectors) run inside a conversation, when the question relates to that service. Grok reads that mail in real time when you ask. That page does not claim an inbound-mail wake for chat.
+
+Will this work? stays 🔴 NO. The hub loop has no human nudge. A chat ack is not `RES`. Do not copy the Projects wake onto this row.
 
 ### OpenAI ChatGPT
 
@@ -140,11 +150,17 @@ The Gmail connector can read, draft, and send. Default is ask-before-send. Team 
 
 ### Google Spark (hub seat)
 
-**Observed.** 🟢 YES hub. It self-mails and manages the mailbox. Wake is 🟡 YES (but …): inbound mail is handled with no human nudge. No HTTP webhook is claimed. Do not apply a no-send caveat to this seat. The bus ack is the self-mail.
+**Observed.** 🟢 YES hub. It self-mails, manages the mailbox, and wakes on inbound mail with no human nudge. Do not apply a no-send caveat to this seat. The bus ack is the self-mail.
+
+**Docs-claimed:** [Spark schedules](https://support.google.com/gemini/answer/17094710) include a Gmail monitor that runs when a message matches a Gmail filter. That article does not name an HTTP webhook. It also says Spark schedules are a different feature from scheduled actions in Gemini chat.
+
+**Operator-reported, pending confirm:** inbound mail can webhook. Do not record this seat as “no HTTP webhook.” A second operator has not confirmed the webhook here.
 
 ### Other Gemini seats
 
-Not the Spark hub seat. **Operator-reported:** some cannot outbound send at all. Those need a thin sender peer. Keep, Tasks, and Reminders are not the wire.
+Not the Spark hub seat. **Operator-reported:** they will not wake on an inbound send. **Docs-claimed:** the Spark help page above keeps Spark schedules separate from scheduled actions in Gemini chat. It does not give non-Spark Gemini a Gmail monitor.
+
+Some of these seats still cannot outbound send at all. Those need a thin sender peer. Keep, Tasks, and Reminders are not the wire. Reading or sending while a chat is open is not a wake.
 
 ### Microsoft Copilot
 
@@ -162,9 +178,14 @@ Not the Spark hub seat. **Operator-reported:** some cannot outbound send at all.
 |---------|------------|
 | Treating a mailbox plugin as unattended self-mail | Ping/pong. Approval-gated seats stay human-in-the-loop |
 | Treating read or self-mail as a wake | Use the wake column. Human-open-chat is 🔴 NO |
-| Treating a schedule as a Gmail-event wake | Schedule-only stays 🟡 YES (but …) |
+| Treating a schedule as a Gmail-event wake | Schedule-only stays 🟡 YES (but …). A poll routine is still a wake |
+| Treating Cursor as editor-open only | With a mail connector, wake is poll only. Not a Gmail webhook |
+| Treating Grok chat as a no-send path | It can read and send when asked. Wake stays 🔴 NO |
+| Copying the Projects wake onto Grok chat | Chat does not wake. Projects is the other row |
 | Treating read, draft, or auto-ack as `RES` | The self-mail has to leave |
-| Treating the Spark hub seat as a no-send Gemini seat | Spark hub is 🟢 YES. A thin sender peer is for other Gemini seats that cannot send |
+| Recording Spark as “no HTTP webhook” | Wake is 🟢 YES. The webhook is operator-reported, pending confirm |
+| Treating the Spark hub seat as a no-send Gemini seat | Spark hub is 🟢 YES. Other Gemini seats will not wake on inbound send |
+| Treating other Gemini like the Spark hub | They do not wake on inbound send. A thin sender peer is only for seats that also cannot send |
 | Using Keep, Tasks, or Reminders as the bus | Self-mail on the one shared mailbox |
 | Treating an Alexa utterance as `RES` | Wait for the self-mail |
 | Copying one family’s send path onto another | Verify the seat |

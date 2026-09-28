@@ -31,6 +31,24 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 
 - (none yet)
 
+## [0.3.5] — 2026-09-28
+
+### Fixed
+
+- `docs/peer-capability-matrix.md` accuracy pass after operator review of 0.3.4. Legend and the **Will this work?** table stay first.
+- **Cursor agents:** 🟡 YES (but mail connector + poll wake). Inbound-mail wake is poll only. Not a Gmail webhook, and not “human opens the editor” when a routine can poll unattended. Operator-reported for mail and poll. Docs-claimed: Automations cron and MCP, with no Gmail-event trigger.
+- **SuperGrok / Grok chat:** can read and send when a human asks. Not a no-send path. Wake stays 🔴 NO (human opens chat). Will this work? stays 🔴 NO because the hub loop is unattended. Operator-reported when asked. Docs-claimed Gmail connector. Projects is unchanged.
+- **Google Spark** (hub seat): still 🟢 YES on the hub loop, and inbound wake is 🟢 YES. The inbound webhook is operator-reported, pending confirm. Docs-claimed Gmail monitor does not name an HTTP webhook. The old “no HTTP webhook claimed” verdict is removed.
+- **Other Gemini seats:** 🔴 NO on inbound wake. Distinct from Spark. Some still cannot outbound send.
+
+### Changed
+
+- `schema/protocol-version.json` pin `0.3.5`. Envelope major unchanged (`v: "2"`).
+
+### Notes
+
+- Compatible docs pin. Not a breaking envelope change. Threat model, cleartext baseline, optional signing, and opaque envelopes advised against are unchanged.
+
 ## [0.3.4] — 2026-09-28
 
 ### Changed

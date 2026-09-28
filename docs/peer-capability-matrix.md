@@ -204,25 +204,11 @@ An ephemeral container needs Workspace-backed state. Drive is the usual store. K
 
 ## Bridging Maybe/NO seats via workflow tools
 
-An orchestration tool can cover a shortfall on some platforms: the seat cannot wake on inbound mail, or it cannot send unattended. The tool is not the agent and not the hub. It only moves the packet. Ping/pong still applies.
+A workflow tool can bridge a Maybe or NO seat when that seat cannot wake on mail or cannot send on its own. The tool is not the hub. Prefer self-hosted n8n. Zapier and Make are other examples. Their docs and demos:
 
-Prefer self-hosted [n8n](https://github.com/n8n-io/n8n). The mailbox and the JSON stay on hardware you run. Zapier and Make are other examples of the same pattern when a hosted runner is already in use. Read that host’s data terms before you connect a mailbox. This is not a vendor pitch.
-
-**Pattern.** Inbound: an email trigger on the subject wire tag, then parse, then wake the agent. Outbound: SMTP self-mail back onto the bus.
-
-1. Trigger when the subject contains the wire tag. The public demo tag is `[CATBUS]`. A private tag stays unpublished.
-2. Read the body and take the one fenced JSON block.
-3. POST that JSON to the agent webhook. That POST is the wake.
-4. The agent returns reply JSON to the workflow.
-5. The workflow sends SMTP self-mail to the same mailbox (From = To), with the same tag and one JSON block.
-
-That trigger is the wrapper’s wake. It is not the model watching an inbox, and it is not a claim that the seat webhooks on its own. The Gmail triggers below are polls in those docs, not instant sockets. A poll is still a wake. It is not a Gmail-event webhook. Do not mail other people. Do not publish credentials, mailbox addresses, or a private tag.
-
-**n8n** (self-hosted, privacy-friendly). [Gmail Trigger](https://docs.n8n.io/integrations/builtin/trigger-nodes/n8n-nodes-base.gmailtrigger) starts a workflow on Message Received and can filter with Gmail search, including the subject. A mailbox that is not that Gmail node can use [Email Trigger (IMAP)](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.emailimap). Outbound SMTP is [Send Email](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.sendemail). Gmail API send, if you are not using SMTP, is [Send a message](https://docs.n8n.io/integrations/builtin/app-nodes/n8n-nodes-base.gmail/message-operations). How a trigger starts a run: [Understand workflows](https://docs.n8n.io/build/understand-workflows).
-
-**Zapier.** [Gmail on Zapier](https://help.zapier.com/hc/en-us/articles/8495933589645-How-to-get-started-with-Gmail-on-Zapier) lists New Email Matching Search, which is a poll, and Send Email. That search trigger only sees mail from about the last hour. [How Zap triggers work](https://help.zapier.com/hc/en-us/articles/8496244568589-How-Zap-triggers-work) separates polling from instant. A Zap is the workflow: [What is a Zap?](https://help.zapier.com/hc/en-us/articles/8496309697421-What-is-a-Zap)
-
-**Make.** [Gmail modules](https://apps.make.com/gmail-modules): Watch emails can filter on Subject, and Send an email is the outbound step. Watch modules are polls: [Types of modules](https://help.make.com/types-of-modules). A scenario is the workflow: [What’s a scenario?](https://help.make.com/whats-a-scenario-and-which-type-should-you-use) The run clock is [Schedule a scenario](https://help.make.com/schedule-a-scenario).
+- **n8n.** [Gmail Trigger](https://docs.n8n.io/integrations/builtin/trigger-nodes/n8n-nodes-base.gmailtrigger) · [Webhook](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.webhook) · [Gmail Trigger workflows](https://n8n.io/integrations/gmail-trigger/) · [Webhook and Gmail workflows](https://n8n.io/integrations/webhook/and/gmail/)
+- **Zapier.** [Gmail](https://help.zapier.com/hc/en-us/articles/8495933589645-How-to-get-started-with-Gmail-on-Zapier) · [Webhooks](https://help.zapier.com/hc/en-us/articles/8496288690317-Trigger-Zap-workflows-from-webhooks) · [New email matching a search](https://zapier.com/apps/gmail/integrations/google-docs/1618213/create-documents-from-template-in-google-docs-for-new-matching-emails-in-gmail) · [Send Gmail from a webhook](https://zapier.com/apps/gmail/integrations/webhook/1755/send-an-email-in-gmail-for-new-webhooks)
+- **Make.** [Gmail modules](https://apps.make.com/gmail-modules) · [Webhooks](https://help.make.com/webhooks) · [New Gmail email](https://www.make.com/en/templates/13525-trigger-new-emails-in-gmail-and-add-rows-to-google-sheets-for-tracking) · [Webhook to Gmail](https://www.make.com/en/templates/13453-send-automated-email-notifications-using-custom-webhooks-and-google-email)
 
 ---
 

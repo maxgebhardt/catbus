@@ -42,6 +42,10 @@ Create an inbox filter or mailbox rule on the subject wire tag so bus and bot tr
 
 Tag match is routing, not authentication.
 
+## Will this work for your agents?
+
+A hub needs **unattended self-mail**: routine packets to the same shared mailbox with no per-message human Send click. Copilot and Alexa often need a human to click Send even for that self-mail, so `RES` stalls if that seat is the only hub. Read [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md) before you seat anyone, then verify with a self-mail ping/pong.
+
 ## Security hierarchy
 
 | Order | Component | Status | Doc |
@@ -57,9 +61,9 @@ Readable JSON plus optional signing is the path. Opaque envelopes are not a stro
 
 Hand [`docs/00-stand-up-order.md`](docs/00-stand-up-order.md) to the shared-mailbox central agent. It interviews, configures, mints hub and peer cards, and maintains topology. Humans answer short questions and give **GO** only when the hub asks.
 
-Before seating a runtime as hub or as a peer you will depend on for `RES`, read the peer capability matrix. Read, draft, and auto-ack are not unattended self-mail. Some seats cannot send until a human clicks Send, including self-mail. Some seats cannot outbound send at all.
+Seat limits: [Will this work for your agents?](#will-this-work-for-your-agents) and [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md).
 
-Also: [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md) · [`docs/best-practices.md`](docs/best-practices.md) · [`docs/faq-anti-patterns.md`](docs/faq-anti-patterns.md) · [`prompts/hub.md`](prompts/hub.md)
+Also: [`docs/best-practices.md`](docs/best-practices.md) · [`docs/faq-anti-patterns.md`](docs/faq-anti-patterns.md) · [`prompts/hub.md`](prompts/hub.md)
 
 ## Transport properties
 
@@ -72,9 +76,9 @@ Also: [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md) · [`do
 
 | Path | Purpose |
 |------|---------|
+| [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md) | Living seat matrix: read unattended, draft, auto-ack without Send, unattended self-mail, human Approve for self-mail, hub fit |
 | [`docs/00-stand-up-order.md`](docs/00-stand-up-order.md) | Interview, liveness, cards, topology |
 | [`docs/faq-anti-patterns.md`](docs/faq-anti-patterns.md) | Questions and anti-patterns |
-| [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md) | Living seat matrix: read unattended, draft, auto-ack without Send, unattended self-mail, human Approve for self-mail, hub fit |
 | [`docs/best-practices.md`](docs/best-practices.md) | Living practices |
 | [`docs/architecture.md`](docs/architecture.md) | Topology and design constraints |
 | [`docs/threat-model.md`](docs/threat-model.md) | Asset-based threat model (**MUST**) |

@@ -13,7 +13,7 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 
 ### Changed
 
-- (none yet)
+- README: “Will this work for your agents?” sits after mailbox rules and before the security hierarchy, and points at `docs/peer-capability-matrix.md`. Protocol pin unchanged (`0.3.2`).
 
 ### Deprecated
 

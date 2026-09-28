@@ -35,7 +35,10 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 
 ### Changed
 
-- Operator review of the merged 0.3.4 matrix (PR #5, `9836212`), folded onto the 0.3.5 accuracy branch. Legend, the **Will this work?** table, and the inbound-mail wake column stay.
+- Operator review of the merged 0.3.4 matrix (PR #5, `9836212`), folded onto the accuracy branch. Legend, the **Will this work?** table, and the inbound-mail wake column stay. This section is the pin.
+- **Cursor agents:** 🟡 YES (but mail connector + poll wake). Not a Gmail webhook.
+- **SuperGrok / Grok chat:** can read and send when asked. Hub loop is 🔴 NO (a human must ask). **SuperGrok / Grok Projects** stays 🟢 YES.
+- **Other Gemini seats:** 🔴 NO on inbound wake. Distinct from Spark.
 - **Google Spark** (hub seat): hub fit moves from bare 🟢 YES to 🟡 YES (but ephemeral turns; batch wake about 15–60 minutes). Not a real-time socket daemon. Gmail and Workspace tools stay. The inbound webhook stays operator-reported, pending confirm, and does not erase the latency caveat. The 15–60 minute interval is operator-reported, not a figure from the vendor page.
 - **ChatGPT:** Custom GPT / Actions or Work stays 🟡 YES (but …). Consumer web chat is 🔴 NO.
 - **Claude:** MCP / Desktop stays 🟡 YES (but …). claude.ai web is 🔴 NO.
@@ -63,7 +66,7 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 
 ### Notes
 
-- Compatible docs pin. Not a breaking envelope change. Threat model, cleartext baseline, optional signing, and opaque envelopes advised against are unchanged.
+- Not released on its own. **0.3.6** is the pin. The Spark hub verdict there is 🟡 YES (but …), not the bare 🟢 YES in this section.
 
 ## [0.3.4] — 2026-09-28
 

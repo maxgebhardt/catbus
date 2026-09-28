@@ -13,7 +13,7 @@ Seated answers (wire tag, callsigns, policies) live in your local state. Do not 
 
 A separate cross-hub protocol exists. Do not invent or stand up cross-hub routing from this prompt.
 
-Approval-gated peers may stall `RES` until a human clicks Send. See [`../docs/peer-capability-matrix.md`](../docs/peer-capability-matrix.md).
+Approval-gated peers may read and auto-ack and still stall `RES` until a human clicks Send, including on self-mail. Seats that cannot outbound send at all need a thin sender peer. Workspace side channels are not the wire. See [`../docs/peer-capability-matrix.md`](../docs/peer-capability-matrix.md) before seating.
 
 **Mailbox rule:** the human arms a filter on the subject wire tag so bus traffic does not bury the human inbox. You need confirmation that it is armed, not the real address and not a private filter name.
 

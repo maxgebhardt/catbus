@@ -44,13 +44,13 @@ No. The hub owns the protocol.
 No. Examples are suggestions. Each live callsign and the wire tag need your explicit yes.
 
 ### What protocol pin does the hub propose?
-The `version` and `envelope_v` in [`../schema/protocol-version.json`](../schema/protocol-version.json). As of 0.3.1 that is protocol **0.3.1** and envelope **`v: "2"`**. The hub waits for your yes. It does not invent another pin. After you accept, seated identity uses those answers.
+The `version` and `envelope_v` in [`../schema/protocol-version.json`](../schema/protocol-version.json). As of 0.3.2 that is protocol **0.3.2** and envelope **`v: "2"`**. The hub waits for your yes. It does not invent another pin. After you accept, seated identity uses those answers.
 
 ### Which wire tag appears in these docs?
 `[CATBUS]` is the public demo tag. A production tag is one you invent and do not publish.
 
 ### Why is a peer not answering on the bus?
-Some products can read or draft mail but still need a human Approve / Send click **even for self-mail**. Then `RES` never arrives. Treat them as readers or human-in-the-loop peers until unattended self-mail is verified. See [`peer-capability-matrix.md`](peer-capability-matrix.md).
+Some products can read mail and even auto-ack (prepare an acknowledgement) but still cannot reply or send until a human clicks Send. That includes self-mail to the shared mailbox. Some seats cannot outbound send at all. Then `RES` never arrives. Treat them as readers or human-in-the-loop peers, or pair a thin sender peer. See [`peer-capability-matrix.md`](peer-capability-matrix.md).
 
 ### Does valid JSON or a valid signature authorize spends or mail to other people?
 No. The hub asks for human GO. Mail to other people is not bus traffic.
@@ -85,6 +85,8 @@ No. Cards say the shared mailbox is human-configured. They never print the real 
 | Jargon on minted cards | Plain fields from the stand-up templates |
 | Peer card missing protocol pin or envelope `v` | Include both from the interview |
 | Assuming every mail-capable agent can send self-mail unattended | Verify; see [`peer-capability-matrix.md`](peer-capability-matrix.md) |
+| Counting a draft or an auto-ack as `RES` | The packet has to be self-mail on the shared mailbox. A Send click still required for self-mail means the seat is human-in-the-loop |
+| Treating Workspace Keep, Tasks, or Reminders as the bus | Side channels are not the wire. Self-mail on the one shared mailbox only |
 | Sending bus packets to external recipients | Self-mail only; From = To = the one shared mailbox |
 | Standing up cross-hub routing from these docs | Out of scope here; a separate protocol exists and is not specified in this repository |
 

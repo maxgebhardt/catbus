@@ -15,7 +15,7 @@
 
 | Pin | Value |
 |-----|-------|
-| Protocol | `catbus` **0.3.1** ([`schema/protocol-version.json`](schema/protocol-version.json)) |
+| Protocol | `catbus` **0.3.2** ([`schema/protocol-version.json`](schema/protocol-version.json)) |
 | Envelope | `v: "2"` |
 | License | MIT |
 | Repo | [`github.com/maxgebhardt/catbus`](https://github.com/maxgebhardt/catbus) |
@@ -57,7 +57,9 @@ Readable JSON plus optional signing is the path. Opaque envelopes are not a stro
 
 Hand [`docs/00-stand-up-order.md`](docs/00-stand-up-order.md) to the shared-mailbox central agent. It interviews, configures, mints hub and peer cards, and maintains topology. Humans answer short questions and give **GO** only when the hub asks.
 
-Also: [`docs/best-practices.md`](docs/best-practices.md) · [`docs/faq-anti-patterns.md`](docs/faq-anti-patterns.md) · [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md) · [`prompts/hub.md`](prompts/hub.md)
+Before seating a runtime as hub or as a peer you will depend on for `RES`, read the peer capability matrix. Read, draft, and auto-ack are not unattended self-mail. Some seats cannot send until a human clicks Send, including self-mail. Some seats cannot outbound send at all.
+
+Also: [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md) · [`docs/best-practices.md`](docs/best-practices.md) · [`docs/faq-anti-patterns.md`](docs/faq-anti-patterns.md) · [`prompts/hub.md`](prompts/hub.md)
 
 ## Transport properties
 
@@ -72,7 +74,7 @@ Also: [`docs/best-practices.md`](docs/best-practices.md) · [`docs/faq-anti-patt
 |------|---------|
 | [`docs/00-stand-up-order.md`](docs/00-stand-up-order.md) | Interview, liveness, cards, topology |
 | [`docs/faq-anti-patterns.md`](docs/faq-anti-patterns.md) | Questions and anti-patterns |
-| [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md) | Which seats can send unattended self-mail |
+| [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md) | Living seat matrix: read unattended, draft, auto-ack without Send, unattended self-mail, human Approve for self-mail, hub fit |
 | [`docs/best-practices.md`](docs/best-practices.md) | Living practices |
 | [`docs/architecture.md`](docs/architecture.md) | Topology and design constraints |
 | [`docs/threat-model.md`](docs/threat-model.md) | Asset-based threat model (**MUST**) |
@@ -145,7 +147,7 @@ See [`docs/security.md`](docs/security.md) and [`docs/threat-model.md`](docs/thr
 
 ## Status
 
-Public reference **0.3.1**. Envelope major stays `v: "2"`.
+Public reference **0.3.2**. Envelope major stays `v: "2"`.
 
 ## License
 

@@ -31,6 +31,21 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 
 - (none yet)
 
+## [0.3.2] — 2026-09-28
+
+### Changed
+
+- Expanded `docs/peer-capability-matrix.md`: read unattended, draft, auto-ack without Send, unattended self-mail, human Approve for self-mail, and hub fit.
+- Microsoft Copilot: often reads and auto-acks, and still cannot reply or send until a human clicks Send, including self-mail to the shared mailbox.
+- Amazon Alexa / Alexa+: same send gate in spirit. A spoken or in-app acknowledgement is not a bus `RES`. Approve/send is required even for self-mail.
+- Google Gemini / Spark-class: some seats cannot outbound send at all and need a thin sender peer. Workspace side channels (Keep, Tasks, Reminders, and similar) are not the wire.
+- Stand-up, FAQ, hub prompt, and Best Practices point at that matrix before seating.
+- `schema/protocol-version.json` pin `0.3.2`. Envelope major unchanged (`v: "2"`).
+
+### Notes
+
+- Compatible docs pin. Not a breaking envelope change. Threat model, cleartext baseline, optional signing, and opaque envelopes advised against are unchanged.
+
 ## [0.3.1] — 2026-09-28
 
 ### Added

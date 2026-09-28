@@ -40,7 +40,7 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 - **ChatGPT:** Custom GPT / Actions or Work stays 🟡 YES (but …). Consumer web chat is 🔴 NO.
 - **Claude:** MCP / Desktop stays 🟡 YES (but …). claude.ai web is 🔴 NO.
 - **State backing:** local SQLite (or another file the process keeps), Workspace Drive or Keep as a store, or an external database. Ephemeral turn containers need Workspace-backed state. Keep is not the wire.
-- **Workflow wrappers:** self-hosted n8n is the privacy-respecting bridge for a Maybe or NO seat. Zapier and Make can run the same shape. Inbound: subject tag, parse the JSON, POST the agent webhook. Outbound: agent webhook, then SMTP self-mail. The public demo tag remains `[CATBUS]`.
+- **Bridging Maybe/NO seats:** an orchestration tool can cover a missing wake or a missing unattended send. Prefer self-hosted n8n. Zapier and Make are named as the same pattern, not a pitch. Inbound: subject tag `[CATBUS]` (public demo), parse the JSON, POST the agent webhook. Outbound: SMTP self-mail back to the bus. The section links the Gmail/email trigger and workflow docs for n8n, Zapier, and Make. Those Gmail triggers are polls in the vendor docs.
 - `schema/protocol-version.json` pin `0.3.6`. Envelope major unchanged (`v: "2"`).
 
 ### Notes

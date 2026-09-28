@@ -42,6 +42,7 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 - **SuperGrok / Grok Projects** stays 🟢 YES on the full self-mail lane. Evidence: Observed. Plain chat / chatObserver stays a separate 🔴 NO send path.
 - The matrix leads with a **Will this work?** summary: one hub-loop verdict per family on the same scale.
 - **Inbound-mail wake** is its own column: Gmail-event / webhook, scheduled poll only, or human opens chat. ChatGPT Work is 🟡 YES (but) for a configured Gmail-event trigger. Claude’s ordinary connector is schedule-only. SuperGrok / Grok Projects is Observed wake with no webhook API claimed. The Spark hub seat is Observed mailbox handling with no HTTP webhook claimed.
+- Clarity pass: legend first, short verdict cells, notes hold the citations. Verdicts unchanged.
 - **Google Spark** (hub seat) is 🟢 YES: it can self-mail and close the hub loop. Evidence: Observed. Other Gemini seats that cannot outbound send stay a separate row and still need a thin sender peer.
 - `schema/protocol-version.json` pin `0.3.4`. Envelope major unchanged (`v: "2"`).
 

@@ -44,7 +44,16 @@ Tag match is routing, not authentication.
 
 ## Will this work for your AI agent fleet?
 
-You already know your AI agent fleet before you start. [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md) opens with **Will this work?** — one verdict per family, on the scale 🟢 YES, 🟡 YES (but …), 🟠 Maybe (why), 🔴 NO (why). 🟢 YES means it can close the hub loop unattended. A hub needs unattended self-mail, and inbound mail has to wake the seat with no human nudge. SuperGrok / Grok Projects and a Google Spark hub seat are 🟢 YES. Plain SuperGrok / Grok chat, with no mailbox send path, is 🔴 NO. Some other Gemini seats cannot outbound send and need a thin sender peer. OpenAI ChatGPT is 🟡 YES (but …) on a configured Gmail-event wake, not default chat. Claude is 🟡 YES (but …) on a scheduled cadence only; the ordinary connector has no Gmail-event wake. Default approval still pauses send. Copilot and Alexa are 🔴 NO: a human Send click, including self-mail. Verify with a self-mail ping/pong before you depend on a seat for `RES`.
+You already know your fleet. The go/no-go is the **Will this work?** table in [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md).
+
+| Mark | Meaning |
+|------|---------|
+| 🟢 YES | Closes the hub loop unattended |
+| 🟡 YES (but …) | Does, if the caveat on that row is true |
+| 🟠 Maybe (why) | Not a yes |
+| 🔴 NO (why) | Cannot |
+
+🟢 YES: SuperGrok / Grok Projects, and a Google Spark hub seat. Spark wake is 🟡 YES (but …): mailbox handling, no HTTP webhook claimed. 🔴 NO: SuperGrok / Grok chat, Copilot, Alexa. 🟡 YES (but …): ChatGPT only with pre-authorized send and a configured Gmail-event wake; Claude only on a schedule (no Gmail-event wake). 🟠 Maybe: other Gemini seats that cannot send. Ping/pong before you depend on a seat.
 
 ## Security hierarchy
 

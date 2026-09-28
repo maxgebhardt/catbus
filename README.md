@@ -42,9 +42,9 @@ Create an inbox filter or mailbox rule on the subject wire tag so bus and bot tr
 
 Tag match is routing, not authentication.
 
-## Will this work for your agents?
+## Will this work for your AI agent fleet?
 
-A hub needs **unattended self-mail**: routine packets to the same shared mailbox with no per-message human Send click. Copilot and Alexa often need a human to click Send even for that self-mail, so `RES` stalls if that seat is the only hub. Read [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md) before you seat anyone, then verify with a self-mail ping/pong.
+You already know your AI agent fleet before you start. [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md) is how you decide, up front, whether CATBus fits that fleet: a hub needs unattended self-mail, and Copilot and Alexa often still need a human Send click even for self-mail. Verify with a self-mail ping/pong before you depend on a seat for `RES`.
 
 ## Security hierarchy
 
@@ -61,7 +61,7 @@ Readable JSON plus optional signing is the path. Opaque envelopes are not a stro
 
 Hand [`docs/00-stand-up-order.md`](docs/00-stand-up-order.md) to the shared-mailbox central agent. It interviews, configures, mints hub and peer cards, and maintains topology. Humans answer short questions and give **GO** only when the hub asks.
 
-Seat limits: [Will this work for your agents?](#will-this-work-for-your-agents) and [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md).
+Seat limits: [Will this work for your AI agent fleet?](#will-this-work-for-your-ai-agent-fleet) and [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md).
 
 Also: [`docs/best-practices.md`](docs/best-practices.md) · [`docs/faq-anti-patterns.md`](docs/faq-anti-patterns.md) · [`prompts/hub.md`](prompts/hub.md)
 
@@ -76,7 +76,7 @@ Also: [`docs/best-practices.md`](docs/best-practices.md) · [`docs/faq-anti-patt
 
 | Path | Purpose |
 |------|---------|
-| [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md) | Living seat matrix: read unattended, draft, auto-ack without Send, unattended self-mail, human Approve for self-mail, hub fit |
+| [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md) | Up-front fit check for an AI agent fleet you already have: read, draft, auto-ack without Send, unattended self-mail, hub fit |
 | [`docs/00-stand-up-order.md`](docs/00-stand-up-order.md) | Interview, liveness, cards, topology |
 | [`docs/faq-anti-patterns.md`](docs/faq-anti-patterns.md) | Questions and anti-patterns |
 | [`docs/best-practices.md`](docs/best-practices.md) | Living practices |

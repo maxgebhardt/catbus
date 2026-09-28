@@ -13,7 +13,7 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 
 ### Changed
 
-- README: “Will this work for your agents?” sits after mailbox rules and before the security hierarchy, and points at `docs/peer-capability-matrix.md`. Protocol pin unchanged (`0.3.2`).
+- README gate, after mailbox rules and before the security hierarchy: you already know your AI agent fleet; `docs/peer-capability-matrix.md` is the up-front fit check. Protocol pin unchanged (`0.3.2`).
 
 ### Deprecated
 

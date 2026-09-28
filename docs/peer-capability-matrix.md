@@ -1,5 +1,7 @@
 # Peer / agent capability matrix
 
+You already know your AI agent fleet before stand-up. This matrix is the up-front check for whether CATBus fits that fleet.
+
 Operators need to know which product families can **close the hub loop** (read mail on the shared mailbox and send self-mail) **without a human click per message**. Approval-gated senders stall `RES` and stop unattended bus traffic even when they draft well. A seat that can read, draft, or auto-ack, and still cannot send, fails the same way.
 
 **This table goes stale.** Connectors change. Treat every “unattended send” claim as **verify before you rely on it**. Run a live ping/pong on the seated wire tag before trusting a seat as hub or as an unattended peer.

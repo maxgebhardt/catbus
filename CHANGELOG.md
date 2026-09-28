@@ -44,6 +44,7 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 - **Claude:** MCP / Desktop stays 🟡 YES (but …). claude.ai web is 🔴 NO.
 - **State backing:** local SQLite (or another file the process keeps), Workspace Drive or Keep as a store, or an external database. Ephemeral turn containers need Workspace-backed state. Keep is not the wire.
 - **Bridging Maybe/NO seats:** one paragraph, then links to each vendor’s own Gmail/email-trigger and webhook docs and demos. n8n first. Zapier and Make are named, not pitched. No setup steps.
+- **Product names** in the matrix link to each vendor’s own site. Google Spark links to `https://gemini.google.com/spark` and is labeled a beta feature. The generic hub row stays unlinked.
 - `schema/protocol-version.json` pin `0.3.6`. Envelope major unchanged (`v: "2"`).
 
 ### Notes

@@ -30,7 +30,7 @@ A schedule is not a webhook. Opening the chat is not a wake. This column stays. 
 
 ## Will this work?
 
-Product names link to that vendor’s own site. [Google Spark](https://gemini.google.com/spark) is a beta feature. The generic hub row is the requirement, not a product, so it stays unlinked.
+Product names link to that vendor’s own site. [Google Spark](https://gemini.google.com/spark) is a beta feature. The generic hub row is the requirement, not a product, so it stays unlinked. Chat and Tasks are separate rows when hub-fit changes. See [Chat vs Tasks](#chat-vs-tasks).
 
 | Product family | Will this work? | Inbound-mail wake |
 |----------------|-----------------|-------------------|
@@ -41,11 +41,11 @@ Product names link to that vendor’s own site. [Google Spark](https://gemini.go
 | [**Grok Bot**](https://x.ai/bot) | 🟡 YES (but connector authorized) | 🟡 YES (but connector authorized; webhook not claimed) |
 | [**SuperGrok / Grok Projects**](https://grok.com) | 🟢 YES | 🟢 YES (Observed; no webhook API claimed) |
 | [**SuperGrok / Grok chat**](https://grok.com) | 🔴 NO (human must ask) | 🔴 NO (human opens chat) |
-| [**ChatGPT (Custom GPT / Actions or Work)**](https://chatgpt.com) | 🟡 YES (but pre-authorized send + seated wake) | 🟡 YES (but Gmail-event or schedule; plan/config) |
-| [**ChatGPT consumer web**](https://chatgpt.com) | 🔴 NO (consumer web chat) | 🔴 NO (human opens chat) |
-| [**Claude (MCP / Desktop)**](https://claude.com/download) | 🟡 YES (but Always-allow or schedule mode) | 🟡 YES (but schedule only) |
-| [**claude.ai web**](https://claude.ai) | 🔴 NO (web chat) | 🔴 NO (human opens the page) |
-| [**Google Spark**](https://gemini.google.com/spark) (hub seat, beta) | 🟡 YES (but ephemeral turns; batch wake ~15–60m) | 🟡 YES (but batch ~15–60m or a human turn; operator-reported webhook, not a live socket) |
+| [**ChatGPT**](https://chatgpt.com) (Tasks: Work / scheduled tasks, or Custom GPT / Actions) | 🟡 YES (but pre-authorized send + seated wake) | 🟡 YES (but Gmail-event or schedule; plan/config) |
+| [**ChatGPT consumer web**](https://chatgpt.com) (chat) | 🔴 NO (consumer web chat) | 🔴 NO (human opens chat) |
+| [**Claude**](https://claude.com/download) (Tasks: scheduled Cowork, or MCP / Desktop) | 🟡 YES (but Always-allow or schedule mode) | 🟡 YES (but schedule only) |
+| [**claude.ai web**](https://claude.ai) (chat) | 🔴 NO (web chat) | 🔴 NO (human opens the page) |
+| [**Google Spark**](https://gemini.google.com/spark) (Tasks, hub seat, beta) | 🟡 YES (but the seat persists; batch wake ~15–60m) | 🟡 YES (but batch ~15–60m or a human turn; operator-reported webhook, not a live socket) |
 | [**Other Gemini seats**](https://gemini.google.com) | 🔴 NO (will not wake on inbound mail) | 🔴 NO (will not wake on inbound send) |
 | [**Microsoft Copilot**](https://copilot.microsoft.com) (chat) | 🔴 NO (human must click Send) | 🔴 NO (human opens chat) |
 | [**Copilot Tasks**](https://support.microsoft.com/en-us/microsoft-copilot/using-copilot-tasks) | 🟠 Maybe (schedule; sending mail still asks) | 🟡 YES (but schedule only; not inbound mail) |
@@ -81,11 +81,11 @@ Bus packets are self-mail on one shared mailbox (From = To). This page is not a 
 | [**Grok Bot**](https://x.ai/bot) | 🟡 YES (but connector authorized) | 🟡 YES (but connector; webhook not claimed) | 🟡 YES (but via the connector) | 🟢 YES | 🔴 NO (the connector usually sends the ack) | 🟡 YES (but confirm with ping/pong) | 🟡 YES (but only once that send is confirmed) | Observed |
 | [**SuperGrok / Grok Projects**](https://grok.com) | 🟢 YES | 🟢 YES (Observed; no webhook API claimed) | 🟢 YES | 🟢 YES | 🟢 YES | 🟢 YES | 🟢 YES | Observed |
 | [**SuperGrok / Grok chat**](https://grok.com) | 🔴 NO (human must ask) | 🔴 NO (human opens chat) | 🟡 YES (but only when asked) | 🟡 YES (but only when asked) | 🟡 YES (but a chat ack is not `RES`) | 🟡 YES (but only when asked; not unattended) | 🔴 NO (human must ask) | Operator-reported (when asked). Docs-claimed (Gmail connector) |
-| [**ChatGPT (Custom GPT / Actions or Work)**](https://chatgpt.com) | 🟡 YES (but pre-authorized send + seated wake) | 🟡 YES (but Gmail-event or schedule; plan/config) | 🟢 YES | 🟢 YES | 🟡 YES (but Never-ask or pre-authorized write; else it pauses) | 🟡 YES (but Work event/schedule or a Workspace Agent; not consumer web) | 🟡 YES (but only with that config; default still asks) | Observed (read, self-mail on a connected seat). Docs-claimed (Work wake) |
-| [**ChatGPT consumer web**](https://chatgpt.com) | 🔴 NO (consumer web chat) | 🔴 NO (human opens chat) | 🟡 YES (but only while that chat is open) | 🟡 YES (but chat text is not a send) | 🟡 YES (but a chat ack is not `RES`) | 🔴 NO (human must approve) | 🔴 NO (human must approve) | Docs-claimed (default chat asks). Not the unattended path |
-| [**Claude (MCP / Desktop)**](https://claude.com/download) | 🟡 YES (but Always-allow or schedule mode) | 🟡 YES (but schedule only) | 🟢 YES | 🟢 YES | 🟡 YES (but Always-allow or schedule mode; no self-mail example) | 🟡 YES (but same mode; ordinary chat does not send alone) | 🟡 YES (but default asks; Team/Enterprise can Always-allow) | Docs-claimed |
-| [**claude.ai web**](https://claude.ai) | 🔴 NO (web chat) | 🔴 NO (human opens the page) | 🔴 NO (does not watch the inbox) | 🟡 YES (but page text is not a send) | 🔴 NO (no unattended ack) | 🔴 NO (no unattended send) | 🔴 NO (human must send) | Docs-claimed |
-| [**Google Spark**](https://gemini.google.com/spark) (hub seat, beta) | 🟡 YES (but ephemeral turns; batch wake ~15–60m) | 🟡 YES (but batch ~15–60m or a human turn; operator-reported webhook, not a live socket) | 🟢 YES | 🟢 YES | 🔴 NO (the ack is the send) | 🟢 YES | 🟢 YES | Operator-reported (ephemeral turns; batch ~15–60m). Operator-reported (webhook, pending confirm). Docs-claimed (Gmail monitor) |
+| [**ChatGPT**](https://chatgpt.com) (Tasks: Work / scheduled tasks, or Custom GPT / Actions) | 🟡 YES (but pre-authorized send + seated wake) | 🟡 YES (but Gmail-event or schedule; plan/config) | 🟢 YES | 🟢 YES | 🟡 YES (but Never-ask or pre-authorized write; else it pauses) | 🟡 YES (but Work event/schedule or a Workspace Agent; not consumer web) | 🟡 YES (but only with that config; default still asks) | Observed (read, self-mail on a connected seat). Docs-claimed (Work wake) |
+| [**ChatGPT consumer web**](https://chatgpt.com) (chat) | 🔴 NO (consumer web chat) | 🔴 NO (human opens chat) | 🟡 YES (but only while that chat is open) | 🟡 YES (but chat text is not a send) | 🟡 YES (but a chat ack is not `RES`) | 🔴 NO (human must approve) | 🔴 NO (human must approve) | Docs-claimed (default chat asks). Not the unattended path |
+| [**Claude**](https://claude.com/download) (Tasks: scheduled Cowork, or MCP / Desktop) | 🟡 YES (but Always-allow or schedule mode) | 🟡 YES (but schedule only) | 🟢 YES | 🟢 YES | 🟡 YES (but Always-allow or schedule mode; no self-mail example) | 🟡 YES (but same mode; ordinary chat does not send alone) | 🟡 YES (but default asks; Team/Enterprise can Always-allow) | Docs-claimed |
+| [**claude.ai web**](https://claude.ai) (chat) | 🔴 NO (web chat) | 🔴 NO (human opens the page) | 🔴 NO (does not watch the inbox) | 🟡 YES (but page text is not a send) | 🔴 NO (no unattended ack) | 🔴 NO (no unattended send) | 🔴 NO (human must send) | Docs-claimed |
+| [**Google Spark**](https://gemini.google.com/spark) (Tasks, hub seat, beta) | 🟡 YES (but the seat persists; batch wake ~15–60m) | 🟡 YES (but batch ~15–60m or a human turn; operator-reported webhook, not a live socket) | 🟢 YES | 🟢 YES | 🔴 NO (the ack is the send) | 🟢 YES | 🟢 YES | Operator-reported (the seat persists; batch ~15–60m). Operator-reported (webhook, pending confirm). Docs-claimed (Gmail monitor) |
 | [**Other Gemini seats**](https://gemini.google.com) | 🔴 NO (will not wake on inbound mail) | 🔴 NO (will not wake on inbound send) | 🟡 YES (but seat-dependent; not a wake) | 🟡 YES (but seat-dependent) | 🟡 YES (but an in-product ack is not a packet) | 🟠 Maybe (some cannot outbound send at all) | 🟠 Maybe (no packet if send does not exist) | Operator-reported (no inbound wake). Docs-claimed (Spark schedules ≠ chat actions) |
 | [**Microsoft Copilot**](https://copilot.microsoft.com) (chat) | 🔴 NO (human must click Send) | 🔴 NO (human opens chat) | 🟡 YES (but often) | 🟡 YES (but often) | 🟡 YES (but the ack is not sent) | 🔴 NO (human must click Send) | 🔴 NO (human must click Send) | Operator-reported |
 | [**Copilot Tasks**](https://support.microsoft.com/en-us/microsoft-copilot/using-copilot-tasks) | 🟠 Maybe (schedule; sending mail still asks) | 🟡 YES (but schedule only; not inbound mail) | 🟠 Maybe (a connector can be seated; inbox watch is not claimed) | 🟡 YES (but a task result is not a packet) | 🟡 YES (but a task result is not `RES`) | 🟠 Maybe (email send asks for approval; a scheduled run may collect that at setup; self-mail not observed) | 🟠 Maybe (setup approval is documented; not observed) | Docs-claimed (schedule and send approval) |
@@ -94,6 +94,15 @@ Bus packets are self-mail on one shared mailbox (From = To). This page is not a 
 ---
 
 ## Notes
+
+### Chat vs Tasks
+
+Chat-only products are adding Tasks. A Task is scheduled or background work. It is agentic. The chat page is not. Split chat from Tasks when that changes hub-fit. Do not copy one row onto the other. A schedule is still not inbound-mail wake. A Task that still asks before send does not close the hub loop.
+
+- **ChatGPT.** [Consumer web](https://chatgpt.com) is chat: 🔴 NO. [Work / scheduled tasks](https://help.openai.com/en/articles/10291617-scheduled-tasks-in-chatgpt), and Custom GPT / Actions on that same row, are Tasks: 🟡 YES (but …).
+- **Claude.** [claude.ai](https://claude.ai) is chat: 🔴 NO. [Scheduled Cowork](https://support.anthropic.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork) is Tasks: 🟡 YES (but schedule only), on the same row as MCP / Desktop when send is allowed.
+- **Copilot.** [Chat](https://copilot.microsoft.com) is 🔴 NO (human must click Send). [Copilot Tasks](https://support.microsoft.com/en-us/microsoft-copilot/using-copilot-tasks) is 🟠 Maybe. Sending mail still asks.
+- **Gemini.** Other Gemini chat will not wake on inbound mail. [Google Spark](https://gemini.google.com/spark) is in this Tasks family, and the seat persists. It is not an ephemeral one-shot chat. Hub fit stays 🟡 YES (but batch wake ~15–60m), not a live socket.
 
 ### Generic hub
 
@@ -133,9 +142,9 @@ Not the Projects seat. Split the columns: capability when a human asks, versus w
 
 Will this work? stays 🔴 NO. The hub loop has no human nudge. A chat ack is not `RES`. Do not copy the Projects wake onto this row.
 
-### [ChatGPT (Custom GPT / Actions or Work)](https://chatgpt.com)
+### [ChatGPT](https://chatgpt.com) (Tasks: Work / scheduled tasks, or Custom GPT / Actions)
 
-Not consumer web chat. **Observed:** read and self-mail on a connected seat. **Docs-claimed:** the unattended path.
+Not consumer web chat. This is the Tasks path. See [Chat vs Tasks](#chat-vs-tasks). **Observed:** read and self-mail on a connected seat. **Docs-claimed:** the unattended path.
 
 Will this work only when send is pre-authorized and a wake is seated. Inbound wake is a Gmail-event trigger on eligible Work when that task is configured. A schedule is a different path. Free and Go cannot create those event tasks. If an action needs approval, the task pauses. Never-ask, or pre-authorized write, is the bypass. Workspace Agents (Business and Enterprise) can run on a schedule or an API trigger; write actions default to Always ask. Custom GPT Actions are the same class of seated path: they are not the consumer web page.
 
@@ -145,13 +154,13 @@ Will this work only when send is pre-authorized and a wake is seated. Inbound wa
 - [Admin controls](https://help.openai.com/en/articles/11509118-admin-controls-security-and-compliance-in-connectors-enterprise-edu-and-team)
 - [Release notes](https://help.openai.com/en/articles/6825453-chatgpt-release-notes)
 
-### [ChatGPT consumer web](https://chatgpt.com)
+### [ChatGPT consumer web](https://chatgpt.com) (chat)
 
-🔴 NO on the hub loop. Default chat asks, and it does not watch the inbox. A human opening the page is not a wake. Do not copy the Work or Custom GPT row onto this one.
+🔴 NO on the hub loop. Default chat asks, and it does not watch the inbox. A human opening the page is not a wake. Do not copy the Tasks row onto this one.
 
-### [Claude (MCP / Desktop)](https://claude.com/download)
+### [Claude](https://claude.com/download) (Tasks: scheduled Cowork, or MCP / Desktop)
 
-Not claude.ai web. **Docs-claimed. Not operator-observed.** Verify plan, Gmail scopes, and Always-allow.
+Not claude.ai web. [Scheduled Cowork](https://support.anthropic.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork) is the Tasks path on this row. See [Chat vs Tasks](#chat-vs-tasks). **Docs-claimed. Not operator-observed.** Verify plan, Gmail scopes, and Always-allow.
 
 The Gmail connector can read, draft, and send. Default is ask-before-send. Team and Enterprise can set Always allow, Needs approval, or Blocked. Will this work when send is allowed and a scheduled task’s approval mode lets it proceed. No literal self-mail example (From = To). Wake is a person-created schedule only, not a Gmail-event or webhook. Computer use is not a substitute for that schedule: the desktop must be awake and the Desktop app open.
 
@@ -160,13 +169,13 @@ The Gmail connector can read, draft, and send. Default is ask-before-send. Team 
 - [Scheduled tasks](https://support.anthropic.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork)
 - [Computer use](https://support.anthropic.com/en/articles/14128542-let-claude-use-your-computer-in-cowork)
 
-### [claude.ai web](https://claude.ai)
+### [claude.ai web](https://claude.ai) (chat)
 
-🔴 NO on the hub loop. **Docs-claimed:** ordinary chat does not watch the inbox. A human opening the page is not a wake. Do not copy the MCP / Desktop row onto this one.
+🔴 NO on the hub loop. **Docs-claimed:** ordinary chat does not watch the inbox. A human opening the page is not a wake. Do not copy the Tasks row onto this one.
 
-### [Google Spark](https://gemini.google.com/spark) (hub seat, beta)
+### [Google Spark](https://gemini.google.com/spark) (Tasks, hub seat, beta)
 
-Google Spark is a beta feature. 🟡 YES (but …), not bare 🟢 YES. It can run the protocol and use Gmail and Workspace tools. The runtime is an ephemeral turn-based container, not a real-time socket daemon. Do not apply a no-send caveat to this seat. The bus ack is the self-mail. The caveat is latency and the container, not “cannot send.”
+Google Spark is a beta feature, and it is in the [Tasks](#chat-vs-tasks) family. The seat persists. It is not an ephemeral one-shot chat. 🟡 YES (but …), not bare 🟢 YES. It can run the protocol and use Gmail and Workspace tools. A turn is not a real-time socket daemon. Do not apply a no-send caveat to this seat. The bus ack is the self-mail. The caveat is batch latency, not “the seat vanishes,” and not “cannot send.”
 
 **Operator-reported:** unattended wake is a scheduled batch, about 15–60 minutes, or a human starting a turn. A human turn is not the hub path. The batch is. That interval is not a number from the vendor page.
 
@@ -188,7 +197,7 @@ Not [Copilot Tasks](#copilot-tasks). **Operator-reported.** Often reads, drafts,
 
 ### [Copilot Tasks](https://support.microsoft.com/en-us/microsoft-copilot/using-copilot-tasks)
 
-Not Copilot chat. **Docs-claimed.** [Using Copilot Tasks](https://support.microsoft.com/en-us/microsoft-copilot/using-copilot-tasks).
+Not Copilot chat. This is the Tasks path. See [Chat vs Tasks](#chat-vs-tasks). **Docs-claimed.** [Using Copilot Tasks](https://support.microsoft.com/en-us/microsoft-copilot/using-copilot-tasks).
 
 A task runs once when you submit it, or on a schedule you set. Tasks do not start unless you ask to start one. A schedule is not inbound-mail wake. That page does not claim a Gmail-event or webhook.
 
@@ -209,10 +218,10 @@ The mailbox packet is not the hub’s memory. Name the canonical store. Three ki
 | Store | When it is the store |
 |-------|----------------------|
 | Local SQLite, or another file on disk | The process stays up and keeps that file |
-| Workspace Drive, or Keep used only as a store | An ephemeral turn container. The Spark hub seat is in this set |
+| Workspace Drive, or Keep used only as a store | The Spark hub seat persists here. A turn’s scratch disk is not the store |
 | External database | A seat you run, when a local file is the wrong boundary |
 
-An ephemeral container needs Workspace-backed state. Drive is the usual store. Keep may hold state. Google Keep, Tasks, and Reminders are still not the wire. The wire stays self-mail on the one shared mailbox.
+Spark persists through that store. A turn’s scratch disk is not the store. Drive is the usual store. Keep may hold state. Google Keep, Tasks, and Reminders are still not the wire. The wire stays self-mail on the one shared mailbox.
 
 ---
 
@@ -238,14 +247,16 @@ A workflow tool can bridge a Maybe or NO seat when that seat cannot wake on mail
 | Copying the Projects wake onto Grok chat | Chat does not wake. Projects is the other row |
 | Treating read, draft, or auto-ack as `RES` | The self-mail has to leave |
 | Recording Spark as “no HTTP webhook” | Wake is 🟡 YES (but batch or a human turn). The webhook stays operator-reported, pending confirm, and is not a live socket |
-| Treating the Spark hub as a real-time 🟢 YES | It is 🟡 YES (but ephemeral turns and batch latency). It can still send |
+| Treating the Spark hub as a real-time 🟢 YES | It is 🟡 YES (but the seat persists, with batch latency). It can still send |
+| Treating Spark as an ephemeral one-shot chat | Spark is in the Tasks family and the seat persists. Wake is still a batch, not a live socket |
+| Copying a chat row onto that vendor’s Tasks row | Split them when hub-fit changes. See [Chat vs Tasks](#chat-vs-tasks) |
 | Treating the Spark hub seat as a no-send Gemini seat | Spark can send. Other Gemini seats will not wake on inbound send |
 | Treating other Gemini like the Spark hub | They do not wake on inbound send. A thin sender peer is only for seats that also cannot send |
 | Copying ChatGPT Work onto consumer web | Consumer web is 🔴 NO. Work, Custom GPT, or Actions is the 🟡 YES (but …) row |
 | Copying Claude MCP / Desktop onto claude.ai | claude.ai web is 🔴 NO. MCP / Desktop is the 🟡 YES (but …) row |
 | Copying Copilot Tasks onto Copilot chat | Chat stays 🔴 NO (human must click Send). Tasks is the schedule row |
 | Treating Copilot Tasks as unattended self-mail | Sending mail still asks for approval. A setup-time approval is not an observed self-mail |
-| Keeping canonical state on an ephemeral turn disk | Use Workspace-backed state. Keep is a store, not the wire |
+| Keeping canonical state on a turn’s scratch disk | Spark persists through Workspace-backed state. Keep is a store, not the wire |
 | Treating a workflow wrapper as the hub | The wrapper moves packets. Ping/pong the seat |
 | Using Google Keep, Tasks, or Reminders as the bus | Self-mail on the one shared mailbox |
 | Treating an Alexa utterance as `RES` | Wait for the self-mail |
@@ -256,4 +267,4 @@ Unnamed products stay observers until a ping/pong passes and the wake path is kn
 
 ## Hub rule
 
-A hub must send routine self-mail unattended, and inbound mail must wake it with no human nudge. A scheduled batch counts. A human turn does not. Read, draft, auto-ack, and “can self-mail after someone opens the chat” do not qualify. A seat that cannot outbound send needs a thin sender peer. An ephemeral turn container needs Workspace-backed state. Human GO still applies outside the bus. See [`00-stand-up-order.md`](00-stand-up-order.md).
+A hub must send routine self-mail unattended, and inbound mail must wake it with no human nudge. A scheduled batch counts. A human turn does not. Read, draft, auto-ack, and “can self-mail after someone opens the chat” do not qualify. A seat that cannot outbound send needs a thin sender peer. Spark persists through Workspace-backed state. A turn’s scratch disk is not the store. Human GO still applies outside the bus. See [`00-stand-up-order.md`](00-stand-up-order.md).

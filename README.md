@@ -53,7 +53,7 @@ You already know your fleet. The go/no-go is the **Will this work?** table in [`
 | 🟠 Maybe (why) | Not a yes |
 | 🔴 NO (why) | Cannot |
 
-🟢 YES: SuperGrok / Grok Projects. 🟡 YES (but …): a Google Spark hub seat (ephemeral turns; batch wake about 15–60 minutes, not a live socket; an operator-reported webhook is still pending confirm); Cursor agents with a mail connector and a poll routine (not a Gmail webhook); ChatGPT only on a Custom GPT, Actions, or Work path with pre-authorized send and a seated wake; Claude only on MCP or Desktop with Always-allow or a schedule. 🔴 NO on the unattended hub loop: ChatGPT consumer web, claude.ai web, SuperGrok / Grok chat (read and send only when asked), other Gemini seats (will not wake on inbound send), Copilot chat (human must click Send), Alexa. Copilot Tasks is 🟠 Maybe: a schedule is docs-claimed, and sending mail still asks for approval. Ping/pong before you depend on a seat.
+🟢 YES: SuperGrok / Grok Projects. 🟡 YES (but …): a Google Spark hub seat (Tasks; the seat persists; batch wake about 15–60 minutes, not a live socket; an operator-reported webhook is still pending confirm); Cursor agents with a mail connector and a poll routine (not a Gmail webhook); ChatGPT only on a Custom GPT, Actions, or Work path with pre-authorized send and a seated wake; Claude only on MCP or Desktop with Always-allow or a schedule. 🔴 NO on the unattended hub loop: ChatGPT consumer web, claude.ai web, SuperGrok / Grok chat (read and send only when asked), other Gemini seats (will not wake on inbound send), Copilot chat (human must click Send), Alexa. Copilot Tasks is 🟠 Maybe: a schedule is docs-claimed, and sending mail still asks for approval. Ping/pong before you depend on a seat.
 
 ## Security hierarchy
 

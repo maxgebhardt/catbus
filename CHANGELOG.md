@@ -39,7 +39,8 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 - **Cursor agents:** 🟡 YES (but mail connector + poll wake). Not a Gmail webhook.
 - **SuperGrok / Grok chat:** can read and send when asked. Hub loop is 🔴 NO (a human must ask). **SuperGrok / Grok Projects** stays 🟢 YES.
 - **Other Gemini seats:** 🔴 NO on inbound wake. Distinct from Spark.
-- **Google Spark** (hub seat): hub fit moves from bare 🟢 YES to 🟡 YES (but ephemeral turns; batch wake about 15–60 minutes). Not a real-time socket daemon. Gmail and Workspace tools stay. The inbound webhook stays operator-reported, pending confirm, and does not erase the latency caveat. The 15–60 minute interval is operator-reported, not a figure from the vendor page.
+- **Google Spark** (hub seat, beta): in the Tasks family, and the seat persists. Not an ephemeral one-shot chat. Hub fit is 🟡 YES (but batch wake about 15–60 minutes), not a real-time socket. Gmail and Workspace tools stay. The inbound webhook stays operator-reported, pending confirm. The 15–60 minute interval is operator-reported, not a figure from the vendor page.
+- **Chat vs Tasks:** chat-only products are adding scheduled or background Tasks. Split those rows when hub-fit changes. ChatGPT Work / scheduled tasks, Claude scheduled Cowork, and Copilot Tasks are that pattern. A schedule is still not inbound-mail wake. A Task that still asks before send does not close the hub loop.
 - **ChatGPT:** Custom GPT / Actions or Work stays 🟡 YES (but …). Consumer web chat is 🔴 NO.
 - **Claude:** MCP / Desktop stays 🟡 YES (but …). claude.ai web is 🔴 NO.
 - **State backing:** local SQLite (or another file the process keeps), Workspace Drive or Keep as a store, or an external database. Ephemeral turn containers need Workspace-backed state. Keep is not the wire.

@@ -31,6 +31,22 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 
 - (none yet)
 
+## [0.3.6] — 2026-09-28
+
+### Changed
+
+- Operator review of the merged 0.3.4 matrix (PR #5, `9836212`), folded onto the 0.3.5 accuracy branch. Legend, the **Will this work?** table, and the inbound-mail wake column stay.
+- **Google Spark** (hub seat): hub fit moves from bare 🟢 YES to 🟡 YES (but ephemeral turns; batch wake about 15–60 minutes). Not a real-time socket daemon. Gmail and Workspace tools stay. The inbound webhook stays operator-reported, pending confirm, and does not erase the latency caveat. The 15–60 minute interval is operator-reported, not a figure from the vendor page.
+- **ChatGPT:** Custom GPT / Actions or Work stays 🟡 YES (but …). Consumer web chat is 🔴 NO.
+- **Claude:** MCP / Desktop stays 🟡 YES (but …). claude.ai web is 🔴 NO.
+- **State backing:** local SQLite (or another file the process keeps), Workspace Drive or Keep as a store, or an external database. Ephemeral turn containers need Workspace-backed state. Keep is not the wire.
+- **Workflow wrappers:** self-hosted n8n is the privacy-respecting bridge for a Maybe or NO seat. Zapier and Make can run the same shape. Inbound: subject tag, parse the JSON, POST the agent webhook. Outbound: agent webhook, then SMTP self-mail. The public demo tag remains `[CATBUS]`.
+- `schema/protocol-version.json` pin `0.3.6`. Envelope major unchanged (`v: "2"`).
+
+### Notes
+
+- Compatible docs pin. Not a breaking envelope change. Threat model, cleartext baseline, optional signing, and opaque envelopes advised against are unchanged.
+
 ## [0.3.5] — 2026-09-28
 
 ### Fixed

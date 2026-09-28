@@ -15,7 +15,7 @@
 
 | Pin | Value |
 |-----|-------|
-| Protocol | `catbus` **0.3.5** ([`schema/protocol-version.json`](schema/protocol-version.json)) |
+| Protocol | `catbus` **0.3.6** ([`schema/protocol-version.json`](schema/protocol-version.json)) |
 | Envelope | `v: "2"` |
 | License | MIT |
 | Repo | [`github.com/maxgebhardt/catbus`](https://github.com/maxgebhardt/catbus) |
@@ -53,7 +53,7 @@ You already know your fleet. The go/no-go is the **Will this work?** table in [`
 | 🟠 Maybe (why) | Not a yes |
 | 🔴 NO (why) | Cannot |
 
-🟢 YES: SuperGrok / Grok Projects, and a Google Spark hub seat. Spark wake is 🟢 YES: inbound mail, with an operator-reported webhook pending confirm. 🔴 NO on the unattended hub loop: SuperGrok / Grok chat (read and send only when asked; a human must open chat), other Gemini seats (will not wake on inbound send), Copilot, Alexa. 🟡 YES (but …): Cursor agents with a mail connector and a poll routine (not a Gmail webhook); ChatGPT only with pre-authorized send and a configured Gmail-event wake; Claude only on a schedule (no Gmail-event wake). Ping/pong before you depend on a seat.
+🟢 YES: SuperGrok / Grok Projects. 🟡 YES (but …): a Google Spark hub seat (ephemeral turns; batch wake about 15–60 minutes, not a live socket; an operator-reported webhook is still pending confirm); Cursor agents with a mail connector and a poll routine (not a Gmail webhook); ChatGPT only on a Custom GPT, Actions, or Work path with pre-authorized send and a seated wake; Claude only on MCP or Desktop with Always-allow or a schedule. 🔴 NO on the unattended hub loop: ChatGPT consumer web, claude.ai web, SuperGrok / Grok chat (read and send only when asked), other Gemini seats (will not wake on inbound send), Copilot, Alexa. Ping/pong before you depend on a seat.
 
 ## Security hierarchy
 
@@ -160,7 +160,7 @@ See [`docs/security.md`](docs/security.md) and [`docs/threat-model.md`](docs/thr
 
 ## Status
 
-Public reference **0.3.5**. Envelope major stays `v: "2"`.
+Public reference **0.3.6**. Envelope major stays `v: "2"`.
 
 ## License
 

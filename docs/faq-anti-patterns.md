@@ -44,13 +44,13 @@ No. The hub owns the protocol.
 No. Examples are suggestions. Each live callsign and the wire tag need your explicit yes.
 
 ### What protocol pin does the hub propose?
-The `version` and `envelope_v` in [`../schema/protocol-version.json`](../schema/protocol-version.json). As of 0.3.5 that is protocol **0.3.5** and envelope **`v: "2"`**. The hub waits for your yes. It does not invent another pin. After you accept, seated identity uses those answers.
+The `version` and `envelope_v` in [`../schema/protocol-version.json`](../schema/protocol-version.json). As of 0.3.6 that is protocol **0.3.6** and envelope **`v: "2"`**. The hub waits for your yes. It does not invent another pin. After you accept, seated identity uses those answers.
 
 ### Which wire tag appears in these docs?
 `[CATBUS]` is the public demo tag. A production tag is one you invent and do not publish.
 
 ### Why is a peer not answering on the bus?
-Some products can read mail and even auto-ack (prepare an acknowledgement) but still cannot reply or send until a human clicks Send. That includes self-mail to the shared mailbox. Some seats cannot outbound send at all. A Spark hub seat is not in that set: it can self-mail, wake on inbound mail, and close the hub loop. Other Gemini seats will not wake on an inbound send. A seat that can read and send only when a human asks, or only while a session is already open, still may not poll or wake. ChatGPT and Claude docs describe a configured schedule or event path, not an always-on chat daemon, and default approval still pauses send. Then `RES` never arrives. Treat a no-go seat as a reader or a human-in-the-loop peer, or pair a thin sender peer. The go / no-go is the **Will this work?** summary in [`peer-capability-matrix.md`](peer-capability-matrix.md).
+Some products can read mail and even auto-ack (prepare an acknowledgement) but still cannot reply or send until a human clicks Send. That includes self-mail to the shared mailbox. Some seats cannot outbound send at all. A Spark hub seat can self-mail. Hub fit is YES (but): an ephemeral turn container, with batch wake rather than a live socket. Other Gemini seats will not wake on an inbound send. ChatGPT consumer web and claude.ai web do not close the loop. A Work, Custom GPT, Actions, MCP, or Desktop path can, with the caveat on that row. A seat that can read and send only when a human asks, or only while a session is already open, still may not poll or wake. Default approval still pauses send. Then `RES` never arrives. Treat a no-go seat as a reader or a human-in-the-loop peer, pair a thin sender peer, or bridge it with a workflow wrapper. The go / no-go is the **Will this work?** summary in [`peer-capability-matrix.md`](peer-capability-matrix.md).
 
 ### Does valid JSON or a valid signature authorize spends or mail to other people?
 No. The hub asks for human GO. Mail to other people is not bus traffic.

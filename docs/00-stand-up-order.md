@@ -122,7 +122,7 @@ If the human cannot create the rule yet, describe it at this level only: subject
 
 **Propose** the pin in [`../schema/protocol-version.json`](../schema/protocol-version.json). Do not invent a different pin. Do not seat it until yes.
 
-As of this document, that pin is protocol **`0.3.3`** and envelope **`v: "2"`**. If the file on `main` has moved, propose the file, not this sentence.
+As of this document, that pin is protocol **`0.3.4`** and envelope **`v: "2"`**. If the file on `main` has moved, propose the file, not this sentence.
 
 Ask:
 

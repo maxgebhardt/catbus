@@ -15,7 +15,7 @@
 
 | Pin | Value |
 |-----|-------|
-| Protocol | `catbus` **0.3.3** ([`schema/protocol-version.json`](schema/protocol-version.json)) |
+| Protocol | `catbus` **0.3.4** ([`schema/protocol-version.json`](schema/protocol-version.json)) |
 | Envelope | `v: "2"` |
 | License | MIT |
 | Repo | [`github.com/maxgebhardt/catbus`](https://github.com/maxgebhardt/catbus) |
@@ -44,7 +44,7 @@ Tag match is routing, not authentication.
 
 ## Will this work for your AI agent fleet?
 
-You already know your AI agent fleet before you start. [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md) is how you decide, up front, whether CATBus fits that fleet: a hub needs unattended self-mail. SuperGrok / Grok Projects can read and send that self-mail unattended. Plain SuperGrok / Grok chat, with no mailbox send path, stays an observer. Copilot and Alexa often still need a human Send click even for self-mail. Verify with a self-mail ping/pong before you depend on a seat for `RES`.
+You already know your AI agent fleet before you start. [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md) is how you decide, up front, whether CATBus fits that fleet. Cells use 🟢 YES, 🟡 YES (but …), 🟠 Maybe (why), and 🔴 NO (why). A hub needs unattended self-mail, and inbound mail has to wake the seat with no human nudge. SuperGrok / Grok Projects can read and send that self-mail unattended. Plain SuperGrok / Grok chat, with no mailbox send path, stays an observer. OpenAI ChatGPT can read and self-mail; whether it checks the mailbox with no human nudge is not known. Copilot and Alexa often still need a human Send click even for self-mail. Verify with a self-mail ping/pong before you depend on a seat for `RES`.
 
 ## Security hierarchy
 
@@ -151,7 +151,7 @@ See [`docs/security.md`](docs/security.md) and [`docs/threat-model.md`](docs/thr
 
 ## Status
 
-Public reference **0.3.3**. Envelope major stays `v: "2"`.
+Public reference **0.3.4**. Envelope major stays `v: "2"`.
 
 ## License
 

@@ -31,6 +31,21 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 
 - (none yet)
 
+## [0.3.4] — 2026-09-28
+
+### Changed
+
+- `docs/peer-capability-matrix.md` cells use a scale: 🟢 YES, 🟡 YES (but …), 🟠 Maybe (why), 🔴 NO (why). Evidence labels now include **Docs-claimed**. The Approve column is **Self-mail without Approve click** (🟢 YES means routine self-mail does not wait).
+- Capability is split from unattended poll/wake. A seat that can read and self-mail only while a session is running is not a hub.
+- **OpenAI ChatGPT:** Observed read and self-mail. Unattended poll/wake is not known. Docs-claimed Gmail/Outlook send-from-chat and Work tasks that can run on a new Gmail message, with approval pauses. Sources in the matrix notes.
+- **Anthropic Claude:** Docs-claimed, not operator-observed. The Gmail connector page says read-only. The Workspace help center says send with approval by default, and Team/Enterprise owners may allow actions without asking. Claude Code routines are a separate path (schedule, API, GitHub), not inbound Gmail wake.
+- **SuperGrok / Grok Projects** stays 🟢 YES on the full self-mail lane. Evidence: Observed. Plain chat / chatObserver stays a separate 🔴 NO send path.
+- `schema/protocol-version.json` pin `0.3.4`. Envelope major unchanged (`v: "2"`).
+
+### Notes
+
+- Compatible docs pin. Not a breaking envelope change. Threat model, cleartext baseline, optional signing, and opaque envelopes advised against are unchanged.
+
 ## [0.3.3] — 2026-09-28
 
 ### Changed

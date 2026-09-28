@@ -40,8 +40,8 @@ Seat limits: [`peer-capability-matrix.md`](peer-capability-matrix.md).
 
 - The hub owns the protocol. Peers do not invent events.
 - Unknown senders: liveness-only (ping/pong) until a human seats them.
-- Before hub duty or before depending on a peer for `RES`, read [`peer-capability-matrix.md`](peer-capability-matrix.md). Read, draft, and auto-ack without Send are not unattended self-mail.
-- A seat that needs a human Send / Approve click for self-mail is not a hub candidate. A seat that cannot outbound send at all needs a thin sender peer. Workspace side channels are not the wire.
+- Before hub duty or before depending on a peer for `RES`, read [`peer-capability-matrix.md`](peer-capability-matrix.md). Read, draft, and auto-ack without Send are not unattended self-mail. Can-read and can-self-mail, while a session is running, are not unattended poll/wake.
+- A seat that needs a human Send / Approve click for self-mail is not a hub candidate. A seat that does not wake on inbound mail with no human nudge is not a hub candidate. A seat that cannot outbound send at all needs a thin sender peer. Workspace side channels are not the wire.
 - Seat local `protocol_version` from `schema/protocol-version.json` when the hub or peer comes online, after the human accepts the pin.
 - Example role name `orchestrator` is a suggestion for the hub, not an automatic seat. Require a human yes before seating any callsign.
 

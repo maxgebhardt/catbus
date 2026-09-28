@@ -1,6 +1,6 @@
 {
   "protocol": "catbus",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "envelope_v": "2",
   "released": "2026-09-28",
   "best_practices_url": {
@@ -35,5 +35,5 @@
     "relative": "docs/peer-capability-matrix.md",
     "canonical": "https://github.com/maxgebhardt/catbus/blob/main/docs/peer-capability-matrix.md"
   },
-  "notes": "Public protocol version pin. Hubs SHOULD compare this file and docs/best-practices.md; propose compatible updates locally; require human GO for breaking changes. 0.3.2 expands docs/peer-capability-matrix.md: read, draft, auto-ack without Send, unattended self-mail, human Approve for self-mail, and hub fit. Envelope major remains 2. Threat model remains required. Cleartext sterile payloads remain the baseline. Signing remains optional and recommended. Opaque envelopes remain optional and advised against. Bus traffic is self-mail on one shared mailbox."
+  "notes": "Public protocol version pin. Hubs SHOULD compare this file and docs/best-practices.md; propose compatible updates locally; require human GO for breaking changes. 0.3.3 corrects docs/peer-capability-matrix.md: SuperGrok / Grok Projects can read, draft, auto-ack without Send, and send self-mail unattended; human Approve for self-mail is not required; hub fit is yes. Plain SuperGrok / Grok chat without a mailbox send path stays an observer. External mail unattended is a product capability, not a bus requirement. Envelope major remains 2. Threat model remains required. Cleartext sterile payloads remain the baseline. Signing remains optional and recommended. Opaque envelopes remain optional and advised against. Bus traffic is self-mail on one shared mailbox."
 }

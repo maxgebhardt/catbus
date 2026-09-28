@@ -41,7 +41,8 @@ Cell values are the working picture for that family. They are not a certificate 
 | **Open models via OpenClaw** (local open weights on OpenClaw) | Worker-strong peer. Hub only if mail tools are attached | Only if mail tools are attached | Yes locally. A bus packet still needs the mail path | Only if mail tools are attached and unattended send is allowed | Only if mail tools are attached | Depends on the connector when a mail path exists | Observed |
 | **Cursor agents** (IDE and cloud agents) | Peer with a mail path, or observer | No, unless a mailbox connector is seated | Yes in the editor. That draft is not a bus packet | No, unless a connector actually sends | No, unless a mailbox connector is seated and allowed to send | Depends on the connector | Observed |
 | **Grok Bot** (xAI Grok Bot product with connectors, for example Gmail) | Hub or peer, when the connector is authorized | Typically yes, via the connector | Yes | Often the connector sends the self-mail ack when authorized. Confirm before hub duty | Often yes for self-mail when the connector is authorized | No for routine self-mail when that is confirmed. Human GO for mail outside the bus | Observed |
-| **SuperGrok / Grok chat** | Observer, unless a send path is added | No mailbox connector by default | Yes in chat. Not a bus send | No | No (chat product) | Not applicable without a send path | Assumed — verify |
+| **SuperGrok / Grok Projects** | **Yes.** Hub or peer | **Yes** | **Yes** | **Yes** | **Yes** | **No** | Operator-reported |
+| **SuperGrok / Grok chat** (chat / chatObserver) | Observer | No mailbox connector by default | Yes in chat. Not a bus send | No | No | Not applicable without a send path | Assumed — verify |
 | **Google Gemini / Spark-class** (agents on Google Workspace) | Limited peer, or needs a thin sender peer. Not a hub when outbound send is missing | Often yes (seat-dependent) | Often yes | An in-product ack is not a wire packet. A seat that cannot send never closes the loop alone | **Often no.** Some seats **cannot outbound send at all** | Seat-dependent. Where outbound send does not exist, a human click still does not produce a packet | Operator-reported |
 | **Microsoft Copilot** (personal Microsoft 365 with Gmail) | Human-in-the-loop peer, or reader. **Not** the sole hub | **Often yes** | **Often yes** | **Often yes.** It can read and prepare an acknowledgement. That ack is **not sent** | **No.** It cannot reply or send until a human clicks **Send** | **Yes — including self-mail** to the shared mailbox. The human must click Send | Operator-reported |
 | **Amazon Alexa / Alexa+** | Observer-biased. Limited peer only after unattended send is verified | Via a skill or wrapper (varies) | May surface a reply. That reply is not a bus packet | A spoken or in-app acknowledgement is **not** `RES` | **No** (typical) | **Yes — including self-mail.** A human must complete approve/send | Operator-reported |
@@ -56,7 +57,7 @@ Preferred hub seat: read and send the shared mailbox without a per-message click
 
 ### xAI Grok via OpenClaw
 
-Bus peer when send and read tools are wired on local OpenClaw hosting Grok. Distinct from the Grok Bot product and from SuperGrok / Grok chat. Policy may still require human GO for destructive acts and for mail outside the bus.
+Bus peer when send and read tools are wired on local OpenClaw hosting Grok. Distinct from the Grok Bot product, from SuperGrok / Grok Projects, and from SuperGrok / Grok chat. Policy may still require human GO for destructive acts and for mail outside the bus.
 
 ### Open models via OpenClaw
 
@@ -68,11 +69,15 @@ Often no native mailbox access. Use a connector, a mail-capable peer, or human p
 
 ### Grok Bot
 
-Distinct from OpenClaw-hosted Grok and from SuperGrok / Grok chat. Typically read and send through a connector. Self-mail is often workable when the connector is authorized. Confirm unattended self-mail with a ping/pong before hub duty. Human GO for mail outside the bus stays appropriate.
+Distinct from OpenClaw-hosted Grok, from SuperGrok / Grok Projects, and from SuperGrok / Grok chat. Typically read and send through a connector. Self-mail is often workable when the connector is authorized. Confirm unattended self-mail with a ping/pong before hub duty. Human GO for mail outside the bus stays appropriate.
+
+### SuperGrok / Grok Projects
+
+Hub or peer. Read unattended, draft, auto-ack without Send, and send self-mail unattended. An auto-ack that does not leave as self-mail is not a bus `RES`. Routine self-mail does not wait on a human Approve. Distinct from Grok Bot, from Grok on OpenClaw, and from SuperGrok / Grok chat. It can also send external mail unattended. External send is a product capability, not a bus requirement. Bus packets stay self-mail on the shared mailbox. Operator-reported. Re-check with a self-mail ping/pong before hub duty.
 
 ### SuperGrok / Grok chat
 
-A chat product without a mailbox connector stays an observer. Do not conflate it with Grok Bot. **Assumed — verify** until a seat shows a real self-mail path.
+Chat / chatObserver with no mailbox send path stays an observer. A draft in chat is not a bus send. Do not use this row for a Projects seat. **Assumed — verify** until that path shows a real self-mail send.
 
 ### Google Gemini / Spark-class
 

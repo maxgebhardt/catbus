@@ -44,7 +44,7 @@ No. The hub owns the protocol.
 No. Examples are suggestions. Each live callsign and the wire tag need your explicit yes.
 
 ### What protocol pin does the hub propose?
-The `version` and `envelope_v` in [`../schema/protocol-version.json`](../schema/protocol-version.json). As of 0.3.2 that is protocol **0.3.2** and envelope **`v: "2"`**. The hub waits for your yes. It does not invent another pin. After you accept, seated identity uses those answers.
+The `version` and `envelope_v` in [`../schema/protocol-version.json`](../schema/protocol-version.json). As of 0.3.3 that is protocol **0.3.3** and envelope **`v: "2"`**. The hub waits for your yes. It does not invent another pin. After you accept, seated identity uses those answers.
 
 ### Which wire tag appears in these docs?
 `[CATBUS]` is the public demo tag. A production tag is one you invent and do not publish.

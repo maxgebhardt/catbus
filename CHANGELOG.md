@@ -13,7 +13,7 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 
 ### Changed
 
-- README gate, after mailbox rules and before the security hierarchy: you already know your AI agent fleet; `docs/peer-capability-matrix.md` is the up-front fit check. Protocol pin unchanged (`0.3.2`).
+- (none yet)
 
 ### Deprecated
 
@@ -30,6 +30,19 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 ### Security
 
 - (none yet)
+
+## [0.3.3] — 2026-09-28
+
+### Changed
+
+- `docs/peer-capability-matrix.md`: **SuperGrok / Grok Projects** can read, draft, auto-ack without Send, and send self-mail unattended. Needs human Approve for self-mail: No. Hub fit: Yes. External mail unattended is a product capability, not a bus requirement. Bus packets stay self-mail on one shared mailbox.
+- Plain **SuperGrok / Grok chat** (chat / chatObserver) stays a separate observer row when that path has no mailbox send.
+- README fleet gate matches that split. Copilot and Alexa remain the named human-Send examples.
+- `schema/protocol-version.json` pin `0.3.3`. Envelope major unchanged (`v: "2"`).
+
+### Notes
+
+- Compatible docs pin. Not a breaking envelope change. Threat model, cleartext baseline, optional signing, and opaque envelopes advised against are unchanged.
 
 ## [0.3.2] — 2026-09-28
 

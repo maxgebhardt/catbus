@@ -44,7 +44,7 @@ Tag match is routing, not authentication.
 
 ## Will this work for your AI agent fleet?
 
-You already know your AI agent fleet before you start. [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md) is how you decide, up front, whether CATBus fits that fleet. Cells use 🟢 YES, 🟡 YES (but …), 🟠 Maybe (why), and 🔴 NO (why). A hub needs unattended self-mail, and inbound mail has to wake the seat with no human nudge. SuperGrok / Grok Projects can read and send that self-mail unattended. Plain SuperGrok / Grok chat, with no mailbox send path, stays an observer. OpenAI ChatGPT can read and self-mail; whether it checks the mailbox with no human nudge is not known. Copilot and Alexa often still need a human Send click even for self-mail. Verify with a self-mail ping/pong before you depend on a seat for `RES`.
+You already know your AI agent fleet before you start. [`docs/peer-capability-matrix.md`](docs/peer-capability-matrix.md) opens with **Will this work?** — one verdict per family, on the scale 🟢 YES, 🟡 YES (but …), 🟠 Maybe (why), 🔴 NO (why). 🟢 YES means it can close the hub loop unattended. A hub needs unattended self-mail, and inbound mail has to wake the seat with no human nudge. SuperGrok / Grok Projects and a Google Spark hub seat are 🟢 YES. Plain SuperGrok / Grok chat, with no mailbox send path, is 🔴 NO. Some other Gemini seats cannot outbound send and need a thin sender peer. OpenAI ChatGPT can read and self-mail; whether it checks the mailbox with no human nudge is 🟠 Maybe. Copilot and Alexa are 🔴 NO: a human Send click, including self-mail. Verify with a self-mail ping/pong before you depend on a seat for `RES`.
 
 ## Security hierarchy
 

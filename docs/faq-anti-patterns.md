@@ -50,7 +50,7 @@ The `version` and `envelope_v` in [`../schema/protocol-version.json`](../schema/
 `[CATBUS]` is the public demo tag. A production tag is one you invent and do not publish.
 
 ### Why is a peer not answering on the bus?
-Some products can read mail and even auto-ack (prepare an acknowledgement) but still cannot reply or send until a human clicks Send. That includes self-mail to the shared mailbox. Some seats cannot outbound send at all. A seat that can read and self-mail when a session is running may still not poll or wake on inbound mail. Then `RES` never arrives. Treat them as readers or human-in-the-loop peers, or pair a thin sender peer. See [`peer-capability-matrix.md`](peer-capability-matrix.md).
+Some products can read mail and even auto-ack (prepare an acknowledgement) but still cannot reply or send until a human clicks Send. That includes self-mail to the shared mailbox. Some seats cannot outbound send at all. A Spark hub seat is not in that set: it can self-mail and close the hub loop. A seat that can read and self-mail when a session is running may still not poll or wake on inbound mail. Then `RES` never arrives. Treat a no-go seat as a reader or a human-in-the-loop peer, or pair a thin sender peer. The go / no-go is the **Will this work?** summary in [`peer-capability-matrix.md`](peer-capability-matrix.md).
 
 ### Does valid JSON or a valid signature authorize spends or mail to other people?
 No. The hub asks for human GO. Mail to other people is not bus traffic.

@@ -40,6 +40,8 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 - **OpenAI ChatGPT:** Observed read and self-mail. Unattended poll/wake is not known. Docs-claimed Gmail/Outlook send-from-chat and Work tasks that can run on a new Gmail message, with approval pauses. Sources in the matrix notes.
 - **Anthropic Claude:** Docs-claimed, not operator-observed. The Gmail connector page says read-only. The Workspace help center says send with approval by default, and Team/Enterprise owners may allow actions without asking. Claude Code routines are a separate path (schedule, API, GitHub), not inbound Gmail wake.
 - **SuperGrok / Grok Projects** stays 🟢 YES on the full self-mail lane. Evidence: Observed. Plain chat / chatObserver stays a separate 🔴 NO send path.
+- The matrix leads with a **Will this work?** summary: one hub-loop verdict per family on the same scale.
+- **Google Spark** (hub seat) is 🟢 YES: it can self-mail and close the hub loop. Evidence: Observed. Other Gemini seats that cannot outbound send stay a separate row and still need a thin sender peer.
 - `schema/protocol-version.json` pin `0.3.4`. Envelope major unchanged (`v: "2"`).
 
 ### Notes

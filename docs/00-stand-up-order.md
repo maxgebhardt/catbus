@@ -81,7 +81,7 @@ Ask:
 1. Do you have **one shared mailbox** that both the hub and peer agents can send to and read? Bus traffic is **self-mail** — From = To = that mailbox. No external recipients. Gmail or an equivalent mailbox **is** the bus.
 2. Do **you** (human) keep inbox access for oversight?
 3. Can this agent **send and read** mail on that mailbox?
-4. Can it send **routine self-mail unattended** (no per-message Approve / Send click, **including self-mail**)? If **no**, this seat is not a hub candidate — the human would be the send queue. Some seats can read and auto-ack and still cannot reply or send until a human clicks Send. Some seats cannot outbound send at all and need a thin sender peer. Read [`peer-capability-matrix.md`](peer-capability-matrix.md) before seating a hub or a peer you will depend on for `RES`.
+4. Can it send **routine self-mail unattended** (no per-message Approve / Send click, **including self-mail**)? If **no**, this seat is not a hub candidate — the human would be the send queue. Some seats can read and auto-ack and still cannot reply or send until a human clicks Send. Some Gemini seats cannot outbound send at all and need a thin sender peer. A Spark hub seat is not in that set. Read the **Will this work?** summary in [`peer-capability-matrix.md`](peer-capability-matrix.md) before seating a hub or a peer you will depend on for `RES`.
 
 If any answer is no, stop and say what is missing. Do not mint cards.
 

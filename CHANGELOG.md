@@ -31,6 +31,46 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 
 - (none yet)
 
+## [0.3.6] — 2026-09-28
+
+### Changed
+
+- Operator review of the merged 0.3.4 matrix (PR #5, `9836212`), folded onto the accuracy branch. Legend, the **Will this work?** table, and the inbound-mail wake column stay. This section is the pin.
+- **Cursor agents:** 🟡 YES (but mail connector + poll wake). Not a Gmail webhook.
+- **SuperGrok / Grok chat:** can read and send when asked. Hub loop is 🔴 NO (a human must ask). **SuperGrok / Grok Projects** stays 🟢 YES.
+- **Other Gemini seats:** 🔴 NO on inbound wake. Distinct from Spark.
+- **Google Spark** (hub seat, beta): in the Tasks family, and the seat persists. Not an ephemeral one-shot chat. Hub fit is 🟡 YES (but batch wake about 15–60 minutes), not a real-time socket. Gmail and Workspace tools stay. The inbound webhook stays operator-reported, pending confirm. The 15–60 minute interval is operator-reported, not a figure from the vendor page.
+- **Chat vs Tasks:** chat-only products are adding scheduled or background Tasks. Split those rows when hub-fit changes. ChatGPT Work / scheduled tasks, Claude scheduled Cowork, and Copilot Tasks are that pattern. A schedule is still not inbound-mail wake. A Task that still asks before send does not close the hub loop.
+- **ChatGPT:** Custom GPT / Actions or Work stays 🟡 YES (but …). Consumer web chat is 🔴 NO.
+- **Claude:** MCP / Desktop stays 🟡 YES (but …). claude.ai web is 🔴 NO.
+- **State backing:** local SQLite (or another file the process keeps), Workspace Drive or Keep as a store, or an external database. Ephemeral turn containers need Workspace-backed state. Keep is not the wire.
+- **Bridging Maybe/NO seats:** one paragraph, then links to each vendor’s own Gmail/email-trigger and webhook docs and demos. n8n first. Zapier and Make are named, not pitched. No setup steps.
+- **Product names** in the matrix link to each vendor’s own site. Google Spark links to `https://gemini.google.com/spark` and is labeled a beta feature. The generic hub row stays unlinked.
+- **Microsoft Copilot** chat stays 🔴 NO (human must click Send). **Copilot Tasks** is a separate docs-claimed schedule: 🟠 Maybe on the hub loop, because sending mail still asks for approval. A scheduled run may collect that approval at setup. That is not observed self-mail, and it is not inbound-mail wake. Personal accounts are moving to Copilot Cowork; same path, not a second verdict.
+- `schema/protocol-version.json` pin `0.3.6`. Envelope major unchanged (`v: "2"`).
+
+### Notes
+
+- Compatible docs pin. Not a breaking envelope change. Threat model, cleartext baseline, optional signing, and opaque envelopes advised against are unchanged.
+
+## [0.3.5] — 2026-09-28
+
+### Fixed
+
+- `docs/peer-capability-matrix.md` accuracy pass after operator review of 0.3.4. Legend and the **Will this work?** table stay first.
+- **Cursor agents:** 🟡 YES (but mail connector + poll wake). Inbound-mail wake is poll only. Not a Gmail webhook, and not “human opens the editor” when a routine can poll unattended. Operator-reported for mail and poll. Docs-claimed: Automations cron and MCP, with no Gmail-event trigger.
+- **SuperGrok / Grok chat:** can read and send when a human asks. Not a no-send path. Wake stays 🔴 NO (human opens chat). Will this work? stays 🔴 NO because the hub loop is unattended. Operator-reported when asked. Docs-claimed Gmail connector. Projects is unchanged.
+- **Google Spark** (hub seat): still 🟢 YES on the hub loop, and inbound wake is 🟢 YES. The inbound webhook is operator-reported, pending confirm. Docs-claimed Gmail monitor does not name an HTTP webhook. The old “no HTTP webhook claimed” verdict is removed.
+- **Other Gemini seats:** 🔴 NO on inbound wake. Distinct from Spark. Some still cannot outbound send.
+
+### Changed
+
+- `schema/protocol-version.json` pin `0.3.5`. Envelope major unchanged (`v: "2"`).
+
+### Notes
+
+- Not released on its own. **0.3.6** is the pin. The Spark hub verdict there is 🟡 YES (but …), not the bare 🟢 YES in this section.
+
 ## [0.3.4] — 2026-09-28
 
 ### Changed

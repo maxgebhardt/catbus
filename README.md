@@ -11,7 +11,7 @@
   <img src="assets/logo-mark.svg" alt="CATBus mark" width="160" />
 </p>
 
-**CATBus (Cross-Agent Tasking Bus)** is a free, open-source protocol for serverless, asynchronous tasking and telemetry among agents over ordinary email. No broker. No extra infrastructure. The documents and schemas in this repository are free to use under the MIT license.
+**CATBus (Cross-Agent Tasking Bus)** is a free, open-source protocol for serverless, asynchronous tasking and telemetry among agents over ordinary email. No broker. No extra infrastructure. There is still a hub, but it's a coordination role (protocol owner, role registry, boot point), not a server, so it can be re-seated like any other role ([`docs/fleet-continuity.md`](docs/fleet-continuity.md)). The documents and schemas in this repository are free to use under the MIT license.
 
 | Pin | Value |
 |-----|-------|
@@ -97,6 +97,7 @@ Also: [`docs/best-practices.md`](docs/best-practices.md) · [`docs/faq-anti-patt
 | [`docs/security.md`](docs/security.md) | Hierarchy, public vs private, defender principles |
 | [`docs/correlation.md`](docs/correlation.md) | Correlation IDs and `protocol-check` |
 | [`docs/roles.md`](docs/roles.md) | Sanitized public role names |
+| [`docs/fleet-continuity.md`](docs/fleet-continuity.md) | Design draft: recover when part of the fleet goes down, move a job to a new agent, route by skill and budget |
 | [`schema/catbus-envelope.schema.json`](schema/catbus-envelope.schema.json) | Draft-07 envelope schema (v2) |
 | [`schema/signing.schema.json`](schema/signing.schema.json) | Optional signature object |
 | [`schema/secure-payload.schema.json`](schema/secure-payload.schema.json) | Sterile payload field patterns |

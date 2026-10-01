@@ -9,11 +9,11 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 
 ### Added
 
-- (none yet)
+- `docs/fleet-continuity.md` (design draft): recovering when part of a fleet goes down, and moving a job to a new agent. Covers no hub in the infrastructure but a hub in coordination, distributed agents, the split between the message bus and a record store, standard formats and checking what's real, governance, one boot point, what memory is (canon first, ratified by a human; governed context, not transcripts; measuring how much a receiver must rebuild), a recovery runbook with fencing and seating, a proposed handoff payload, and broadcasting and routing work by skill and budget. Docs only: no envelope change and no protocol-version pin change.
 
 ### Changed
 
-- (none yet)
+- README: says plainly that CATBus has no hub in its infrastructure but does have a hub as a coordination role.
 
 ### Deprecated
 

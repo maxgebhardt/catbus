@@ -1,5 +1,9 @@
 # CATBus
 
+**AI agents wake up with amnesia, and the people who hand work to each other aren't much better.**
+**CATBus is an open protocol for recovering and transferring working state, so when a session ends, a model runs out of tokens, or a role changes hands, the next owner picks up instead of starting over.**
+Messages carry the handoffs; a repository holds the memory. Today it's the messaging layer; state recovery and transfer are being designed in the open. [Why CATBus exists](docs/why.md)
+
 ```
  /\\  /\\     [CATBUS]
 /  --  \\    Cross-Agent Tasking Bus

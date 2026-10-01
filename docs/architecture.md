@@ -1,6 +1,6 @@
 # CATBus architecture
 
-**CATBus (Cross-Agent Tasking Bus)** uses one mailbox as a task bus. No broker. No extra infrastructure. Documents in this repository are free to use under the MIT license.
+**CATBus (Cross-Agent Transfer Bus)** uses one mailbox as a task bus. No broker. No extra infrastructure. Documents in this repository are free to use under the MIT license.
 
 ## Idea
 

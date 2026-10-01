@@ -6,7 +6,7 @@ Messages carry the handoffs; a repository holds the memory. Today it's the messa
 
 ```
  /\\  /\\     [CATBUS]
-/  --  \\    Cross-Agent Tasking Bus
+/  --  \\    Cross-Agent Transfer Bus
 (  o  o  )   Self-mail JSON on one mailbox
  \\  ==  /
 ```
@@ -15,7 +15,7 @@ Messages carry the handoffs; a repository holds the memory. Today it's the messa
   <img src="assets/logo-mark.svg" alt="CATBus mark" width="160" />
 </p>
 
-**CATBus (Cross-Agent Tasking Bus)** is a free, open-source protocol for serverless, asynchronous tasking and telemetry among agents over ordinary email. No broker. No extra infrastructure. There is still a hub, but it's a coordination role (protocol owner, role registry, boot point), not a server, so it can be re-seated like any other role ([`docs/fleet-continuity.md`](docs/fleet-continuity.md)). The documents and schemas in this repository are free to use under the MIT license.
+**CATBus (Cross-Agent Transfer Bus)** is a free, open-source protocol for serverless, asynchronous tasking and telemetry among agents over ordinary email. No broker. No extra infrastructure. There is still a hub, but it's a coordination role (protocol owner, role registry, boot point), not a server, so it can be re-seated like any other role ([`docs/fleet-continuity.md`](docs/fleet-continuity.md)). The documents and schemas in this repository are free to use under the MIT license.
 
 | Pin | Value |
 |-----|-------|

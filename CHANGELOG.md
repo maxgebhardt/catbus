@@ -15,6 +15,7 @@ Versioning follows [Semantic Versioning](https://semver.org/) on `schema/protoco
 ### Changed
 
 - README: the first lines now say why the project exists and link to `docs/why.md`. Docs only.
+- Name: CATBus now stands for **Cross-Agent Transfer Bus** (was Cross-Agent Tasking Bus), because the project is about transferring state, not only tasks. The protocol id stays `catbus`. The README banner, `docs/architecture.md`, and the envelope schema `description` text are updated. No envelope change and no protocol-version pin change.
 
 - README: says plainly that CATBus has no hub in its infrastructure but does have a hub as a coordination role.
 

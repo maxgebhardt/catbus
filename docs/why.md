@@ -12,6 +12,14 @@ Agents run out of tokens. Sessions end. Models get swapped. People go on leave, 
 
 When a role lives inside the agent or the person doing it, every move is a rebuild by hand. The fix is to keep the role somewhere else: in one place, documented or delegated, so when it moves it doesn't start over. **It just gets a new owner.**
 
+## Hand off agent to agent
+
+As people adopt AI, you adopt an AI partner: something you work with as a close counterpart to block and tackle. But as I always say, **bot for bot, human for human.**
+
+When the bot works with you, it learns a tremendous amount of context, but what visibility do you have into that context? And it also holds the history of a project or account better than you do. So why, when the AI deals with so much of the work and nuance, do we hand off at the meatsack layer?
+
+Agent-to-agent transfer is the future. Bringing someone into your project? Here's a CATBus-standard handoff, and the agent that knows you will get you up to speed and work it into your workflow for you. No stupid meetings, no wasted breath. The humans can connect up after the handoff to talk strategy, not operational and tactical block and tackle.
+
 ## What we're building toward
 
 - **Recover state.** An agent that wakes up cold reads one boot point, learns who it is, what role it holds, and what to load, and picks up where the last owner stopped.
